@@ -10,28 +10,37 @@ A starter template for creating PowerPoint presentations using **JSX** + **TypeS
 - Export — generate `.pptx` files with a single command
 - Rich component set — shapes, charts, tables, images, rich text, speaker notes
 
-## GitHub Template
+## Quick Start
 
-This is a template repo. Click the green **Use this template** button to get started.
+### 1. Use this template (recommended)
 
-## Clone to local
+Click the **Use this template** button on GitHub — it creates a fresh repository under your account with no shared history.
 
-If you prefer to do it manually with a cleaner git history:
+### 2. Create with tiged
+
+If you prefer working locally without creating a GitHub repository first:
 
 ```bash
-git clone https://github.com/your-username/pptxgen-ts-starter.git
+npx tiged zythum/pptxgen-ts-starter my-presentation
+cd my-presentation
+npm install
+```
+
+### 3. Clone manually (last resort)
+
+```bash
+git clone https://github.com/zythum/pptxgen-ts-starter.git
 cd pptxgen-ts-starter
 npm install
 ```
 
 ## Checklist
 
-When you use this template, update the following:
+Start customizing:
 
-- Remove `.git` directory and run `git init` to clean up the history
 - Change the `name` field in `package.json`
-- Clean up the `README.md` file
 - Replace slide files in `src/slides/` with your own content
+- Clean up this `README.md`
 
 ## Usage
 
