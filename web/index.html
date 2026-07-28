@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>pptxgen-ts-starter — Slide Preview</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { height: 100%; }
+      body, #root {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* ── PPT Viewer Layout ── */
+      .pptx {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        background: #1e1e2e;
+      }
+
+      .pptx-canvas-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 16px;
+      }
+
+      .pptx-canvas {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+        background: #fff;
+      }
+
+      .pptx-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        padding: 14px 24px;
+        background: #2a2a3e;
+        border-top: 1px solid #3a3a52;
+      }
+
+      .pptx-toolbar button {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        background: #4a4a6a;
+        color: #eee;
+        transition: background 0.2s;
+      }
+      .pptx-toolbar button:hover {
+        background: #6a6a8a;
+      }
+      .pptx-toolbar button:active {
+        background: #5a5a7a;
+      }
+
+      .pptx-slide-counter {
+        font-size: 15px;
+        font-weight: 500;
+        color: #ccc;
+        min-width: 80px;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="module">
+      import { PptxViewer } from "https://esm.sh/@silurus/ooxml@0.74.1/pptx";
+
+      // ── State ──
+      let viewer = null;
+
+      async function renderPreview(domElement) {
+        domElement.innerHTML = `
+          <div class="pptx">
+            <div class="pptx-canvas-wrapper">
+              <canvas class="pptx-canvas"></canvas>
+            </div>
+            <div class="pptx-toolbar">
+              <button class="pptx-prev-btn">← Prev</button>
+              <span class="pptx-slide-counter pptx-counter">Loading...</span>
+              <button class="pptx-next-btn">Next →</button>
+            </div>
+          </div>
+        `;
+
+        const canvas = domElement.querySelector(".pptx-canvas");
+        const counter = domElement.querySelector(".pptx-counter");
+        const prevBtn = domElement.querySelector(".pptx-prev-btn");
+        const nextBtn = domElement.querySelector(".pptx-next-btn");
+
+        counter.textContent = "Generating...";
+
+        try {
+          // Fetch pre-generated .pptx from server
+          const resp = await fetch("/api/generate");
+          if (!resp.ok) {
+            throw new Error("Server error: " + resp.status + " " + resp.statusText);
+          }
+          const buffer = await resp.arrayBuffer();
+          counter.textContent = "Rendering...";
+
+          const targetSlide = parseInt(location.hash.replace("#", ""), 10) || 1;
+          let suppressHashUpdate = true;
+
+          viewer = new PptxViewer(canvas, {
+            useGoogleFonts: true,
+            onSlideChange: (current, total) => {
+              counter.textContent = (current + 1) + " / " + total;
+              if (!suppressHashUpdate) {
+                history.replaceState(null, "", "#" + (current + 1));
+              }
+            },
+          });
+
+          await viewer.load(buffer);
+
+          const wrapper = domElement.querySelector(".pptx-canvas-wrapper");
+          await viewer.fitPage();
+          const ro = new ResizeObserver(() => void viewer?.fitPage());
+          ro.observe(wrapper);
+
+          if (targetSlide > 1) await viewer.goToSlide(targetSlide - 1);
+
+          suppressHashUpdate = false;
+        } catch (err) {
+          counter.textContent = "Error: " + (err as Error).message;
+          console.error(err);
+          return;
+        }
+
+        prevBtn.addEventListener("click", () => viewer?.prevSlide());
+        nextBtn.addEventListener("click", () => viewer?.nextSlide());
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+            viewer?.prevSlide();
+          } else if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " ") {
+            e.preventDefault();
+            viewer?.nextSlide();
+          }
+        });
+      }
+
+      renderPreview(document.getElementById("root"));
+    </script>
+  </body>
+</html>
