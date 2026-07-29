@@ -74,6 +74,36 @@ process.chdir(path.dirname(ENTRY_ABS));
 const PORT = args["--port"] ?? parseInt(process.env.PORT || "5173", 10);
 const HOST = args["--host"] ?? (process.env.HOST || "127.0.0.1");
 
+// ── Hot-reload via SSE ──
+const sseClients = new Set<http.ServerResponse>();
+let changeTimer: ReturnType<typeof setTimeout> | null = null;
+
+function broadcastReload() {
+  // Debounce: coalesce rapid changes into one reload signal
+  if (changeTimer) return;
+  changeTimer = setTimeout(() => {
+    changeTimer = null;
+    for (const client of sseClients) {
+      try {
+        client.write("event: reload\ndata: {}\n\n");
+      } catch {
+        sseClients.delete(client);
+      }
+    }
+    sseClients.clear();
+  }, 50);
+}
+
+// Watch src/ directory for changes
+const SRC_DIR = path.resolve(ROOT, "src");
+if (fs.existsSync(SRC_DIR)) {
+  fs.watch(SRC_DIR, { recursive: true }, (eventType, filename) => {
+    if (filename && !filename.startsWith(".")) {
+      broadcastReload();
+    }
+  });
+}
+
 // ── HTTP Server ──
 const server = http.createServer(async (req, res) => {
   try {
@@ -103,6 +133,20 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
         res.end("Generate failed: " + e.message);
       }
+      return;
+    }
+
+    // ── SSE: Hot-reload ──
+    if (pathname === "/api/hotreload") {
+      res.writeHead(200, {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+        "Access-Control-Allow-Origin": "*",
+      });
+      res.write("event: connected\ndata: {}\n\n");
+      sseClients.add(res);
+      req.on("close", () => sseClients.delete(res));
       return;
     }
 
@@ -159,7 +203,7 @@ const OPEN = args["--open"] ?? false;
 
 server.listen(PORT, HOST, () => {
   const url = `http://${HOST}:${PORT}/`;
-  console.log("\n  Dev Server");
+  console.log("  Dev Server");
   console.log(`  → ${url}\n`);
 
   if (OPEN) {

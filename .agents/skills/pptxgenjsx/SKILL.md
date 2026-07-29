@@ -18,23 +18,40 @@ Build `.pptx` presentations using JSX + TypeScript + [PptxGenJS](https://github.
 ## Import
 
 ```tsx
-import { Deck, Slide, Text, TextRun, Notes, Rect, RoundRect, Ellipse,
-  LineBetween, Arc, BlockArc, CustomGeometry, Shape, Chart, Table, TableCell,
-  Image, Media } from "@zythum02/pptxgenjsx";
+import {
+  Deck,
+  Slide,
+  Text,
+  TextRun,
+  Notes,
+  Rect,
+  RoundRect,
+  Ellipse,
+  LineBetween,
+  Arc,
+  BlockArc,
+  CustomGeometry,
+  Shape,
+  Chart,
+  Table,
+  TableCell,
+  Image,
+  Media,
+} from "@zythum02/pptxgenjsx";
 ```
 
 TSConfig: `jsx: "react-jsx"`, `jsxImportSource: "@zythum02/pptxgenjsx"`.
 
 ## Core Concepts
 
-| Rule | Detail |
-|------|--------|
-| **Canvas** | 13.333 × 7.5 inches (WIDE) |
-| **Positioning** | Absolute inches — every element needs `x`, `y`, `w`, `h` |
-| **Colors** | Hex without `#` (`"FFFFFF"`) or theme color (`"accent1"`) |
-| **Background** | Every slide starts with `<Rect x={0} y={0} w={13.333} h={7.5}>` |
-| **Async** | Slide components are `async`: `export async function Foo(): Promise<PptxNode>` |
-| **Entry Point** | `src/ppt.tsx` — `export default function()` returning `<Deck>...` |
+| Rule            | Detail                                                                         |
+| --------------- | ------------------------------------------------------------------------------ |
+| **Canvas**      | 13.333 × 7.5 inches (WIDE)                                                     |
+| **Positioning** | Absolute inches — every element needs `x`, `y`, `w`, `h`                       |
+| **Colors**      | Hex without `#` (`"FFFFFF"`) or theme color (`"accent1"`)                      |
+| **Background**  | Every slide starts with `<Rect x={0} y={0} w={13.333} h={7.5}>`                |
+| **Async**       | Slide components are `async`: `export async function Foo(): Promise<PptxNode>` |
+| **Entry Point** | `src/ppt.tsx` — `export default function()` returning `<Deck>...`              |
 
 ## Quick Start
 
@@ -63,11 +80,11 @@ export async function TitleSlide(): Promise<PptxNode> {
 
 ## NPM Scripts
 
-| Command | Action |
-|---------|--------|
-| `npm run dev` | Dev server at localhost:5173 |
-| `npm run generate` | Build `output/presentation.pptx` |
-| `npm run generate -- -o file.pptx src/ppt.tsx` | Custom output |
+| Command                                        | Action                           |
+| ---------------------------------------------- | -------------------------------- |
+| `npm run dev`                                  | Dev server at localhost:5173     |
+| `npm run generate`                             | Build `output/presentation.pptx` |
+| `npm run generate -- -o file.pptx src/ppt.tsx` | Custom output                    |
 
 ## Workflow: Adding a New Slide
 
@@ -98,24 +115,25 @@ references/
 
 Each file includes inline code examples.
 
-| File | Contents |
-|------|----------|
-| [components/slide.md](references/components/slide.md) | `<Deck>`, `<Slide>`, `<Notes>`, minimal slide template |
-| [components/text.md](references/components/text.md) | `<Text>`, `<TextRun>` (all options incl. bullet/numbered lists) |
+| File                                                    | Contents                                                                                                                              |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| [components/slide.md](references/components/slide.md)   | `<Deck>`, `<Slide>`, `<Notes>`, minimal slide template                                                                                |
+| [components/text.md](references/components/text.md)     | `<Text>`, `<TextRun>` (all options incl. bullet/numbered lists)                                                                       |
 | [components/shapes.md](references/components/shapes.md) | All 24+ dedicated shape components, `<CustomGeometry>` (SVG conversion), `<Shape>` generic + full 180-name list, process flow example |
-| [components/chart.md](references/components/chart.md) | `<Chart>` — data format, axis/bar/line/pie/label/3D options, Multi-Chart mixed types |
-| [components/table.md](references/components/table.md) | `<Table>` + `<TableCell>` — borders, colspan/rowspan, alignment, auto-paging, alternating rows example |
-| [components/media.md](references/components/media.md) | `<Image>` (path/data/base64, sizing, rounding, rotation), `<Media>` (audio/video/YouTube) |
-| [styling/index.md](references/styling/index.md) | Shared style interfaces: `ShapeFillProps`, `ShapeLineProps`, `ShadowProps`, `BorderProps`, `HyperlinkProps`, `TextBaseProps` |
+| [components/chart.md](references/components/chart.md)   | `<Chart>` — data format, axis/bar/line/pie/label/3D options, Multi-Chart mixed types                                                  |
+| [components/table.md](references/components/table.md)   | `<Table>` + `<TableCell>` — borders, colspan/rowspan, alignment, auto-paging, alternating rows example                                |
+| [components/media.md](references/components/media.md)   | `<Image>` (path/data/base64, sizing, rounding, rotation), `<Media>` (audio/video/YouTube)                                             |
+| [styling/index.md](references/styling/index.md)         | Shared style interfaces: `ShapeFillProps`, `ShapeLineProps`, `ShadowProps`, `BorderProps`, `HyperlinkProps`, `TextBaseProps`          |
+
 ## Common Mistakes
 
-| ❌ Mistake | ✅ Correct |
-|-----------|-----------|
-| `<RoundRect rectRadius={0}>` | `<Rect>` instead |
-| `color="#FFFFFF"` | `color="FFFFFF"` (no `#`) |
-| `<div>`, `<span>`, `<p>` | `<Text>` + `<TextRun>` |
-| Named export in `src/ppt.tsx` | `export default function()` |
-| Missing full-size background | Add `<Rect x={0} y={0} w={13.333} h={7.5}>` |
-| Forgetting `breakLine: true` | Set on last `TextRun` of each line |
-| Pixels instead of inches | Use inches for all position props |
+| ❌ Mistake                           | ✅ Correct                                           |
+| ------------------------------------ | ---------------------------------------------------- |
+| `<RoundRect rectRadius={0}>`         | `<Rect>` instead                                     |
+| `color="#FFFFFF"`                    | `color="FFFFFF"` (no `#`)                            |
+| `<div>`, `<span>`, `<p>`             | `<Text>` + `<TextRun>`                               |
+| Named export in `src/ppt.tsx`        | `export default function()`                          |
+| Missing full-size background         | Add `<Rect x={0} y={0} w={13.333} h={7.5}>`          |
+| Forgetting `breakLine: true`         | Set on last `TextRun` of each line                   |
+| Pixels instead of inches             | Use inches for all position props                    |
 | Forgetting `async` on slide function | `export async function MySlide(): Promise<PptxNode>` |

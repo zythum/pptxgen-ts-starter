@@ -1,10 +1,12 @@
-import { Slide, Text, TextRun, Notes, Rect, RoundRect, type PptxNode } from "@zythum02/pptxgenjsx";
+import { Text, TextRun, Notes, Rect, RoundRect } from "@zythum02/pptxgenjsx";
+import { SlideBackground } from "../components/SlideBackground";
+import { PageNumber } from "../components/PageNumber";
 
-export async function EndSlide(): Promise<PptxNode> {
+export default async function () {
   return (
-    <Slide>
-      {/* Background */}
-      <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "1E1E2E" }} />
+    <>
+      <SlideBackground color="dark" />
+      <PageNumber color="6B7280" />
 
       {/* Decorative top accent */}
       <Rect x={5.667} y={2.5} w={2.0} h={0.06} fill={{ color: "7C3AED" }} />
@@ -25,18 +27,20 @@ export async function EndSlide(): Promise<PptxNode> {
       {/* Commands */}
       <RoundRect x={3.5} y={5.0} w={7.0} h={1.2} fill={{ color: "2A2A3E" }} rectRadius={0.1} />
       <Text x={3.8} y={5.1} w={6.4} h={1.0} align="center" valign="middle">
-        <TextRun text="npm install  →  npm run dev  →  npm run generate" options={{ fontSize: 14, color: "6EE7B7", fontFace: "Courier New" }} />
+        <TextRun
+          text="npm install  →  npm run dev  →  npm run generate"
+          options={{ fontSize: 14, color: "6EE7B7", fontFace: "Courier New" }}
+        />
       </Text>
 
       {/* Decorative bottom accent */}
       <Rect x={5.667} y={6.5} w={2.0} h={0.06} fill={{ color: "7C3AED" }} />
 
       <Notes>
-        Thanks for exploring the pptxgen-ts-starter template!
-        To get started: fork or clone the repo, run npm install,
-        start editing slides in src/slides/, preview in the browser,
-        and generate your .pptx when ready.
+        Thanks for exploring the pptxgen-ts-starter template! To get started: fork or clone the
+        repo, run npm install, start editing slides in src/slides/, preview in the browser, and
+        generate your .pptx when ready.
       </Notes>
-    </Slide>
+    </>
   );
 }

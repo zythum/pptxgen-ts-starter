@@ -2,23 +2,23 @@
 
 ## `<Image>`
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `x` | `number` | — | Left offset |
-| `y` | `number` | — | Top offset |
-| `w` | `number` | — | Width |
-| `h` | `number` | — | Height |
-| `path` | `string` | — | Relative path (from entry file `src/ppt.tsx`) or URL |
-| `data` | `string` | — | Base64 data (alternative to path; format: `"image/png;base64,..."`) |
-| `altText` | `string` | — | Accessibility |
-| `rotate` | `number` | `0` | Rotation degrees |
-| `flipH` | `boolean` | `false` | Flip horizontally |
-| `flipV` | `boolean` | `false` | Flip vertically |
-| `rounding` | `boolean` | `false` | Rounded corners |
-| `transparency` | `number` | `0` | 0–100 |
-| `shadow` | `ShadowProps` | — | Shadow |
-| `hyperlink` | `HyperlinkProps` | — | Clickable link |
-| `sizing` | `{ type: "contain"\|"cover"\|"crop", w?: number, h?: number, x?: number, y?: number }` | — | Sizing behavior |
+| Prop           | Type                                                                                   | Default | Description                                                         |
+| -------------- | -------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------- |
+| `x`            | `number`                                                                               | —       | Left offset                                                         |
+| `y`            | `number`                                                                               | —       | Top offset                                                          |
+| `w`            | `number`                                                                               | —       | Width                                                               |
+| `h`            | `number`                                                                               | —       | Height                                                              |
+| `path`         | `string`                                                                               | —       | Relative path (from entry file `src/ppt.tsx`) or URL                |
+| `data`         | `string`                                                                               | —       | Base64 data (alternative to path; format: `"image/png;base64,..."`) |
+| `altText`      | `string`                                                                               | —       | Accessibility                                                       |
+| `rotate`       | `number`                                                                               | `0`     | Rotation degrees                                                    |
+| `flipH`        | `boolean`                                                                              | `false` | Flip horizontally                                                   |
+| `flipV`        | `boolean`                                                                              | `false` | Flip vertically                                                     |
+| `rounding`     | `boolean`                                                                              | `false` | Rounded corners                                                     |
+| `transparency` | `number`                                                                               | `0`     | 0–100                                                               |
+| `shadow`       | `ShadowProps`                                                                          | —       | Shadow                                                              |
+| `hyperlink`    | `HyperlinkProps`                                                                       | —       | Clickable link                                                      |
+| `sizing`       | `{ type: "contain"\|"cover"\|"crop", w?: number, h?: number, x?: number, y?: number }` | —       | Sizing behavior                                                     |
 
 ```tsx
 // Local file (path relative to entry file src/ppt.tsx)
@@ -39,14 +39,14 @@
 
 ## `<Media>` — Audio/Video
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `type` | `"audio"\|"online"\|"video"` | Media type |
-| `path` | `string` | Local file path (relative to `src/ppt.tsx`) |
-| `link` | `string` | Video embed link (e.g. YouTube) |
-| `data` | `string` | Base64 media data |
-| `cover` | `string` | Cover image path |
-| `extn` | `string` | File extension (when path lacks it) |
+| Prop    | Type                         | Description                                 |
+| ------- | ---------------------------- | ------------------------------------------- |
+| `type`  | `"audio"\|"online"\|"video"` | Media type                                  |
+| `path`  | `string`                     | Local file path (relative to `src/ppt.tsx`) |
+| `link`  | `string`                     | Video embed link (e.g. YouTube)             |
+| `data`  | `string`                     | Base64 media data                           |
+| `cover` | `string`                     | Cover image path                            |
+| `extn`  | `string`                     | File extension (when path lacks it)         |
 
 ```tsx
 // Video

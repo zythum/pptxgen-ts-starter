@@ -1,10 +1,12 @@
-import { Slide, Text, TextRun, Notes, Rect, type PptxNode } from "@zythum02/pptxgenjsx";
+import { Text, TextRun, Notes, Rect } from "@zythum02/pptxgenjsx";
+import { SlideBackground } from "../components/SlideBackground";
+import { PageNumber } from "../components/PageNumber";
 
-export async function TitleSlide(): Promise<PptxNode> {
+export default async function TitleSlide() {
   return (
-    <Slide>
-      {/* Background */}
-      <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "1E1E2E" }} />
+    <>
+      <SlideBackground color="dark" />
+      <PageNumber color="6B7280" />
 
       {/* Accent line */}
       <Rect x={4.667} y={2.8} w={4.0} h={0.06} fill={{ color: "7C3AED" }} />
@@ -41,6 +43,6 @@ export async function TitleSlide(): Promise<PptxNode> {
         The starter uses JSX to define slides and pptxgenjs to render them to .pptx files.
         Press the next button or use arrow keys to navigate.
       </Notes>
-    </Slide>
+    </>
   );
 }

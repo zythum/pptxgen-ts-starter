@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>pptxgen-ts-starter — Slide Preview</title>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      html { height: 100%; }
-      body, #root {
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        height: 100%;
+      }
+      body,
+      #root {
         width: 100%;
         height: 100%;
         overflow: hidden;
@@ -81,6 +88,20 @@
   <body>
     <div id="root"></div>
 
+    <!-- Hot-reload: listen for file changes and auto-refresh -->
+    <script>
+      (function () {
+        var es = new EventSource("/api/hotreload");
+        es.addEventListener("reload", function () {
+          es.close();
+          location.reload();
+        });
+        es.addEventListener("error", function () {
+          // Reconnect on network error (EventSource retries automatically)
+        });
+      })();
+    </script>
+
     <script type="module">
       import { PptxViewer } from "https://esm.sh/@silurus/ooxml@0.74.1/pptx";
 
@@ -123,7 +144,7 @@
           viewer = new PptxViewer(canvas, {
             useGoogleFonts: true,
             onSlideChange: (current, total) => {
-              counter.textContent = (current + 1) + " / " + total;
+              counter.textContent = current + 1 + " / " + total;
               if (!suppressHashUpdate) {
                 history.replaceState(null, "", "#" + (current + 1));
               }

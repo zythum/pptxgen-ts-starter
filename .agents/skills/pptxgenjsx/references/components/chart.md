@@ -2,26 +2,26 @@
 
 ## `<Chart>`
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `x` | `number` | Left offset (inches) |
-| `y` | `number` | Top offset |
-| `w` | `number` | Width |
-| `h` | `number` | Height |
-| `type` | `CHART_NAME` | `'area'\|'bar'\|'bar3D'\|'bubble'\|'doughnut'\|'line'\|'pie'\|'radar'\|'scatter'` |
-| `data` | `OptsChartData[]` | Series data |
-| `options` | `IChartOpts` | Chart options |
+| Prop      | Type              | Description                                                                       |
+| --------- | ----------------- | --------------------------------------------------------------------------------- |
+| `x`       | `number`          | Left offset (inches)                                                              |
+| `y`       | `number`          | Top offset                                                                        |
+| `w`       | `number`          | Width                                                                             |
+| `h`       | `number`          | Height                                                                            |
+| `type`    | `CHART_NAME`      | `'area'\|'bar'\|'bar3D'\|'bubble'\|'doughnut'\|'line'\|'pie'\|'radar'\|'scatter'` |
+| `data`    | `OptsChartData[]` | Series data                                                                       |
+| `options` | `IChartOpts`      | Chart options                                                                     |
 
 ---
 
 ## Data Format (`OptsChartData[]`)
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `name` | `string` | Series name |
+| Prop     | Type                     | Description                            |
+| -------- | ------------------------ | -------------------------------------- |
+| `name`   | `string`                 | Series name                            |
 | `labels` | `string[] \| string[][]` | Category labels (supports multi-level) |
-| `values` | `number[]` | Data values |
-| `sizes` | `number[]` | Bubble sizes (only for `bubble`) |
+| `values` | `number[]`               | Data values                            |
+| `sizes`  | `number[]`               | Bubble sizes (only for `bubble`)       |
 
 ---
 
@@ -41,22 +41,22 @@
 
 ### Bar-Specific
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `barDir` | `"bar" \| "col"` | `"bar"`=horizontal, `"col"`=vertical |
-| `barGrouping` | `"clustered" \| "stacked" \| "stacked100"` | Grouping mode |
-| `barGapWidthPct` | `number` | 0–500 |
-| `barOverlapPct` | `number` | -100–100 |
+| Option           | Type                                       | Description                          |
+| ---------------- | ------------------------------------------ | ------------------------------------ |
+| `barDir`         | `"bar" \| "col"`                           | `"bar"`=horizontal, `"col"`=vertical |
+| `barGrouping`    | `"clustered" \| "stacked" \| "stacked100"` | Grouping mode                        |
+| `barGapWidthPct` | `number`                                   | 0–500                                |
+| `barOverlapPct`  | `number`                                   | -100–100                             |
 
 ### Line-Specific
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `lineSize` | `number` | Line width in points |
-| `lineDash` | `string` | Dash style |
-| `lineSmooth` | `boolean` | Smooth curves |
-| `lineDataSymbol` | `"circle"\|"diamond"\|"square"\|"triangle"\|"none"` | Data point symbol |
-| `lineDataSymbolSize` | `number` | Symbol size |
+| Option               | Type                                                | Description          |
+| -------------------- | --------------------------------------------------- | -------------------- |
+| `lineSize`           | `number`                                            | Line width in points |
+| `lineDash`           | `string`                                            | Dash style           |
+| `lineSmooth`         | `boolean`                                           | Smooth curves        |
+| `lineDataSymbol`     | `"circle"\|"diamond"\|"square"\|"triangle"\|"none"` | Data point symbol    |
+| `lineDataSymbolSize` | `number`                                            | Symbol size          |
 
 ### Doughnut
 
@@ -88,10 +88,15 @@ plotArea: {
 ## Example
 
 ```tsx
-<Chart x={0.8} y={1.8} w={11.733} h={5.0} type="bar"
+<Chart
+  x={0.8}
+  y={1.8}
+  w={11.733}
+  h={5.0}
+  type="bar"
   data={[
-    { name: "Revenue", labels: ["Q1","Q2","Q3","Q4"], values: [450, 520, 480, 610] },
-    { name: "Costs", labels: ["Q1","Q2","Q3","Q4"], values: [320, 340, 310, 380] },
+    { name: "Revenue", labels: ["Q1", "Q2", "Q3", "Q4"], values: [450, 520, 480, 610] },
+    { name: "Costs", labels: ["Q1", "Q2", "Q3", "Q4"], values: [320, 340, 310, 380] },
   ]}
   options={{
     showLegend: true,
@@ -108,14 +113,21 @@ plotArea: {
 ## Multi-Chart (Mixed Types)
 
 ```tsx
-<Chart type="bar" x={0.5} y={1.5} w={9} h={5.5}
-  data={[{ name: "Bars", labels: ["A","B","C","D"], values: [30,45,35,50] }]}
+<Chart
+  type="bar"
+  x={0.5}
+  y={1.5}
+  w={9}
+  h={5.5}
+  data={[{ name: "Bars", labels: ["A", "B", "C", "D"], values: [30, 45, 35, 50] }]}
   options={{
-    multi: [{
-      type: "line",
-      data: [{ name: "Line", labels: ["A","B","C","D"], values: [20,30,25,40] }],
-      options: { secondaryValAxis: true },
-    }],
+    multi: [
+      {
+        type: "line",
+        data: [{ name: "Line", labels: ["A", "B", "C", "D"], values: [20, 30, 25, 40] }],
+        options: { secondaryValAxis: true },
+      },
+    ],
     catAxes: [{}],
     valAxes: [{}, { secondaryValAxis: true }],
   }}

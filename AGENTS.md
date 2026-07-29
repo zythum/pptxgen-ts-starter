@@ -1,109 +1,126 @@
 # pptxgen-ts-starter — Agent Guide
 
-This file is for AI coding assistants (Cursor, Claude Code, Copilot, etc.) working on this project.
-
-## Project Identity
-
-A starter template for building `.pptx` presentations using **JSX + TypeScript + pptxgenjs**. Slides are defined as JSX components and compiled into PowerPoint files.
+> Build `.pptx` presentations with JSX + TypeScript + pptxgenjs. Slides are JSX components compiled into PowerPoint files.
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| JSX Components | `@zythum02/pptxgenjsx` ^0.1.1 (provides `<Slide>`, `<Text>`, `<Rect>`, `<RoundRect>`, etc.) |
-| Rendering Engine | `pptxgenjs` ^4.0.1 |
-| Dev Server | Vanilla Node HTTP server via `tsx` |
-| PPTX Viewer (browser) | `@silurus/ooxml` |
-| Build/Run | `tsx` — runs TypeScript directly, no compilation step needed |
-| TS Config | `jsx: "react-jsx"`, `jsxImportSource: "@zythum02/pptxgenjsx"` |
+| Layer            | Technology                                                                                    |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| JSX Components   | `@zythum02/pptxgenjsx` — `<Slide>`, `<Text>`, `<Rect>`, `<Chart>`, `<Table>`, `<Image>`, etc. |
+| Rendering Engine | `pptxgenjs` ^4.0.1                                                                            |
+| Dev Server       | Vanilla Node HTTP via `tsx` — **no file watching, refresh browser manually**                  |
+| PPTX Viewer      | `@silurus/ooxml` (browser)                                                                    |
+| TS Config        | `jsx: "react-jsx"`, `jsxImportSource: "@zythum02/pptxgenjsx"`                                 |
 
-## Architecture Rules
+## Project Structure
 
-### 1. Slide Components
+```
+src/
+├── ppt.tsx                  # Entry — default export, composes all slides in <Deck>
+├── slides/                  # One file per slide, numbered: 01-title.tsx, 02-*.tsx …
+├── components/              # Shared UI: SlideBackground, SectionHeader, Card
+└── media/images/            # Image assets — paths relative to src/ppt.tsx
+scripts/
+├── dev-server.ts            # Dev server — do not modify
+└── generate.ts              # .pptx builder — do not modify
+web/index.html               # Browser PPTX viewer
+.agents/skills/pptxgenjsx/   # Component API reference (loaded on demand)
+```
 
-- Each slide is a **named function export** (e.g. `export function TitleSlide()`, `export function DataSlide()`).
-- One file per slide, numbered by presentation order: `01-title.tsx`, `02-data.tsx`, `03-end.tsx`.
-- Import all slides in `src/ppt.tsx` and compose them inside `<Deck>`.
-- Every slide **must start with a full-size background shape** covering the entire canvas (13.333×7.5 inches).
+## Conventions
 
-### 2. Positioning
+### Slides
 
-- **All positions are absolute** — there is no flexbox or grid. Every element has explicit `x`, `y`, `w`, `h` in inches.
-- Design with inches, not pixels. Standard canvas is **13.333×7.5** (WIDE).
+- **Named async exports** — `export async function TitleSlide()`. Components are regular functions (`export function Card()`). **Never annotate return types.**
+- **Numbered files** — `01-title.tsx`, `02-overview.tsx`, ordered by presentation flow.
+- **Full-size background first** — every slide's first child is `<SlideBackground />`.
+- **Composed in `src/ppt.tsx`** — import all slides, arrange inside `<Deck>`.
 
-### 3. Shapes
+### Components
 
-| Element | When to Use |
-|---------|-------------|
-| `<Rect>` | Pure rectangles: background fills, decorative lines, accent bars |
-| `<RoundRect>` | Only when **visibly rounded** corners are needed (cards, badges, buttons) |
-| `<Ellipse>` | Circles and ovals |
+- Extract into `components/` when a pattern appears in **3+ slides**.
+- Expose only what varies — `<SlideBackground color="dark" />` takes zero position props; `<Card>` takes all four (`x, y, w, h`).
+- Keep positioning visible in the slide file, not hidden behind a component abstraction.
 
-> **Critical rule**: Never use `<RoundRect rectRadius={0} />` as a substitute for `<Rect>`. If it's a pure rectangle, use `<Rect>`.
+### Positioning & Canvas
 
-### 4. Colors
+- **Absolute inches** — every element needs `x`, `y`, `w`, `h`. No flexbox, no grid.
+- Canvas: **13.333 × 7.5 in** (WIDE), set via `<Deck layout={{ name: "WIDE", width: 13.333, height: 7.5 }}>`.
 
-- Hex strings **omit the `#` prefix**: `"1E1E2E"`, `"7C3AED"`, `"FFFFFF"`.
-- Transparency is `fill: { color: "1E1E2E", transparency: 50 }` (0–100).
+### Colors
 
-### 5. Text
+- Hex **without `#`** — `"7C3AED"` not `"#7C3AED"`.
+- Transparency: `fill: { color: "1E1E2E", transparency: 50 }` (0–100).
 
-- `<Text>` positions the block. Props: `x, y, w, h, align`, `valign`, `lineSpacing`.
-- `<TextRun>` is the formatted segment. Each `TextRun` carries its own `options`: `fontSize`, `bold`, `italic`, `color`, `fontFace`, `breakLine`.
-- Use `breakLine: true` on the last `TextRun` of a line (like `<br>` in HTML).
+### Shapes
 
-### 6. Images
+| Component     | Use when                                                            |
+| ------------- | ------------------------------------------------------------------- |
+| `<Rect>`      | Plain rectangle — backgrounds, accent bars, dividers                |
+| `<RoundRect>` | **Visible** rounded corners — cards, badges. Never `rectRadius={0}` |
+| `<Ellipse>`   | Circles and ellipses                                                |
 
-- Place image files in `src/media/images/`.
-- Reference with relative path in `<Image path="media/images/filename.png">`.
-- Path is resolved relative to the entry file `src/ppt.tsx`.
+### Code Style
 
-### 7. Speaker Notes
+- **No return type annotations** — let TypeScript infer from JSX.
+- `src/ppt.tsx` must be a **default export** (`export default function ()`).
+- **No HTML elements** — `<div>`, `<span>`, `<p>` are not in `JSX.IntrinsicElements`. Only imported components are valid.
+- **Don't modify** `scripts/*.ts` — infrastructure, not content.
 
-- `<Notes>Your notes here</Notes>` — placed as a child of `<Slide>`.
+## Workflow: Add or Edit a Slide
 
-### 8. Entry Point
+1. Create `src/slides/NN-name.tsx` — async function returning `<Slide>` with `<SlideBackground>`.
+2. Compose content using `<Text>`, `<TextRun>`, `<Rect>`, `<Chart>`, `<Table>`, etc.
+3. Import the slide in `src/ppt.tsx` and add it inside `<Deck>`.
+4. `npm run dev` → **refresh browser** to preview, or `npm run generate` for `.pptx`.
 
-- `src/ppt.tsx` has a **default export** (not named) that returns a `<Deck>` wrapping all slides.
-- Keep the entry point clean — it should only import slides and compose the deck.
+### Slide Template
 
-## Skill: pptxgenjsx
+```tsx
+import { Slide, Text, TextRun, Notes } from "@zythum02/pptxgenjsx";
+import { SlideBackground } from "../components/SlideBackground";
+import { SectionHeader } from "../components/SectionHeader";
 
-Detailed API reference is available in the agent skill at `.agents/skills/pptxgenjsx/`:
+export async function MySlide() {
+  return (
+    <Slide>
+      <SlideBackground color="light" />
+      <SectionHeader title="My Section" />
 
-| Reference File | Covers |
-|----------------|--------|
-| [SKILL.md](.agents/skills/pptxgenjsx/SKILL.md) | Overview, import, core concepts, workflow checklist, file index |
-| [components/slide.md](.agents/skills/pptxgenjsx/references/components/slide.md) | `<Deck>`, `<Slide>`, `<Notes>`, minimal slide template |
-| [components/text.md](.agents/skills/pptxgenjsx/references/components/text.md) | `<Text>` block container, `<TextRun>` inline segment with all options |
-| [components/shapes.md](.agents/skills/pptxgenjsx/references/components/shapes.md) | All shape components (`Rect`, `RoundRect`, `Ellipse`, `Arc`, `CustomGeometry`, etc.), `<Shape>` generic + 180-name `SHAPE_NAME` list |
-| [components/chart.md](.agents/skills/pptxgenjsx/references/components/chart.md) | `<Chart>` — 9 chart types, data format, axis/bar/line/pie/label/3D options, Multi-Chart |
-| [components/table.md](.agents/skills/pptxgenjsx/references/components/table.md) | `<Table>` + `<TableCell>` — borders, colspan/rowspan, alignment, auto-paging |
-| [components/media.md](.agents/skills/pptxgenjsx/references/components/media.md) | `<Image>` (path/data/base64, sizing, rounding, rotation), `<Media>` (audio/video/YouTube) |
-| [styling/index.md](.agents/skills/pptxgenjsx/references/styling/index.md) | Shared style interfaces: `ShapeFillProps`, `ShapeLineProps`, `ShadowProps`, `BorderProps`, `HyperlinkProps`, `TextBaseProps` |
+      <Text x={0.8} y={2.0} w={6} h={0.8} align="left" valign="middle">
+        <TextRun text="Content goes here" options={{ fontSize: 18, color: "1F2937" }} />
+      </Text>
 
-## Workflow (for the agent)
+      <Notes>Speaker notes.</Notes>
+    </Slide>
+  );
+}
+```
 
-When asked to add/edit slides:
+## Common Mistakes
 
-1. Create a new file in `src/slides/` following the numbering convention.
-2. Define a named export function returning `<Slide>` with a full-size background.
-3. Import and add the slide to `src/ppt.tsx`.
-4. Run `npm run dev` to verify in browser, or `npm run generate` to produce `.pptx`.
+| ❌ Wrong                      | ✅ Correct                                             |
+| ----------------------------- | ------------------------------------------------------ |
+| `color="#FFFFFF"`             | `color="FFFFFF"` (no `#`)                              |
+| `<RoundRect rectRadius={0}>`  | `<Rect>`                                               |
+| `<div>`, `<span>`, `<p>`      | `<Text>` + `<TextRun>`                                 |
+| Named export in `src/ppt.tsx` | `export default function ()`                           |
+| Missing full-size background  | `<SlideBackground />` as first child                   |
+| `function Foo(): PptxNode`    | `async function Foo()` — no return type                |
+| Modifying `scripts/*.ts`      | Content belongs in `src/slides/` and `src/components/` |
+| Forgetting `breakLine: true`  | Set on the last `<TextRun>` of each line               |
 
-## Common Mistakes to Avoid
+## Skills
 
-- ❌ `RoundRect` with `rectRadius={0}` — use `Rect` instead
-- ❌ Hex color with `#` prefix — use `"FFFFFF"` not `"#FFFFFF"`
-- ❌ HTML elements like `<div>`, `<span>`, `<p>`, `<section>` — they do not exist in `JSX.IntrinsicElements` and will cause TypeScript errors. Only imported components (`<Slide>`, `<Text>`, `<Rect>`, etc.) are valid
-- ❌ Named export in `src/ppt.tsx` — it must be a default export
-- ❌ Missing full-size background on a slide
-- ❌ Modifying `scripts/dev-server.ts` or `scripts/generate.ts` unless there's a bug — they are infrastructure, not content
+- [pptxgenjsx](.agents/skills/pptxgenjsx/SKILL.md) - Component API reference
 
 ## NPM Scripts
 
-| Command | Action |
-|---------|--------|
-| `npm run dev` | Start dev server at localhost:5173 |
-| `npm run generate` | Build output/presentation.pptx |
-| `npm run generate -- -o my-deck.pptx src/ppt.tsx` | Custom output path |
+| Command                                        | Action                                                          |
+| ---------------------------------------------- | --------------------------------------------------------------- |
+| `npm run dev`                                  | Dev server at `localhost:5173` (refresh browser to see changes) |
+| `npm run generate`                             | Build `output/presentation.pptx`                                |
+| `npm run generate -- -o file.pptx src/ppt.tsx` | Custom output path                                              |
+| `npm run typecheck`                            | Type check, no emit                                             |
+| `npm run lint`                                 | Lint with oxlint                                                |
+| `npm run format`                               | Format with oxfmt                                               |

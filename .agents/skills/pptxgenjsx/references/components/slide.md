@@ -4,10 +4,10 @@
 
 Wraps all slides. Must be the **default export** of `src/ppt.tsx`.
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `title` | `string` | Presentation title |
-| `author` | `string` | Author name |
+| Prop     | Type                                              | Description                                            |
+| -------- | ------------------------------------------------- | ------------------------------------------------------ |
+| `title`  | `string`                                          | Presentation title                                     |
+| `author` | `string`                                          | Author name                                            |
 | `layout` | `{ name: string, width: number, height: number }` | Slide dimensions in inches. Default: `WIDE` 13.333×7.5 |
 
 ```tsx
@@ -20,20 +20,19 @@ Wraps all slides. Must be the **default export** of `src/ppt.tsx`.
 
 Children are positioned absolutely. Each slide **must** start with a full-size background shape.
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `background` | `BackgroundProps` | Background color or image (`{ color: "FFFFFF" }`, `{ path: "..." }`, `{ data: "..." }`) |
-| `color` | `HexColor` | Default text color for the slide |
-| `hidden` | `boolean` | Whether the slide is hidden in the presentation |
-| `slideNumber` | `SlideNumberProps` | Slide number formatting options |
-| `masterName` | `string` | Master slide name (layout) to apply |
-| `sectionTitle` | `string` | Section this slide belongs to |
+| Prop           | Type               | Description                                                                             |
+| -------------- | ------------------ | --------------------------------------------------------------------------------------- |
+| `background`   | `BackgroundProps`  | Background color or image (`{ color: "FFFFFF" }`, `{ path: "..." }`, `{ data: "..." }`) |
+| `color`        | `HexColor`         | Default text color for the slide                                                        |
+| `hidden`       | `boolean`          | Whether the slide is hidden in the presentation                                         |
+| `slideNumber`  | `SlideNumberProps` | Slide number formatting options                                                         |
+| `masterName`   | `string`           | Master slide name (layout) to apply                                                     |
+| `sectionTitle` | `string`           | Section this slide belongs to                                                           |
 
 ### Minimal Slide Template
 
 ```tsx
-import { Slide, Rect, Text, TextRun, Notes, type PptxNode }
-  from "@zythum02/pptxgenjsx";
+import { Slide, Rect, Text, TextRun, Notes, type PptxNode } from "@zythum02/pptxgenjsx";
 
 export async function MySlide(): Promise<PptxNode> {
   return (

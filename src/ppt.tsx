@@ -1,10 +1,4 @@
-import { Deck } from "@zythum02/pptxgenjsx";
-import { TitleSlide } from "./slides/01-title";
-import { AgendaSlide } from "./slides/02-agenda";
-import { TextSlide } from "./slides/03-text";
-import { LayoutSlide } from "./slides/04-layout";
-import { ShapeSlide } from "./slides/05-shape";
-import { EndSlide } from "./slides/06-end";
+import { Deck, Slide } from "@zythum02/pptxgenjsx";
 
 /**
  * Sample presentation — demonstrates the full feature set of pptxgenjs-jsx.
@@ -19,12 +13,12 @@ export default function () {
       author="pptxgen-ts-starter"
       layout={{ name: "WIDE", width: 13.333, height: 7.5 }}
     >
-      <TitleSlide />
-      <AgendaSlide />
-      <TextSlide />
-      <LayoutSlide />
-      <ShapeSlide />
-      <EndSlide />
+      <Slide component={() => import("./slides/01-title")} />
+      <Slide component={() => import("./slides/02-agenda")} />
+      <Slide component={() => import("./slides/03-text")} />
+      <Slide component={() => import("./slides/04-layout")} />
+      <Slide component={() => import("./slides/05-shape")} />
+      <Slide component={() => import("./slides/06-end")} />
     </Deck>
   );
 }

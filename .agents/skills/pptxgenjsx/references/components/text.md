@@ -6,25 +6,25 @@ Positions and styles a text block on the slide. All children must be `<TextRun>`
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `x` | `Coord` (`number \|`${number}%``) | — | Left offset (inches or %) |
-| `y` | `Coord` | — | Top offset |
-| `w` | `Coord` | — | Width |
-| `h` | `Coord` | — | Height |
-| `align` | `HAlign` | `"left"` | `"left"\|"center"\|"right"\|"justify"` |
-| `valign` | `VAlign` | `"top"` | `"top"\|"middle"\|"bottom"` |
-| `lineSpacing` | `number` | — | Line spacing in points |
-| `fill` | `FillProps` | — | Background fill |
-| `border` | `BorderProps` | — | Border |
-| `shadow` | `ShadowProps` | — | Shadow |
-| `rtl` | `boolean` | — | Right-to-left layout |
-| `rotate` | `number` | — | Rotation in degrees |
-| `autoFit` | `boolean` | — | Shrink text to fit |
-| `shrinkText` | `boolean` | — | Shrink overflow text |
-| `wrap` | `boolean` | `true` | Word wrap |
-| `margin` | `number \| number[]` | — | Margin: single value or `[top, right, bottom, left]` |
-| `inset` | `number` | — | Internal padding in inches |
+| Prop          | Type                              | Default  | Description                                          |
+| ------------- | --------------------------------- | -------- | ---------------------------------------------------- |
+| `x`           | `Coord` (`number \|`${number}%``) | —        | Left offset (inches or %)                            |
+| `y`           | `Coord`                           | —        | Top offset                                           |
+| `w`           | `Coord`                           | —        | Width                                                |
+| `h`           | `Coord`                           | —        | Height                                               |
+| `align`       | `HAlign`                          | `"left"` | `"left"\|"center"\|"right"\|"justify"`               |
+| `valign`      | `VAlign`                          | `"top"`  | `"top"\|"middle"\|"bottom"`                          |
+| `lineSpacing` | `number`                          | —        | Line spacing in points                               |
+| `fill`        | `FillProps`                       | —        | Background fill                                      |
+| `border`      | `BorderProps`                     | —        | Border                                               |
+| `shadow`      | `ShadowProps`                     | —        | Shadow                                               |
+| `rtl`         | `boolean`                         | —        | Right-to-left layout                                 |
+| `rotate`      | `number`                          | —        | Rotation in degrees                                  |
+| `autoFit`     | `boolean`                         | —        | Shrink text to fit                                   |
+| `shrinkText`  | `boolean`                         | —        | Shrink overflow text                                 |
+| `wrap`        | `boolean`                         | `true`   | Word wrap                                            |
+| `margin`      | `number \| number[]`              | —        | Margin: single value or `[top, right, bottom, left]` |
+| `inset`       | `number`                          | —        | Internal padding in inches                           |
 
 ---
 
@@ -34,22 +34,22 @@ A single formatted run of text inside a `<Text>` block. Each `<TextRun>` carries
 
 ### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `fontSize` | `number` | Font size in points |
-| `fontFace` | `string` | Font family, e.g. `"Arial"` |
-| `bold` | `boolean` | Bold |
-| `italic` | `boolean` | Italic |
-| `color` | `Color` | Hex (no `#`) or theme color |
-| `transparency` | `number` | 0–100 |
-| `highlight` | `HexColor` | Highlight color |
-| `breakLine` | `boolean` | Line-break after this segment (like `<br>`) |
-| `align` | `HAlign` | Horizontal alignment override |
-| `valign` | `VAlign` | Vertical alignment override |
-| `lang` | `string` | Language code, e.g. `"en-US"` |
-| `textDirection` | `string` | `"horz"\|"vert"\|"vert270"\|"wordArtVert"` |
-| `tabStops` | `Array<{ position: number, alignment?: "l"\|"r"\|"ctr"\|"dec" }>` | Tab stops |
-| `softBreakBefore` | `boolean` | Soft line-break before content (Shift+Enter) |
+| Option            | Type                                                              | Description                                  |
+| ----------------- | ----------------------------------------------------------------- | -------------------------------------------- |
+| `fontSize`        | `number`                                                          | Font size in points                          |
+| `fontFace`        | `string`                                                          | Font family, e.g. `"Arial"`                  |
+| `bold`            | `boolean`                                                         | Bold                                         |
+| `italic`          | `boolean`                                                         | Italic                                       |
+| `color`           | `Color`                                                           | Hex (no `#`) or theme color                  |
+| `transparency`    | `number`                                                          | 0–100                                        |
+| `highlight`       | `HexColor`                                                        | Highlight color                              |
+| `breakLine`       | `boolean`                                                         | Line-break after this segment (like `<br>`)  |
+| `align`           | `HAlign`                                                          | Horizontal alignment override                |
+| `valign`          | `VAlign`                                                          | Vertical alignment override                  |
+| `lang`            | `string`                                                          | Language code, e.g. `"en-US"`                |
+| `textDirection`   | `string`                                                          | `"horz"\|"vert"\|"vert270"\|"wordArtVert"`   |
+| `tabStops`        | `Array<{ position: number, alignment?: "l"\|"r"\|"ctr"\|"dec" }>` | Tab stops                                    |
+| `softBreakBefore` | `boolean`                                                         | Soft line-break before content (Shift+Enter) |
 
 #### Underline
 
@@ -70,13 +70,13 @@ A single formatted run of text inside a `<Text>` block. Each `<TextRun>` carries
 { bullet: { type: "number", numberType: "arabicPeriod", numberStartAt: 1 } }
 ```
 
-| `numberType` | Output |
-|-------------|--------|
-| `"arabicPeriod"` | 1. |
-| `"arabicParenR"` | 1) |
-| `"romanLcParenR"` | i) |
-| `"alphaUcPeriod"` | A. |
-| `"alphaLcParenBoth"` | (a) |
+| `numberType`         | Output |
+| -------------------- | ------ |
+| `"arabicPeriod"`     | 1.     |
+| `"arabicParenR"`     | 1)     |
+| `"romanLcParenR"`    | i)     |
+| `"alphaUcPeriod"`    | A.     |
+| `"alphaLcParenBoth"` | (a)    |
 
 ---
 
@@ -87,7 +87,10 @@ A single formatted run of text inside a `<Text>` block. Each `<TextRun>` carries
 ```tsx
 <Text x={1.5} y={3.0} w={10.333} h={1.5} align="center" valign="middle">
   <TextRun text="Bold title" options={{ fontSize: 36, bold: true, color: "FFFFFF" }} />
-  <TextRun text=" and normal subtitle" options={{ fontSize: 18, color: "A78BFA", breakLine: true }} />
+  <TextRun
+    text=" and normal subtitle"
+    options={{ fontSize: 18, color: "A78BFA", breakLine: true }}
+  />
 </Text>
 ```
 

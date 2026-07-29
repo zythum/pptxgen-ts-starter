@@ -4,30 +4,30 @@ All shapes accept: `fill`, `line`, `shadow`, `flipH`, `flipV`, `rotate`, `hyperl
 
 ## Dedicated Components
 
-| Component | Extra Props | Notes |
-|-----------|-------------|-------|
-| `<Rect>` | — | Pure rectangle. Use for backgrounds, lines, accent bars |
-| `<RoundRect>` | `rectRadius` (0.0–1.0) | Rounded corners. Cards, badges, buttons |
-| `<Ellipse>` / `<Oval>` | — | Circles and ovals |
-| `<Line>` | — | Line in PPT box model |
-| `<LineBetween>` | `x1, y1, x2, y2` | Line between endpoints. Handles `flipH/flipV` automatically |
-| `<Arc>` | `angleRange: [start, end]` (0–359°) | Arc |
-| `<BlockArc>` | `angleRange`, `arcThicknessRatio` | Arc with thickness |
-| `<PieShape>` | `angleRange` | Pie/wedge |
-| `<Triangle>` | — | Triangle |
-| `<RightTriangle>` | — | Right triangle |
-| `<Diamond>` | — | Diamond |
-| `<Pentagon>` | — | Pentagon |
-| `<Hexagon>` | — | Hexagon |
-| `<Star>`, `<Star4>`, `<Star5>`, `<Star6>`, `<Star8>`, `<Star10>` | — | Stars |
-| `<LeftArrow>`, `<RightArrow>`, `<UpArrow>`, `<DownArrow>` | — | Directional arrows |
-| `<LeftRightArrow>`, `<UpDownArrow>` | — | Bidirectional arrows |
-| `<Chevron>` | — | Chevron |
-| `<Cloud>` | — | Cloud |
-| `<Heart>` | — | Heart |
-| `<Donut>` | — | Donut |
-| `<Plus>` | — | Plus sign |
-| `<CustomGeometry>` | `points: CustomGeometryPoint[]` | Custom SVG-derived path |
+| Component                                                        | Extra Props                         | Notes                                                       |
+| ---------------------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
+| `<Rect>`                                                         | —                                   | Pure rectangle. Use for backgrounds, lines, accent bars     |
+| `<RoundRect>`                                                    | `rectRadius` (0.0–1.0)              | Rounded corners. Cards, badges, buttons                     |
+| `<Ellipse>` / `<Oval>`                                           | —                                   | Circles and ovals                                           |
+| `<Line>`                                                         | —                                   | Line in PPT box model                                       |
+| `<LineBetween>`                                                  | `x1, y1, x2, y2`                    | Line between endpoints. Handles `flipH/flipV` automatically |
+| `<Arc>`                                                          | `angleRange: [start, end]` (0–359°) | Arc                                                         |
+| `<BlockArc>`                                                     | `angleRange`, `arcThicknessRatio`   | Arc with thickness                                          |
+| `<PieShape>`                                                     | `angleRange`                        | Pie/wedge                                                   |
+| `<Triangle>`                                                     | —                                   | Triangle                                                    |
+| `<RightTriangle>`                                                | —                                   | Right triangle                                              |
+| `<Diamond>`                                                      | —                                   | Diamond                                                     |
+| `<Pentagon>`                                                     | —                                   | Pentagon                                                    |
+| `<Hexagon>`                                                      | —                                   | Hexagon                                                     |
+| `<Star>`, `<Star4>`, `<Star5>`, `<Star6>`, `<Star8>`, `<Star10>` | —                                   | Stars                                                       |
+| `<LeftArrow>`, `<RightArrow>`, `<UpArrow>`, `<DownArrow>`        | —                                   | Directional arrows                                          |
+| `<LeftRightArrow>`, `<UpDownArrow>`                              | —                                   | Bidirectional arrows                                        |
+| `<Chevron>`                                                      | —                                   | Chevron                                                     |
+| `<Cloud>`                                                        | —                                   | Cloud                                                       |
+| `<Heart>`                                                        | —                                   | Heart                                                       |
+| `<Donut>`                                                        | —                                   | Donut                                                       |
+| `<Plus>`                                                         | —                                   | Plus sign                                                   |
+| `<CustomGeometry>`                                               | `points: CustomGeometryPoint[]`     | Custom SVG-derived path                                     |
 
 ### Critical Rule
 
@@ -54,7 +54,12 @@ All shapes accept: `fill`, `line`, `shadow`, `flipH`, `flipV`, `rotate`, `hyperl
 3. Map SVG commands: `M` → `{ moveTo: true }`, `L/H/V` → line points, `C` → cubic, `Q` → quadratic, `Z` → `{ close: true }`
 
 ```tsx
-<CustomGeometry x={1} y={1} w={3} h={2} fill={{ color: "7C3AED" }}
+<CustomGeometry
+  x={1}
+  y={1}
+  w={3}
+  h={2}
+  fill={{ color: "7C3AED" }}
   points={[
     { x: 0, y: 0, moveTo: true },
     { x: 3, y: 0 },
@@ -111,8 +116,13 @@ Demonstrates numbered step circles (Ellipse) with connecting lines (LineBetween)
           <TextRun text={step.num} options={{ fontSize: 16, bold: true, color: "FFFFFF" }} />
         </Text>
         {i < 2 && (
-          <LineBetween x1={x + 1.2} y1={2.6} x2={x + 2.833} y2={2.6}
-            line={{ color: "334155", width: 2 }} />
+          <LineBetween
+            x1={x + 1.2}
+            y1={2.6}
+            x2={x + 2.833}
+            y2={2.6}
+            line={{ color: "334155", width: 2 }}
+          />
         )}
         <Text x={x - 0.2} y={3.5} w={2.8} h={0.6} align="center" valign="middle">
           <TextRun text={step.title} options={{ fontSize: 20, bold: true, color: "FFFFFF" }} />

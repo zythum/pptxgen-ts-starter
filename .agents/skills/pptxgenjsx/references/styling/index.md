@@ -15,12 +15,12 @@ fill={{ color: "accent1" }}
 
 ## Line / Stroke (`ShapeLineProps`)
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `color` | `Color` | Hex or theme color |
-| `width` | `number` | Line width in points |
-| `dashType` | `string` | `"solid"\|"dash"\|"dashDot"\|"lgDash"\|"lgDashDot"\|"lgDashDotDot"\|"sysDash"\|"sysDot"` |
-| `endArrowType` | `string` | `"none"\|"arrow"\|"diamond"\|"oval"\|"stealth"\|"triangle"` |
+| Prop           | Type     | Description                                                                              |
+| -------------- | -------- | ---------------------------------------------------------------------------------------- |
+| `color`        | `Color`  | Hex or theme color                                                                       |
+| `width`        | `number` | Line width in points                                                                     |
+| `dashType`     | `string` | `"solid"\|"dash"\|"dashDot"\|"lgDash"\|"lgDashDot"\|"lgDashDotDot"\|"sysDash"\|"sysDot"` |
+| `endArrowType` | `string` | `"none"\|"arrow"\|"diamond"\|"oval"\|"stealth"\|"triangle"`                              |
 
 ---
 
@@ -30,13 +30,13 @@ fill={{ color: "accent1" }}
 shadow={{ type: "outer", blur: 8, offset: 2, color: "000000", opacity: 0.06 }}
 ```
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `type` | `"outer" \| "inner"` | `"outer"` | Shadow direction |
-| `blur` | `number` | — | Blur radius in points |
-| `offset` | `number` | — | Offset in points |
-| `color` | `Color` | — | Shadow color |
-| `opacity` | `number` | — | 0–1 |
+| Prop      | Type                 | Default   | Description           |
+| --------- | -------------------- | --------- | --------------------- |
+| `type`    | `"outer" \| "inner"` | `"outer"` | Shadow direction      |
+| `blur`    | `number`             | —         | Blur radius in points |
+| `offset`  | `number`             | —         | Offset in points      |
+| `color`   | `Color`              | —         | Shadow color          |
+| `opacity` | `number`             | —         | 0–1                   |
 
 ---
 
@@ -73,16 +73,17 @@ border={[
 
 These props are available on components that contain text (like `<TableCell>`):
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `bold` | `boolean` | Bold text |
-| `italic` | `boolean` | Italic text |
-| `fontSize` | `number` | Font size in points |
-| `fontFace` | `string` | Font family |
-| `color` | `Color` | Hex or theme color |
-| `underline` | `{ style: string, color?: Color }` | Underline |
-| `bullet` | `boolean \| object` | Bullet/numbered list |
-| `align` | `HAlign` | Horizontal alignment |
-| `valign` | `VAlign` | Vertical alignment |
-| `margin` | `number \| [number, number, number, number]` | Margin |
-***
+| Prop        | Type                                         | Description          |
+| ----------- | -------------------------------------------- | -------------------- |
+| `bold`      | `boolean`                                    | Bold text            |
+| `italic`    | `boolean`                                    | Italic text          |
+| `fontSize`  | `number`                                     | Font size in points  |
+| `fontFace`  | `string`                                     | Font family          |
+| `color`     | `Color`                                      | Hex or theme color   |
+| `underline` | `{ style: string, color?: Color }`           | Underline            |
+| `bullet`    | `boolean \| object`                          | Bullet/numbered list |
+| `align`     | `HAlign`                                     | Horizontal alignment |
+| `valign`    | `VAlign`                                     | Vertical alignment   |
+| `margin`    | `number \| [number, number, number, number]` | Margin               |
+
+---

@@ -76,25 +76,22 @@ export async function generate(options: GenerateOptions): Promise<ArrayBuffer | 
 
   // Resolve output path before chdir (output can be relative to original cwd)
   const outputAbs = options.output
-    ? (path.isAbsolute(options.output) ? options.output : path.resolve(root, options.output))
+    ? path.isAbsolute(options.output)
+      ? options.output
+      : path.resolve(root, options.output)
     : undefined;
 
   // chdir to the entry file's directory so its relative imports resolve correctly
   process.chdir(path.dirname(entryPath));
 
   // tsImport does NOT cache — every call re-evaluates with latest changes
-  const mod = await tsImport(
-    entryPath.replace(/\\/g, "/"),
-    import.meta.url,
-  );
+  const mod = await tsImport(entryPath.replace(/\\/g, "/"), import.meta.url);
   const deck = mod.default();
 
   // Validate before rendering
   const issues = validateDeck(deck);
   if (issues.some((i: any) => i.level === "error")) {
-    throw new Error(
-      "Deck validation failed:\n" + JSON.stringify(issues, null, 2)
-    );
+    throw new Error("Deck validation failed:\n" + JSON.stringify(issues, null, 2));
   }
 
   // Use createRequire to get the real constructor (avoids ESM default-import wrapper issue)
@@ -112,7 +109,7 @@ export async function generate(options: GenerateOptions): Promise<ArrayBuffer | 
   }
 
   if (options.outputType === "arraybuffer") {
-    const buf = await writePptx(deck, { outputType: "arraybuffer", pptx }) as ArrayBuffer;
+    const buf = (await writePptx(deck, { outputType: "arraybuffer", pptx })) as ArrayBuffer;
     return buf;
   }
 

@@ -11,7 +11,8 @@ pptxgen-ts-starter/
 │   └── generate.ts          # CLI build tool (generates .pptx)
 ├── src/
 │   ├── ppt.tsx              # Deck entry — composes all slides into <Deck>
-│   ├── slides/              # Individual slide components
+│   ├── slides/              # One file per slide, numbered by presentation order
+│   ├── components/          # Reusable slide-building primitives.
 │   └── media/images/        # Image assets
 ├── web/
 │   └── index.html           # Browser PPTX viewer
