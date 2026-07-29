@@ -33,7 +33,7 @@ export function PageNumber({ color = "9CA3AF" }: { color?: string }) {
   const { index, total } = useSlideContext();
   const { width, height } = useGroupContext();
   return (
-    <Text x={0} y={height2 - 0.5} w={width - 0.5} h={0.4} align="right" valign="middle">
+    <Text x={0} y={height - 0.5} w={width - 0.5} h={0.4} align="right" valign="middle">
       <TextRun text={`${index} / ${total}`} options={{ fontSize: 10, color }} />
     </Text>
   );
