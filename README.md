@@ -48,7 +48,9 @@ The starter contains the following scripts:
 
 - `npm run dev` — starts dev server at `localhost:5173` with browser preview
 - `npm run generate` — generates `output/presentation.pptx`
-- `npm run generate -- -o my-deck.pptx src/ppt.tsx` — build with custom output path
+- `npm run typecheck` — type check with tsc (no emit)
+- `npm run lint` — lint with oxlint
+- `npm run format` — format with oxfmt
 
 ## Project Structure
 

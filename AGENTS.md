@@ -31,7 +31,7 @@ web/index.html               # Browser PPTX viewer
 
 ### Slides
 
-- **Named async exports** — `export async function TitleSlide()`. Components are regular functions (`export function Card()`). **Never annotate return types.**
+- **Default async exports (anonymous)** — `export default async function ()`. Components are regular functions (`export function Card()`). **Never annotate return types.**
 - **Numbered files** — `01-title.tsx`, `02-overview.tsx`, ordered by presentation flow.
 - **Full-size background first** — every slide's first child is `<SlideBackground />`.
 - **Composed in `src/ppt.tsx`** — import all slides, arrange inside `<Deck>`.
@@ -45,7 +45,7 @@ web/index.html               # Browser PPTX viewer
 ### Positioning & Canvas
 
 - **Absolute inches** — every element needs `x`, `y`, `w`, `h`. No flexbox, no grid.
-- Canvas: **13.333 × 7.5 in** (WIDE), set via `<Deck layout={{ name: "WIDE", width: 13.333, height: 7.5 }}>`.
+- Canvas: **13.333 × 7.5 in** (WIDE), set via `<Deck layout="LAYOUT_WIDE">`.
 
 ### Colors
 
@@ -81,7 +81,7 @@ import { Slide, Text, TextRun, Notes } from "@zythum02/pptxgenjsx";
 import { SlideBackground } from "../components/SlideBackground";
 import { SectionHeader } from "../components/SectionHeader";
 
-export async function MySlide() {
+export default async function () {
   return (
     <Slide>
       <SlideBackground color="light" />
@@ -120,7 +120,6 @@ export async function MySlide() {
 | ---------------------------------------------- | --------------------------------------------------------------- |
 | `npm run dev`                                  | Dev server at `localhost:5173` (refresh browser to see changes) |
 | `npm run generate`                             | Build `output/presentation.pptx`                                |
-| `npm run generate -- -o file.pptx src/ppt.tsx` | Custom output path                                              |
 | `npm run typecheck`                            | Type check, no emit                                             |
 | `npm run lint`                                 | Lint with oxlint                                                |
 | `npm run format`                               | Format with oxfmt                                               |

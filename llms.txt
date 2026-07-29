@@ -31,4 +31,6 @@ pptxgen-ts-starter/
 
 - `npm run dev` — Start dev server at localhost:5173
 - `npm run generate` — Build output/presentation.pptx
-- `npm run generate -- -o my-deck.pptx src/ppt.tsx` — Custom output path
+- `npm run typecheck` — Type check with tsc (no emit)
+- `npm run lint` — Lint with oxlint
+- `npm run format` — Format with oxfmt

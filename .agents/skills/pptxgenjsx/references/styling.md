@@ -1,4 +1,80 @@
-# Colors & Styling Interfaces
+# Units & Colors
+
+## Units
+
+### Length Units (Position & Size)
+
+All position and size props (`x`, `y`, `w`, `h` on shapes, text, images, groups, etc.) use **inches** as the default unit.
+
+```tsx
+<Rect x={1.5} y={2.0} w={4} h={3} />
+```
+
+Percentage strings are also supported — resolved against the enclosing context (slide or group):
+
+```tsx
+// Resolves against slide width (13.333")
+<Text x="10%" y="50%" w="80%" h="10%" />
+```
+
+### Font Size
+
+`fontSize` on `<TextRun>` is in **points (pt)**:
+
+```tsx
+<TextRun options={{ fontSize: 44, bold: true }}>Title</TextRun>
+```
+
+### Line Spacing
+
+`lineSpacing` on `<Text>` is in **points (pt)**:
+
+```tsx
+<Text x={1} y={1} w={10} h={3} lineSpacing={28}>
+```
+
+### Margins & Padding
+
+| Prop     | Component | Unit      |
+| -------- | --------- | --------- |
+| `margin` | `<Text>`  | inches    |
+| `inset`  | `<Text>`  | inches    |
+| `margin` | `<TableCell>` | inches |
+
+### Stroke / Line Width
+
+`line.width` (shapes) and `border.pt` (borders) are in **points (pt)**:
+
+```tsx
+<LineBetween x1={0} y1={1} x2={10} y2={1} line={{ color: "E5E7EB", width: 2 }} />
+<TableCell border={{ type: "solid", color: "E5E7EB", pt: 1 }} />
+```
+
+### Shadow
+
+`blur` and `offset` on shadow are in **points (pt)**:
+
+```tsx
+shadow={{ type: "outer", blur: 8, offset: 2, color: "000000", opacity: 0.06 }}
+```
+
+### Rotation
+
+`rotate` is in **degrees**:
+
+```tsx
+<Rect x={1} y={1} w={3} h={1} rotate={45} />
+```
+
+### Corner Radius
+
+`rectRadius` on `<RoundRect>` is a **ratio (0.0–1.0)**, not a length:
+
+```tsx
+<RoundRect x={1} y={1} w={3} h={2} rectRadius={0.3} />
+```
+
+---
 
 ## Fill (`ShapeFillProps`)
 

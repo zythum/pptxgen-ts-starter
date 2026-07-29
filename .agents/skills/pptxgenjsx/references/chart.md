@@ -1,6 +1,6 @@
-# Chart Component
+# Chart Components
 
-## `<Chart>`
+## `<Chart>` — Generic Chart
 
 | Prop      | Type              | Description                                                                       |
 | --------- | ----------------- | --------------------------------------------------------------------------------- |
@@ -10,7 +10,66 @@
 | `h`       | `number`          | Height                                                                            |
 | `type`    | `CHART_NAME`      | `'area'\|'bar'\|'bar3D'\|'bubble'\|'doughnut'\|'line'\|'pie'\|'radar'\|'scatter'` |
 | `data`    | `OptsChartData[]` | Series data                                                                       |
-| `options` | `IChartOpts`      | Chart options                                                                     |
+| `options` | `IChartOpts`      | Chart options (see below)                                                         |
+
+```tsx
+<Chart
+  x={0.8}
+  y={1.8}
+  w={11.733}
+  h={5.0}
+  type="bar"
+  data={[
+    { name: "Revenue", labels: ["Q1", "Q2", "Q3", "Q4"], values: [450, 520, 480, 610] },
+    { name: "Costs", labels: ["Q1", "Q2", "Q3", "Q4"], values: [320, 340, 310, 380] },
+  ]}
+  options={{
+    showLegend: true,
+    barGrouping: "clustered",
+    chartColors: ["7C3AED", "10B981"],
+    catAxisLabelFontSize: 12,
+    valGridLine: { color: "E5E7EB", size: 1, style: "dash" },
+  }}
+/>
+```
+
+---
+
+## Typed Chart Components
+
+Shortcut components that set the `type` prop automatically. Accept all the same options as `<Chart>`.
+
+| Component        | Equivalent `type`   |
+| ---------------- | ------------------- |
+| `<AreaChart>`    | `"area"`            |
+| `<BarChart>`     | `"bar"`             |
+| `<Bar3DChart>`   | `"bar3D"`           |
+| `<BubbleChart>`  | `"bubble"`          |
+| `<DoughnutChart>`| `"doughnut"`        |
+| `<LineChart>`    | `"line"`            |
+| `<PieChart>`     | `"pie"`             |
+| `<RadarChart>`   | `"radar"`           |
+| `<ScatterChart>` | `"scatter"`         |
+
+```tsx
+<BarChart
+  x={0.8} y={1.8} w={11.733} h={5.0}
+  data={[...]}
+  showValue={true}
+/>
+
+<LineChart
+  x={0.8} y={1.8} w={11.733} h={5.0}
+  data={[...]}
+  lineSize={3}
+/>
+
+<PieChart
+  x={0.8} y={1.8} w={6} h={5.0}
+  data={[...]}
+  showPercent={true}
+/>
+```
 
 ---
 
@@ -85,40 +144,12 @@ plotArea: {
 
 ---
 
-## Example
-
-```tsx
-<Chart
-  x={0.8}
-  y={1.8}
-  w={11.733}
-  h={5.0}
-  type="bar"
-  data={[
-    { name: "Revenue", labels: ["Q1", "Q2", "Q3", "Q4"], values: [450, 520, 480, 610] },
-    { name: "Costs", labels: ["Q1", "Q2", "Q3", "Q4"], values: [320, 340, 310, 380] },
-  ]}
-  options={{
-    showLegend: true,
-    barGrouping: "clustered",
-    chartColors: ["7C3AED", "10B981"],
-    catAxisLabelFontSize: 12,
-    valGridLine: { color: "E5E7EB", size: 1, style: "dash" },
-  }}
-/>
-```
-
----
-
 ## Multi-Chart (Mixed Types)
 
 ```tsx
 <Chart
   type="bar"
-  x={0.5}
-  y={1.5}
-  w={9}
-  h={5.5}
+  x={0.5} y={1.5} w={9} h={5.5}
   data={[{ name: "Bars", labels: ["A", "B", "C", "D"], values: [30, 45, 35, 50] }]}
   options={{
     multi: [

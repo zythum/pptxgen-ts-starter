@@ -39,24 +39,24 @@
 
 ## `<Media>` — Audio/Video
 
-| Prop    | Type                         | Description                                 |
-| ------- | ---------------------------- | ------------------------------------------- |
-| `type`  | `"audio"\|"online"\|"video"` | Media type                                  |
-| `path`  | `string`                     | Local file path (relative to `src/ppt.tsx`) |
-| `link`  | `string`                     | Video embed link (e.g. YouTube)             |
-| `data`  | `string`                     | Base64 media data                           |
-| `cover` | `string`                     | Cover image path                            |
-| `extn`  | `string`                     | File extension (when path lacks it)         |
+| Prop        | Type                         | Description                                 |
+| ----------- | ---------------------------- | ------------------------------------------- |
+| `mediaType` | `"audio"\|"online"\|"video"` | Media type                                  |
+| `path`      | `string`                     | Local file path (relative to `src/ppt.tsx`) |
+| `link`      | `string`                     | Video embed link (e.g. YouTube)             |
+| `data`      | `string`                     | Base64 media data                           |
+| `cover`     | `string`                     | Cover image path                            |
+| `extn`      | `string`                     | File extension (when path lacks it)         |
 
 ```tsx
 // Video
-<Media x={1} y={1} w={8} h={5} type="video" path="intro.mp4" />
+<Media x={1} y={1} w={8} h={5} mediaType="video" path="intro.mp4" />
 
 // YouTube embed
-<Media x={1} y={1} w={8} h={5} type="online"
+<Media x={1} y={1} w={8} h={5} mediaType="online"
   link="https://www.youtube.com/embed/Dph6ynRVyUc" />
 
 // Audio with cover
-<Media x={1} y={1} w={2} h={2} type="audio" path="background.mp3"
+<Media x={1} y={1} w={2} h={2} mediaType="audio" path="background.mp3"
   cover="play-button.png" />
 ```

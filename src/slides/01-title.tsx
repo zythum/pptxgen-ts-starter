@@ -2,7 +2,7 @@ import { Text, TextRun, Notes, Rect } from "@zythum02/pptxgenjsx";
 import { SlideBackground } from "../components/SlideBackground";
 import { PageNumber } from "../components/PageNumber";
 
-export default async function TitleSlide() {
+export default async function () {
   return (
     <>
       <SlideBackground color="dark" />

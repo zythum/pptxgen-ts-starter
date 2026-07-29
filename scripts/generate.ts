@@ -89,7 +89,7 @@ export async function generate(options: GenerateOptions): Promise<ArrayBuffer | 
   const deck = mod.default();
 
   // Validate before rendering
-  const issues = validateDeck(deck);
+  const issues = await validateDeck(deck);
   if (issues.some((i: any) => i.level === "error")) {
     throw new Error("Deck validation failed:\n" + JSON.stringify(issues, null, 2));
   }
