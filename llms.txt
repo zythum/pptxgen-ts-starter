@@ -11,14 +11,14 @@ This template lets you write slides as JSX components and compile them into `.pp
 | Package | Role |
 |---------|------|
 | `pptxgenjs` ^4.0.1 | Low-level PPTX rendering engine |
-| `@artifact-kit/pptxgenjs-jsx` ^0.1.6 | JSX component library (`<Slide>`, `<Text>`, `<Rect>`, etc.) |
+| `@zythum02/pptxgenjsx` ^0.1.0 | JSX component library (`<Slide>`, `<Text>`, `<Rect>`, etc.) |
 | `@silurus/ooxml` ^0.74.1 | Browser-based PPTX viewer (used in dev server) |
 | `tsx` ^4.23.1 | TypeScript runtime for scripts |
 | `typescript` ^7.0.2 | Type checking |
 
 ## JSX Component API
 
-All components are imported from `@artifact-kit/pptxgenjs-jsx`.
+All components are imported from `@zythum02/pptxgenjsx`.
 
 ### `<Deck>`
 Root element. Props:
@@ -71,10 +71,11 @@ Shape styling:
 ## Important Rules
 
 1. **Use `Rect` for pure rectangles** (backgrounds, decorative lines, accent bars). Do NOT use `RoundRect` with `rectRadius={0}` as a workaround — it's semantically incorrect and may have edge cases.
-2. **All positions are absolute** — there is no flexbox or grid. Design in inches.
-3. **Hex colors omit the `#` prefix** — e.g. `"1E1E2E"` not `"#1E1E2E"`.
-4. **Place images** in `src/media/images/` and reference with relative path in `<Image path="...">`.
-5. **Speaker notes** go inside `<Slide>` as `<Notes>...</Notes>`.
+2. **No HTML elements** — `<div>`, `<span>`, `<p>`, `<section>` etc. do not exist in this JSX runtime. TypeScript will reject them with `Property 'div' does not exist on type 'JSX.IntrinsicElements'`. Only uppercase imported components (`<Slide>`, `<Text>`, `<Rect>`, etc.) are valid.
+3. **All positions are absolute** — there is no flexbox or grid. Design in inches.
+4. **Hex colors omit the `#` prefix** — e.g. `"1E1E2E"` not `"#1E1E2E"`.
+5. **Place images** in `src/media/images/` and reference with relative path in `<Image path="...">`.
+6. **Speaker notes** go inside `<Slide>` as `<Notes>...</Notes>`.
 
 ## Project Structure
 
@@ -91,7 +92,7 @@ pptxgen-ts-starter/
 │   └── index.html           # Browser PPTX viewer
 ├── output/                  # Generated .pptx files
 ├── package.json
-├── tsconfig.json            # jsx: react-jsx, jsxImportSource: @artifact-kit/pptxgenjs-jsx
+├── tsconfig.json            # jsx: react-jsx, jsxImportSource: @zythum02/pptxgenjsx
 └── .gitignore
 ```
 
@@ -112,6 +113,6 @@ pptxgen-ts-starter/
 
 ## TypeScript Config
 
-- `jsx: "react-jsx"` with `jsxImportSource: "@artifact-kit/pptxgenjs-jsx"`
+- `jsx: "react-jsx"` with `jsxImportSource: "@zythum02/pptxgenjsx"`
 - No separate JSX transform or Babel needed
 - `noEmit: true` — tsx runtime handles compilation

@@ -9,7 +9,7 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import fs from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { validateDeck, renderPptx, writePptx } from "@artifact-kit/pptxgenjs-jsx";
+import { validateDeck, renderPptx, writePptx } from "@zythum02/pptxgenjsx/render";
 import arg from "arg";
 
 // ── CLI entry point ───────────────────────────────────────────────

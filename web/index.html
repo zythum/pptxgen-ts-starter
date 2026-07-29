@@ -141,7 +141,7 @@
 
           suppressHashUpdate = false;
         } catch (err) {
-          counter.textContent = "Error: " + (err as Error).message;
+          counter.textContent = "Error: " + err.message;
           console.error(err);
           return;
         }

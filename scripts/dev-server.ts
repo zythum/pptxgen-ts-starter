@@ -74,7 +74,7 @@ const HOST = args["--host"] ?? (process.env.HOST || "127.0.0.1");
 // ── HTTP Server ──
 const server = http.createServer(async (req, res) => {
   try {
-    const url = new URL(req.url, "http://" + HOST + ":" + PORT);
+    const url = new URL(req.url ?? "/", "http://" + HOST + ":" + PORT);
     let pathname = url.pathname;
 
     // ── API: Generate PPTX on-demand ──
@@ -138,11 +138,18 @@ const server = http.createServer(async (req, res) => {
 });
 
 // ── Graceful shutdown ──
-const onClose = () => server.close(() => process.exit(0));
-process.removeListener("SIGTERM", onClose);
-process.removeListener("SIGINT", onClose);
-process.on("SIGTERM", onClose);
-process.on("SIGINT", onClose);
+let closing = false;
+const onClose = (signal: string) => {
+  if (closing) return;
+  closing = true;
+  console.log(`\nReceived ${signal}, shutting down...`);
+
+  // Try graceful close; force-exit after 3s if connections block it.
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 3000).unref();
+};
+process.on("SIGTERM", () => onClose("SIGTERM"));
+process.on("SIGINT", () => onClose("SIGINT"));
 
 // ── Start ──
 server.listen(PORT, HOST, () => {

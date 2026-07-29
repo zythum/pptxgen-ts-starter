@@ -10,12 +10,12 @@ A starter template for building `.pptx` presentations using **JSX + TypeScript +
 
 | Layer | Technology |
 |-------|-----------|
-| JSX Components | `@artifact-kit/pptxgenjs-jsx` (provides `<Slide>`, `<Text>`, `<Rect>`, `<RoundRect>`, etc.) |
+| JSX Components | `@zythum02/pptxgenjsx` ^0.1.0 (provides `<Slide>`, `<Text>`, `<Rect>`, `<RoundRect>`, etc.) |
 | Rendering Engine | `pptxgenjs` ^4.0.1 |
 | Dev Server | Vanilla Node HTTP server via `tsx` |
 | PPTX Viewer (browser) | `@silurus/ooxml` |
 | Build/Run | `tsx` — runs TypeScript directly, no compilation step needed |
-| TS Config | `jsx: "react-jsx"`, `jsxImportSource: "@artifact-kit/pptxgenjs-jsx"` |
+| TS Config | `jsx: "react-jsx"`, `jsxImportSource: "@zythum02/pptxgenjsx"` |
 
 ## Project Structure
 
@@ -101,6 +101,7 @@ When asked to add/edit slides:
 
 - ❌ `RoundRect` with `rectRadius={0}` — use `Rect` instead
 - ❌ Hex color with `#` prefix — use `"FFFFFF"` not `"#FFFFFF"`
+- ❌ HTML elements like `<div>`, `<span>`, `<p>`, `<section>` — they do not exist in `JSX.IntrinsicElements` and will cause TypeScript errors. Only imported components (`<Slide>`, `<Text>`, `<Rect>`, etc.) are valid
 - ❌ Named export in `src/ppt.tsx` — it must be a default export
 - ❌ Missing full-size background on a slide
 - ❌ Modifying `scripts/dev-server.ts` or `scripts/generate.ts` unless there's a bug — they are infrastructure, not content

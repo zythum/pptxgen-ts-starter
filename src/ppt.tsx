@@ -1,4 +1,4 @@
-import { Deck } from "@artifact-kit/pptxgenjs-jsx";
+import { Deck } from "@zythum02/pptxgenjsx";
 import { TitleSlide } from "./slides/01-title";
 import { AgendaSlide } from "./slides/02-agenda";
 import { TextSlide } from "./slides/03-text";

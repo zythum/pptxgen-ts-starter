@@ -1,6 +1,6 @@
-import { Slide, Text, TextRun, Notes, RoundRect, Rect, Ellipse } from "@artifact-kit/pptxgenjs-jsx";
+import { Slide, Text, TextRun, Notes, RoundRect, Rect, Ellipse, type PptxNode } from "@zythum02/pptxgenjsx";
 
-export function ShapeSlide() {
+export async function ShapeSlide(): Promise<PptxNode> {
   return (
     <Slide>
       {/* Background */}
