@@ -10,33 +10,12 @@ A starter template for building `.pptx` presentations using **JSX + TypeScript +
 
 | Layer | Technology |
 |-------|-----------|
-| JSX Components | `@zythum02/pptxgenjsx` ^0.1.0 (provides `<Slide>`, `<Text>`, `<Rect>`, `<RoundRect>`, etc.) |
+| JSX Components | `@zythum02/pptxgenjsx` ^0.1.1 (provides `<Slide>`, `<Text>`, `<Rect>`, `<RoundRect>`, etc.) |
 | Rendering Engine | `pptxgenjs` ^4.0.1 |
 | Dev Server | Vanilla Node HTTP server via `tsx` |
 | PPTX Viewer (browser) | `@silurus/ooxml` |
 | Build/Run | `tsx` — runs TypeScript directly, no compilation step needed |
 | TS Config | `jsx: "react-jsx"`, `jsxImportSource: "@zythum02/pptxgenjsx"` |
-
-## Project Structure
-
-```
-pptxgen-ts-starter/
-├── scripts/
-│   ├── dev-server.ts        # HTTP dev server (localhost:5173)
-│   └── generate.ts          # CLI build tool (generates .pptx)
-├── src/
-│   ├── ppt.tsx              # Deck entry — composes all slides into <Deck>
-│   ├── slides/              # Individual slide components
-│   │   ├── 01-title.tsx     # Numbered by order
-│   │   ├── 02-agenda.tsx
-│   │   └── ...
-│   └── media/images/        # Image assets (referenced by <Image path="...">)
-├── web/
-│   └── index.html           # Browser PPTX viewer
-├── output/                  # Generated .pptx files (gitignored)
-├── llms.txt                 # LLM reference doc
-└── AGENTS.md                # This file
-```
 
 ## Architecture Rules
 
@@ -76,8 +55,8 @@ pptxgen-ts-starter/
 ### 6. Images
 
 - Place image files in `src/media/images/`.
-- Reference with relative path in `<Image path="filename.png">`.
-- Path is resolved relative to `src/media/images/`.
+- Reference with relative path in `<Image path="media/images/filename.png">`.
+- Path is resolved relative to the entry file `src/ppt.tsx`.
 
 ### 7. Speaker Notes
 
@@ -87,6 +66,21 @@ pptxgen-ts-starter/
 
 - `src/ppt.tsx` has a **default export** (not named) that returns a `<Deck>` wrapping all slides.
 - Keep the entry point clean — it should only import slides and compose the deck.
+
+## Skill: pptxgenjsx
+
+Detailed API reference is available in the agent skill at `.agents/skills/pptxgenjsx/`:
+
+| Reference File | Covers |
+|----------------|--------|
+| [SKILL.md](.agents/skills/pptxgenjsx/SKILL.md) | Overview, import, core concepts, workflow checklist, file index |
+| [components/slide.md](.agents/skills/pptxgenjsx/references/components/slide.md) | `<Deck>`, `<Slide>`, `<Notes>`, minimal slide template |
+| [components/text.md](.agents/skills/pptxgenjsx/references/components/text.md) | `<Text>` block container, `<TextRun>` inline segment with all options |
+| [components/shapes.md](.agents/skills/pptxgenjsx/references/components/shapes.md) | All shape components (`Rect`, `RoundRect`, `Ellipse`, `Arc`, `CustomGeometry`, etc.), `<Shape>` generic + 180-name `SHAPE_NAME` list |
+| [components/chart.md](.agents/skills/pptxgenjsx/references/components/chart.md) | `<Chart>` — 9 chart types, data format, axis/bar/line/pie/label/3D options, Multi-Chart |
+| [components/table.md](.agents/skills/pptxgenjsx/references/components/table.md) | `<Table>` + `<TableCell>` — borders, colspan/rowspan, alignment, auto-paging |
+| [components/media.md](.agents/skills/pptxgenjsx/references/components/media.md) | `<Image>` (path/data/base64, sizing, rounding, rotation), `<Media>` (audio/video/YouTube) |
+| [styling/index.md](.agents/skills/pptxgenjsx/references/styling/index.md) | Shared style interfaces: `ShapeFillProps`, `ShapeLineProps`, `ShadowProps`, `BorderProps`, `HyperlinkProps`, `TextBaseProps` |
 
 ## Workflow (for the agent)
 

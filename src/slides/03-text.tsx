@@ -1,10 +1,10 @@
-import { Slide, Text, TextRun, Notes, RoundRect, type PptxNode } from "@zythum02/pptxgenjsx";
+import { Slide, Text, TextRun, Notes, Rect, RoundRect, type PptxNode } from "@zythum02/pptxgenjsx";
 
 export async function TextSlide(): Promise<PptxNode> {
   return (
     <Slide>
       {/* Background */}
-      <RoundRect x={0} y={0} w={13.333} h={7.5} fill={{ color: "FFFFFF" }} rectRadius={0} />
+      <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "FFFFFF" }} />
 
       {/* Title */}
       <Text x={0.8} y={0.6} w={6} h={0.9} align="left" valign="middle">
@@ -37,17 +37,22 @@ export async function TextSlide(): Promise<PptxNode> {
         <TextRun text="JSX Usage" options={{ fontSize: 18, bold: true, color: "A78BFA" }} />
       </Text>
 
-      {/* Code-like text block */}
-      <Text x={7.2} y={2.9} w={5.0} h={3.5} align="left" valign="top" lineSpacing={22}>
-        <TextRun text={'<Text x={0.8} y={2.9}'} options={{ fontSize: 11, color: "F87171" }} />
-        <TextRun text={'      w={5.0} h={3.5}>'} options={{ fontSize: 11, color: "F87171", breakLine: true }} />
-        <TextRun text={'  <TextRun text="Bold text"'} options={{ fontSize: 11, color: "A78BFA", breakLine: true }} />
-        <TextRun text={'    options={{bold: true}} />'} options={{ fontSize: 11, color: "A78BFA", breakLine: true }} />
-        <TextRun text={'  <TextRun text="Italic text"'} options={{ fontSize: 11, color: "A78BFA", breakLine: true }} />
-        <TextRun text={'    options={{italic: true}} />'} options={{ fontSize: 11, color: "A78BFA", breakLine: true }} />
-        <TextRun text={'  <TextRun text="Colored"'} options={{ fontSize: 11, color: "A78BFA", breakLine: true }} />
-        <TextRun text={'    options={{color:"7C3AED"}} />'} options={{ fontSize: 11, color: "A78BFA", breakLine: true }} />
-        <TextRun text={'</Text>'} options={{ fontSize: 11, color: "F87171", breakLine: true }} />
+      {/* Code-like text block — each JSX element formatted with one prop per line */}
+      <Text x={7.2} y={2.9} w={5.0} h={4.2} align="left" valign="top" lineSpacing={15}>
+        <TextRun text={'<Text x={0.8} y={2.9} w={5.0} h={3.5}>'} options={{ fontSize: 11, fontFace: "Courier New", color: "F87171", breakLine: true }} />
+        <TextRun text={'  <TextRun'} options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }} />
+        <TextRun text={'    text="Bold text"'} options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }} />
+        <TextRun text={'    options={{bold: true}}'} options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }} />
+        <TextRun text={'  />'} options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }} />
+        <TextRun text={'  <TextRun'} options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }} />
+        <TextRun text={'    text="Italic text"'} options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }} />
+        <TextRun text={'    options={{italic: true}}'} options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }} />
+        <TextRun text={'  />'} options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }} />
+        <TextRun text={'  <TextRun'} options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }} />
+        <TextRun text={'    text="Colored text"'} options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }} />
+        <TextRun text={'    options={{color:"7C3AED"}}'} options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }} />
+        <TextRun text={'  />'} options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }} />
+        <TextRun text={'</Text>'} options={{ fontSize: 11, fontFace: "Courier New", color: "F87171", breakLine: true }} />
       </Text>
 
       <Notes>

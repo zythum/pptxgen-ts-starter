@@ -1,81 +1,6 @@
 # pptxgen-ts-starter
 
-> Build PowerPoint presentations with JSX + TypeScript using pptxgenjs.
-
-## Overview
-
-This template lets you write slides as JSX components and compile them into `.pptx` files. It supports browser preview via a dev server and CLI-based generation.
-
-## Key Dependencies
-
-| Package | Role |
-|---------|------|
-| `pptxgenjs` ^4.0.1 | Low-level PPTX rendering engine |
-| `@zythum02/pptxgenjsx` ^0.1.0 | JSX component library (`<Slide>`, `<Text>`, `<Rect>`, etc.) |
-| `@silurus/ooxml` ^0.74.1 | Browser-based PPTX viewer (used in dev server) |
-| `tsx` ^4.23.1 | TypeScript runtime for scripts |
-| `typescript` ^7.0.2 | Type checking |
-
-## JSX Component API
-
-All components are imported from `@zythum02/pptxgenjsx`.
-
-### `<Deck>`
-Root element. Props:
-- `title` — presentation title
-- `author` — author name
-- `layout` — slide dimensions `{ name, width, height }` (inches). Default: WIDE 13.333×7.5
-
-### `<Slide>`
-A single slide. Children are positioned absolutely.
-
-### `<Text>`
-Text block. Props: `x, y, w, h, align, valign, lineSpacing`. Children are `<TextRun>` elements.
-
-### `<TextRun>`
-A formatted text segment. Props:
-- `text` — string content
-- `options` — `{ fontSize, bold, italic, color, fontFace, breakLine, ... }`
-
-### `<Rect>`
-Rectangle shape. Props: `x, y, w, h, fill, line`.
-Use `Rect` for pure rectangles (backgrounds, decorative lines, accent bars).
-
-### `<RoundRect>`
-Rounded rectangle. Props: same as `Rect` + `rectRadius` (corner radius in inches).
-Use `RoundRect` only when you actually need rounded corners (e.g. cards, badges, buttons).
-
-### `<Ellipse>`
-Ellipse / oval shape. Props: `x, y, w, h, fill, line`.
-
-### `<Image>`
-Image shape. Props: `x, y, w, h, path` (relative to `src/media/images/`).
-
-### `<Notes>`
-Speaker notes. Placed as a child of `<Slide>`.
-
-## Common Props Pattern
-
-Positioning props are all in **inches**:
-- `x` — left offset
-- `y` — top offset
-- `w` — width
-- `h` — height
-
-Shape styling:
-- `fill: { color: "HEX" }` — fill color (6-char hex, no `#`)
-- `fill: { color: "HEX", transparency: 0-100 }` — optional transparency
-- `line: { color: "HEX", width: number, dashType: "solid"|"dash"|"dot" }` — optional border
-- `shadow: { type: "outer", blur: number, offset: number, color: "HEX", opacity: 0-1 }` — optional shadow
-
-## Important Rules
-
-1. **Use `Rect` for pure rectangles** (backgrounds, decorative lines, accent bars). Do NOT use `RoundRect` with `rectRadius={0}` as a workaround — it's semantically incorrect and may have edge cases.
-2. **No HTML elements** — `<div>`, `<span>`, `<p>`, `<section>` etc. do not exist in this JSX runtime. TypeScript will reject them with `Property 'div' does not exist on type 'JSX.IntrinsicElements'`. Only uppercase imported components (`<Slide>`, `<Text>`, `<Rect>`, etc.) are valid.
-3. **All positions are absolute** — there is no flexbox or grid. Design in inches.
-4. **Hex colors omit the `#` prefix** — e.g. `"1E1E2E"` not `"#1E1E2E"`.
-5. **Place images** in `src/media/images/` and reference with relative path in `<Image path="...">`.
-6. **Speaker notes** go inside `<Slide>` as `<Notes>...</Notes>`.
+> Build PowerPoint presentations with JSX + TypeScript using pptxgenjs. Slides are defined as JSX components and compiled into `.pptx` files.
 
 ## Project Structure
 
@@ -83,36 +8,26 @@ Shape styling:
 pptxgen-ts-starter/
 ├── scripts/
 │   ├── dev-server.ts        # HTTP dev server (localhost:5173)
-│   ├── generate.ts          # CLI build tool (generates .pptx)
+│   └── generate.ts          # CLI build tool (generates .pptx)
 ├── src/
-│   ├── ppt.tsx              # Deck entry — compose slides here
+│   ├── ppt.tsx              # Deck entry — composes all slides into <Deck>
 │   ├── slides/              # Individual slide components
 │   └── media/images/        # Image assets
 ├── web/
 │   └── index.html           # Browser PPTX viewer
 ├── output/                  # Generated .pptx files
 ├── package.json
-├── tsconfig.json            # jsx: react-jsx, jsxImportSource: @zythum02/pptxgenjsx
-└── .gitignore
+├── tsconfig.json
+├── llms.txt
+└── AGENTS.md
 ```
 
-## Workflow
+## Agent Skills
 
-1. **Edit slides** — create/modify files in `src/slides/`
-2. **Preview** — `npm run dev` opens browser at `localhost:5173`
-   - The dev server re-imports the entry file on every request (no cache)
-3. **Generate** — `npm run generate` produces `output/presentation.pptx`
-4. **Custom output** — `npm run generate -- -o my-deck.pptx src/ppt.tsx`
+- [pptxgenjsx SKILL.md](.agents/skills/pptxgenjsx/SKILL.md) — Complete skill for creating and editing PPTX slides using JSX + pptxgenjs
 
-## Slide Component Conventions
+## NPM Scripts
 
-- Each slide is a named export (e.g. `export function TitleSlide()`)
-- Slides are imported and composed in `src/ppt.tsx` inside `<Deck>`
-- Best practice: one file per slide, numbered by order (`01-title.tsx`, `02-agenda.tsx`, ...)
-- Every slide starts with a full-size background shape covering the entire canvas (13.333×7.5)
-
-## TypeScript Config
-
-- `jsx: "react-jsx"` with `jsxImportSource: "@zythum02/pptxgenjsx"`
-- No separate JSX transform or Babel needed
-- `noEmit: true` — tsx runtime handles compilation
+- `npm run dev` — Start dev server at localhost:5173
+- `npm run generate` — Build output/presentation.pptx
+- `npm run generate -- -o my-deck.pptx src/ppt.tsx` — Custom output path

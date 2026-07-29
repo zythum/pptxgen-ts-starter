@@ -23,8 +23,8 @@ export async function EndSlide(): Promise<PptxNode> {
       </Text>
 
       {/* Commands */}
-      <RoundRect x={3.5} y={5.0} w={6.333} h={1.2} fill={{ color: "2A2A3E" }} rectRadius={0.1} />
-      <Text x={3.8} y={5.1} w={5.733} h={1.0} align="center" valign="middle">
+      <RoundRect x={3.5} y={5.0} w={7.0} h={1.2} fill={{ color: "2A2A3E" }} rectRadius={0.1} />
+      <Text x={3.8} y={5.1} w={6.4} h={1.0} align="center" valign="middle">
         <TextRun text="npm install  →  npm run dev  →  npm run generate" options={{ fontSize: 14, color: "6EE7B7", fontFace: "Courier New" }} />
       </Text>
 

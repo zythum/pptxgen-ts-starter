@@ -8,6 +8,7 @@ import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { exec } from "node:child_process";
 import arg from "arg";
 import { generate } from "./generate";
 
@@ -35,6 +36,7 @@ const args = arg(
   {
     "--port": Number,
     "--host": String,
+    "--open": Boolean,
     "--help": Boolean,
     "-p": "--port",
     "-h": "--help",
@@ -49,6 +51,7 @@ if (args["--help"]) {
   Options:
     --port, -p   Port number (default: 5173 or $PORT)
     --host,      Host address (default: 127.0.0.1 or $HOST)
+    --open       Open browser automatically on start
     --help, -h   Show this help message
 
   Arguments:
@@ -152,7 +155,24 @@ process.on("SIGTERM", () => onClose("SIGTERM"));
 process.on("SIGINT", () => onClose("SIGINT"));
 
 // ── Start ──
+const OPEN = args["--open"] ?? false;
+
 server.listen(PORT, HOST, () => {
+  const url = `http://${HOST}:${PORT}/`;
   console.log("\n  Dev Server");
-  console.log("  → http://" + HOST + ":" + PORT + "/\n");
+  console.log(`  → ${url}\n`);
+
+  if (OPEN) {
+    if (process.platform === "win32") {
+      // start "title" "url" — empty title prevents first-quoted-arg confusion
+      exec(`start "" "${url}"`, { shell: "cmd.exe" }, (err) => {
+        if (err) console.error(`  Failed to open browser: ${err.message}`);
+      });
+    } else {
+      const cmd = process.platform === "darwin" ? "open" : "xdg-open";
+      exec(`${cmd} "${url}"`, (err) => {
+        if (err) console.error(`  Failed to open browser: ${err.message}`);
+      });
+    }
+  }
 });

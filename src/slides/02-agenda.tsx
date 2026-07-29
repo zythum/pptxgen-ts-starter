@@ -1,10 +1,10 @@
-import { Slide, Text, TextRun, Notes, RoundRect, type PptxNode } from "@zythum02/pptxgenjsx";
+import { Slide, Text, TextRun, Notes, Rect, RoundRect, type PptxNode } from "@zythum02/pptxgenjsx";
 
 export async function AgendaSlide(): Promise<PptxNode> {
   return (
     <Slide>
       {/* White background */}
-      <RoundRect x={0} y={0} w={13.333} h={7.5} fill={{ color: "FFFFFF" }} rectRadius={0} />
+      <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "FFFFFF" }} />
 
       {/* Section title */}
       <Text x={0.8} y={0.6} w={6} h={0.9} align="left" valign="middle">
