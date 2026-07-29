@@ -16,7 +16,10 @@ import arg from "arg";
 const currentUrl = pathToFileURL(process.argv[1]!).href;
 if (currentUrl === import.meta.url) {
   main().catch((err) => {
-    console.error("Failed to generate presentation:", err);
+    const e = err instanceof Error ? err : new Error(String(err));
+    console.error("✖ Failed to generate presentation");
+    console.error("  Error:", e.message);
+    console.error("  Stack:", e.stack);
     process.exit(1);
   });
 
@@ -54,8 +57,17 @@ if (currentUrl === import.meta.url) {
     const cwd = process.cwd();
     const resolvedEntry = path.resolve(cwd, entry);
     const resolvedOutput = output.startsWith("/") ? output : path.resolve(cwd, output);
-    await generate({ entry: resolvedEntry, output: resolvedOutput });
-    console.log("✅ Generated:", resolvedOutput);
+    try {
+      await generate({ entry: resolvedEntry, output: resolvedOutput });
+      console.log("✅ Generated:", resolvedOutput);
+    } catch (err) {
+      const e = err instanceof Error ? err : new Error(String(err));
+      console.error("✖ Failed to generate presentation");
+      console.error("  Entry file:", resolvedEntry);
+      console.error("  Error:", e.message);
+      console.error("  Stack:", e.stack);
+      process.exit(1);
+    }
   }
 }
 
@@ -85,13 +97,30 @@ export async function generate(options: GenerateOptions): Promise<ArrayBuffer | 
   process.chdir(path.dirname(entryPath));
 
   // tsImport does NOT cache — every call re-evaluates with latest changes
-  const mod = await tsImport(entryPath.replace(/\\/g, "/"), import.meta.url);
-  const deck = mod.default();
+  let mod;
+  try {
+    mod = await tsImport(entryPath.replace(/\\/g, "/"), import.meta.url);
+  } catch (err) {
+    const e = err instanceof Error ? err : new Error(String(err));
+    e.message = `Failed to import entry file "${entryPath}":\n  ${e.message}`;
+    throw e;
+  }
+
+  let deck;
+  try {
+    deck = mod.default();
+  } catch (err) {
+    const e = err instanceof Error ? err : new Error(String(err));
+    e.message = `Error in deck default export (${entryPath}):\n  ${e.message}`;
+    throw e;
+  }
 
   // Validate before rendering
   const issues = await validateDeck(deck);
   if (issues.some((i: any) => i.level === "error")) {
-    throw new Error("Deck validation failed:\n" + JSON.stringify(issues, null, 2));
+    const err = new Error("Deck validation failed:\n" + JSON.stringify(issues, null, 2));
+    // Attach the entry file path for better error reporting
+    throw err;
   }
 
   // Use createRequire to get the real constructor (avoids ESM default-import wrapper issue)
@@ -104,13 +133,25 @@ export async function generate(options: GenerateOptions): Promise<ArrayBuffer | 
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
-    await renderPptx(deck, { fileName: outputAbs, pptx });
+    try {
+      await renderPptx(deck, { fileName: outputAbs, pptx });
+    } catch (err) {
+      const e = err instanceof Error ? err : new Error(String(err));
+      e.message = `Failed to render PPTX to "${outputAbs}":\n  ${e.message}`;
+      throw e;
+    }
     return undefined;
   }
 
   if (options.outputType === "arraybuffer") {
-    const buf = (await writePptx(deck, { outputType: "arraybuffer", pptx })) as ArrayBuffer;
-    return buf;
+    try {
+      const buf = (await writePptx(deck, { outputType: "arraybuffer", pptx })) as ArrayBuffer;
+      return buf;
+    } catch (err) {
+      const e = err instanceof Error ? err : new Error(String(err));
+      e.message = `Failed to write PPTX buffer:\n  ${e.message}`;
+      throw e;
+    }
   }
 
   throw new Error("Must specify either output or outputType");

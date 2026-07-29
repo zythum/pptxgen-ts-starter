@@ -128,10 +128,19 @@ const server = http.createServer(async (req, res) => {
         });
         res.end(b);
       } catch (err) {
-        const e = err as Error;
-        console.error("Generate error:", e.message);
-        res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
-        res.end("Generate failed: " + e.message);
+        const e = err instanceof Error ? err : new Error(String(err));
+        console.log("✖ Generate failed");
+        console.log("  Entry:", ENTRY_FILE);
+        console.log("  Error:", e.message);
+        console.log("  Stack:", e.stack ?? "(no stack)");
+
+        const body = JSON.stringify({
+          error: e.message,
+          file: ENTRY_FILE,
+          stack: e.stack ?? null,
+        });
+        res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+        res.end(body);
       }
       return;
     }

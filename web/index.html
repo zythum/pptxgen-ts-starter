@@ -83,10 +83,99 @@
         text-align: center;
         font-variant-numeric: tabular-nums;
       }
+
+      /* ── Error Modal ── */
+      .error-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .error-modal-overlay.active {
+        display: flex;
+      }
+      .error-modal {
+        background: #2a2a3e;
+        border: 1px solid #e53e3e;
+        border-radius: 12px;
+        max-width: 640px;
+        width: 90%;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 8px 48px rgba(0, 0, 0, 0.6);
+      }
+      .error-modal-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #3a3a52;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fbb4b4;
+      }
+      .error-modal-header .icon {
+        font-size: 20px;
+      }
+      .error-modal-close {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: #888;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 0 4px;
+        line-height: 1;
+      }
+      .error-modal-close:hover {
+        color: #eee;
+      }
+      .error-modal-body {
+        padding: 16px 20px;
+        overflow-y: auto;
+        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #ccc;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .error-modal-body .error-file {
+        color: #f9a8d4;
+        font-weight: 500;
+      }
+      .error-modal-body .error-message {
+        color: #fca5a5;
+        font-weight: 600;
+        margin-top: 8px;
+      }
+      .error-modal-body .error-stack {
+        color: #9ca3af;
+        margin-top: 12px;
+        font-size: 12px;
+        border-top: 1px solid #3a3a52;
+        padding-top: 12px;
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- ── Error Modal ── -->
+    <div id="errorModal" class="error-modal-overlay">
+      <div class="error-modal">
+        <div class="error-modal-header">
+          <span class="icon">⚠️</span>
+          <span>Generate Failed</span>
+          <button class="error-modal-close" id="errorModalClose">✕</button>
+        </div>
+        <div class="error-modal-body" id="errorModalBody"></div>
+      </div>
+    </div>
 
     <!-- Hot-reload: listen for file changes and auto-refresh -->
     <script>
@@ -104,6 +193,32 @@
 
     <script type="module">
       import { PptxViewer } from "https://esm.sh/@silurus/ooxml@0.74.1/pptx";
+
+      // ── Error modal ──
+      const errorModal = document.getElementById("errorModal");
+      const errorModalBody = document.getElementById("errorModalBody");
+      document.getElementById("errorModalClose").addEventListener("click", () => {
+        errorModal.classList.remove("active");
+      });
+      errorModal.addEventListener("click", (e) => {
+        if (e.target === errorModal) errorModal.classList.remove("active");
+      });
+
+      function showError(err, file) {
+        const parts = [''];
+        if (file) parts.push(`<div class="error-file">File: ${file}</div>`);
+        parts.push(`<div class="error-message">${escapeHtml(err.message)}</div>`);
+        if (err.stack) parts.push(`<div class="error-stack">${escapeHtml(err.stack)}</div>`);
+        errorModalBody.innerHTML = parts.join("\n");
+        errorModal.classList.add("active");
+        console.error(err);
+      }
+
+      function escapeHtml(s) {
+        const d = document.createElement("div");
+        d.textContent = s;
+        return d.innerHTML;
+      }
 
       // ── State ──
       let viewer = null;
@@ -132,7 +247,15 @@
         try {
           // Fetch pre-generated .pptx from server
           const resp = await fetch("/api/generate");
+          const contentType = resp.headers.get("Content-Type") || "";
           if (!resp.ok) {
+            if (contentType.includes("json")) {
+              const errData = await resp.json();
+              const err = new Error(errData.error);
+              counter.textContent = "Error — see modal";
+              showError(err, errData.file);
+              return;
+            }
             throw new Error("Server error: " + resp.status + " " + resp.statusText);
           }
           const buffer = await resp.arrayBuffer();
@@ -162,8 +285,8 @@
 
           suppressHashUpdate = false;
         } catch (err) {
-          counter.textContent = "Error: " + err.message;
-          console.error(err);
+          counter.textContent = "Error — see modal";
+          showError(err, null);
           return;
         }
 
