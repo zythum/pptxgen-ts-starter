@@ -130,9 +130,7 @@ const server = http.createServer(async (req, res) => {
       } catch (err) {
         const e = err instanceof Error ? err : new Error(String(err));
         console.log("✖ Generate failed");
-        console.log("  Entry:", ENTRY_FILE);
-        console.log("  Error:", e.message);
-        console.log("  Stack:", e.stack ?? "(no stack)");
+        console.error(e);
 
         const body = JSON.stringify({
           error: e.message,

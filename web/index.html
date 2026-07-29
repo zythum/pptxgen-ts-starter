@@ -101,7 +101,7 @@
         background: #2a2a3e;
         border: 1px solid #e53e3e;
         border-radius: 12px;
-        max-width: 640px;
+        max-width: 900px;
         width: 90%;
         max-height: 80vh;
         display: flex;
@@ -121,19 +121,6 @@
       .error-modal-header .icon {
         font-size: 20px;
       }
-      .error-modal-close {
-        margin-left: auto;
-        background: none;
-        border: none;
-        color: #888;
-        font-size: 20px;
-        cursor: pointer;
-        padding: 0 4px;
-        line-height: 1;
-      }
-      .error-modal-close:hover {
-        color: #eee;
-      }
       .error-modal-body {
         padding: 16px 20px;
         overflow-y: auto;
@@ -141,24 +128,18 @@
         font-size: 13px;
         line-height: 1.6;
         color: #ccc;
-        white-space: pre-wrap;
         word-break: break-all;
-      }
-      .error-modal-body .error-file {
-        color: #f9a8d4;
-        font-weight: 500;
       }
       .error-modal-body .error-message {
         color: #fca5a5;
         font-weight: 600;
-        margin-top: 8px;
+        font-size: 14px;
       }
       .error-modal-body .error-stack {
         color: #9ca3af;
-        margin-top: 12px;
         font-size: 12px;
-        border-top: 1px solid #3a3a52;
         padding-top: 12px;
+        white-space: pre-wrap;
       }
     </style>
   </head>
@@ -171,7 +152,6 @@
         <div class="error-modal-header">
           <span class="icon">⚠️</span>
           <span>Generate Failed</span>
-          <button class="error-modal-close" id="errorModalClose">✕</button>
         </div>
         <div class="error-modal-body" id="errorModalBody"></div>
       </div>
@@ -197,18 +177,12 @@
       // ── Error modal ──
       const errorModal = document.getElementById("errorModal");
       const errorModalBody = document.getElementById("errorModalBody");
-      document.getElementById("errorModalClose").addEventListener("click", () => {
-        errorModal.classList.remove("active");
-      });
-      errorModal.addEventListener("click", (e) => {
-        if (e.target === errorModal) errorModal.classList.remove("active");
-      });
 
-      function showError(err, file) {
+      function showError(err, stack) {
         const parts = [''];
-        if (file) parts.push(`<div class="error-file">File: ${file}</div>`);
         parts.push(`<div class="error-message">${escapeHtml(err.message)}</div>`);
-        if (err.stack) parts.push(`<div class="error-stack">${escapeHtml(err.stack)}</div>`);
+        const st = stack ?? err.stack;
+        if (st) parts.push(`<div class="error-stack">${escapeHtml(st)}</div>`);
         errorModalBody.innerHTML = parts.join("\n");
         errorModal.classList.add("active");
         console.error(err);
@@ -252,8 +226,8 @@
             if (contentType.includes("json")) {
               const errData = await resp.json();
               const err = new Error(errData.error);
-              counter.textContent = "Error — see modal";
-              showError(err, errData.file);
+              counter.textContent = "Error";
+              showError(err, errData.stack);
               return;
             }
             throw new Error("Server error: " + resp.status + " " + resp.statusText);
