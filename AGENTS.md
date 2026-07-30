@@ -69,10 +69,11 @@ web/index.html               # Browser PPTX viewer
 
 ## Workflow: Add or Edit a Slide
 
-1. Create `src/slides/NN-name.tsx` — async function returning `<Slide>` with `<SlideBackground>`.
-2. Compose content using `<Text>`, `<TextRun>`, `<Rect>`, `<Chart>`, `<Table>`, etc.
-3. Import the slide in `src/ppt.tsx` and add it inside `<Deck>`.
-4. `npm run dev` → **refresh browser** to preview, or `npm run generate` for `.pptx`.
+1. Create `src/slides/NN-name.tsx` — async function returning the slide content in `<>`, with `<SlideBackground>` as the first child.
+2. Compose content using `<Text>`, `<TextRun>`, `<Rect>`, `<Chart>`, `<Table>`, etc. (see [pptxgenjsx](.agents/skills/pptxgenjsx/SKILL.md) for component API).
+3. **Verify layout** — use `estimate-text.ts` and `image-tool.ts` to prevent text overflow, element overlap, and image distortion (see [Layout Quality Check](#layout-quality-check) below).
+4. Import the slide in `src/ppt.tsx` — use `component: () => import("../slides/NN-name")` and add it inside `<Deck>`.
+5. `npm run dev` → **refresh browser** to preview, or `npm run generate` for `.pptx`.
 
 ### Slide Template
 
@@ -96,6 +97,55 @@ export default async function () {
   );
 }
 ```
+
+## Layout Quality Check
+
+Before committing a slide, verify content fits properly to avoid runtime surprises.
+
+### Text overflow
+
+When text content has variable length (data-driven, speaker names, long titles), **always** measure rendered height before picking container `h`.
+
+```
+npx tsx scripts/estimate-text.ts -w 6.5 -f "18pt Inter" --leading 26 \
+  "Variable-length text that might overflow its box"
+```
+
+**Check against container** — if the reported height exceeds your `h`, widen the box, reduce font size, or add `shrinkText` to the `<Text>` component.
+
+**Use `--json` for programmatic checks** — parse the output in scripts or CI.
+
+### Element overlap
+
+After placing all elements on a slide, verify their bounding boxes don't collide:
+
+```
+# Measure each text block
+npx tsx scripts/estimate-text.ts -w 4 -f "14pt Arial" --json "Title text"
+npx tsx scripts/estimate-text.ts -w 4 -f "12pt Arial" --json "Body text"
+```
+
+Manually sum `y + height` for each element and confirm it's ≤ the next element's `y`. Common overlap points:
+- `<SectionHeader>` fixed height vs. content below it
+- Multi-column text layouts where columns share vertical space
+- `<Image>` + caption `<Text>` stacked vertically
+
+### Image stretching
+
+For `<Image>` elements, always confirm the source image aspect ratio matches your container:
+
+```
+npx tsx scripts/image-tool.ts --image src/media/images/photo.png
+```
+
+Output shows native `width × height`. Compute aspect ratio (e.g. `1920/1080 = 1.778`) and compare to your `<Image w / h>` (e.g. `6.5/3.656 = 1.778`). If they don't match, use `--crop` or `--resize` to produce a correctly-sized asset:
+
+```
+# Crop photo to 16:9 then resize to fit 6.5" × 3.656" at 96 DPI
+npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 --resize 624x351 --output photo-ready.png
+```
+
+**Rule of thumb:** always crop/resize **before** referencing the image in a slide. Never rely on `pptxgenjs` to stretch an image into a mismatched container — PowerPoint handles non-native aspect ratios poorly.
 
 ## Common Mistakes
 
