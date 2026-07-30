@@ -28,6 +28,9 @@ const MIME_TYPES: Record<string, string> = {
   ".ico": "image/x-icon",
   ".json": "application/json; charset=utf-8",
   ".woff2": "font/woff2",
+  ".ttf": "font/ttf",
+  ".otf": "font/otf",
+  ".woff": "font/woff",
   ".webp": "image/webp",
 };
 
@@ -144,7 +147,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     // ── SSE: Hot-reload ──
-    if (pathname === "/api/hotreload") {
+    if (pathname === "/api/hot-reload") {
       res.writeHead(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",

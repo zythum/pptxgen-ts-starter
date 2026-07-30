@@ -160,7 +160,7 @@
     <!-- Hot-reload: listen for file changes and auto-refresh -->
     <script>
       (function () {
-        var es = new EventSource("/api/hotreload");
+        var es = new EventSource("/api/hot-reload");
         es.addEventListener("reload", function () {
           es.close();
           location.reload();

@@ -114,6 +114,34 @@ export default async function () {
 
 - [pptxgenjsx](.agents/skills/pptxgenjsx/SKILL.md) - Component API reference
 
+## CLI Tools
+
+### `scripts/estimate-text.ts` — Text measurement
+
+Measure exact rendered height of text at a given width, font, and line-spacing. Uses Canvas 2D `measureText` for precise word-wrap.
+
+```
+npx tsx scripts/estimate-text.ts -w 3.5 -f "11pt Arial" --leading 22 "Long text to measure…"
+echo "..." | npx tsx scripts/estimate-text.ts --stdin -w 5 -f "14pt Inter"
+```
+
+**Options:** `--width/-w` (container width in inches), `--font/-f` (CSS font string), `--leading/-l` (line spacing in pt), `--margin` (container padding), `--json` (structured JSON output), `--download-font/-d` (download from Google Fonts), `--font-file` (register local .ttf/.otf/.woff2), `--stdin` (read from stdin).
+
+**Output:** human-readable description by default; use `--json` for structured output.
+
+### `scripts/image-tool.ts` — Image query & processing
+
+Query image metadata, resize, or crop images. All operations use `sharp`.
+
+```
+npx tsx scripts/image-tool.ts --image photo.png          # query metadata only
+npx tsx scripts/image-tool.ts --image photo.png --resize 800   # scale to 800px wide
+npx tsx scripts/image-tool.ts --image photo.png --crop 16:9    # center crop to 16:9
+npx tsx scripts/image-tool.ts --image photo.png --crop 1:1 --resize 400
+```
+
+**Options:** `--image <path>` (required), `--resize <w>` or `<w>x<h>`, `--crop <aspect>` (e.g. `16:9`, `1:1`) or `<w>x<h>` or `<w>x<h>+<x>+<y>`, `--output <path>`.
+
 ## NPM Scripts
 
 | Command             | Action                                                          |
