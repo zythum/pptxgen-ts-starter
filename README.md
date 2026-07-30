@@ -44,13 +44,24 @@ Start customizing:
 
 ## Usage
 
-The starter contains the following scripts:
+The starter contains the following npm scripts:
 
-- `npm run dev` — starts dev server at `localhost:5173` with browser preview
-- `npm run generate` — generates `output/presentation.pptx`
-- `npm run typecheck` — type check with tsc (no emit)
-- `npm run lint` — lint with oxlint
-- `npm run format` — format with oxfmt
+| Command             | Action                                                          |
+| ------------------- | --------------------------------------------------------------- |
+| `npm run dev`       | Dev server at `localhost:5173` (refresh browser to see changes) |
+| `npm run generate`  | Build `output/presentation.pptx`                                |
+| `npm run typecheck` | Type check, no emit                                             |
+| `npm run lint`      | Lint with oxlint                                                |
+| `npm run format`    | Format with oxfmt                                               |
+
+### CLI Tools
+
+Two utility scripts help verify slide layout before generating the final `.pptx`:
+
+- **`scripts/estimate-text.ts`** — measure rendered text height to prevent overflow
+- **`scripts/image-tool.ts`** — query image metadata, crop, or resize images
+
+See [AGENTS.md](AGENTS.md#cli-tools) for full usage details and examples.
 
 ## Project Structure
 
@@ -62,14 +73,22 @@ pptxgen-ts-starter/
 ├── src/
 │   ├── ppt.tsx            # deck entry — compose slides here
 │   ├── slides/            # individual slide components
+│   ├── components/        # shared UI: SlideBackground, SectionHeader, Card
 │   └── media/images/      # place your images here
 ├── web/
 │   └── index.html         # browser-based PPTX viewer
+├── .agents/
+│   └── skills/pptxgenjsx/ # component API reference
 ├── output/                # generated .pptx files
+├── AGENTS.md              # detailed slide authoring guide
 ├── package.json
 ├── tsconfig.json
 └── .gitignore
 ```
+
+## Agent Guide
+
+For detailed authoring instructions — conventions, workflow, common mistakes, and component API — see [AGENTS.md](AGENTS.md). This is the primary reference for both human contributors and AI coding assistants.
 
 ## Acknowledgment
 
