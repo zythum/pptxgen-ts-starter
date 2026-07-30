@@ -14,7 +14,16 @@ export default async function () {
       {/* 2×2 card grid — children positions are relative to the group */}
       <Group x={0.8} y={2.0} w={11.733} h={4.8}>
         {/* Top-left card — white bg, border, shadow, purple accent */}
-        <Card x={0} y={0} w={5.6} h={2.2} fill="FFFFFF" accentColor="7C3AED" border={true} shadow={true}>
+        <Card
+          x={0}
+          y={0}
+          w={5.6}
+          h={2.2}
+          fill="FFFFFF"
+          accentColor="7C3AED"
+          border={true}
+          shadow={true}
+        >
           <Text x={0.4} y={0.1} w={4.8} h={0.5} align="left" valign="middle">
             <TextRun text="Feature Card" options={{ fontSize: 17, bold: true, color: "1F2937" }} />
           </Text>
@@ -27,9 +36,21 @@ export default async function () {
         </Card>
 
         {/* Top-right card — white bg, border, shadow, green accent */}
-        <Card x={6.0} y={0} w={5.733} h={2.2} fill="FFFFFF" accentColor="10B981" border={true} shadow={true}>
+        <Card
+          x={6.0}
+          y={0}
+          w={5.733}
+          h={2.2}
+          fill="FFFFFF"
+          accentColor="10B981"
+          border={true}
+          shadow={true}
+        >
           <Text x={0.4} y={0.1} w={5.0} h={0.5} align="left" valign="middle">
-            <TextRun text="Left Accent Bar" options={{ fontSize: 17, bold: true, color: "1F2937" }} />
+            <TextRun
+              text="Left Accent Bar"
+              options={{ fontSize: 17, bold: true, color: "1F2937" }}
+            />
           </Text>
           <Text x={0.4} y={0.7} w={5.0} h={1.2} align="left" valign="top" lineSpacing={24}>
             <TextRun

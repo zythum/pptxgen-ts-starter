@@ -35,10 +35,10 @@ Percentage strings are also supported — resolved against the enclosing context
 
 ### Margins & Padding
 
-| Prop     | Component | Unit      |
-| -------- | --------- | --------- |
-| `margin` | `<Text>`  | inches    |
-| `inset`  | `<Text>`  | inches    |
+| Prop     | Component     | Unit   |
+| -------- | ------------- | ------ |
+| `margin` | `<Text>`      | inches |
+| `inset`  | `<Text>`      | inches |
 | `margin` | `<TableCell>` | inches |
 
 ### Stroke / Line Width

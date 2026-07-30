@@ -38,6 +38,12 @@
 
 ---
 
+## `<TableRow>`
+
+A wrapper component for each row. `<Table>` only accepts `<TableRow>` or `<Fragment>` as direct children — do not place `<TableCell>` directly inside `<Table>`.
+
+---
+
 ## Example (with Alternating Rows + Totals)
 
 ```tsx
@@ -50,9 +56,9 @@
   rowH={[0.55, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45]}
   border={{ type: "solid", color: "E2E8F0", pt: 1 }}
 >
-  {[
-    /* Header row */
-    ["Product", "Q1", "Q2", "Q3", "Q4"].map((h, i) => (
+  {/* Header row */}
+  <TableRow>
+    {["Product", "Q1", "Q2", "Q3", "Q4"].map((h, i) => (
       <TableCell
         key={i}
         bold
@@ -64,29 +70,41 @@
       >
         {h}
       </TableCell>
-    )),
-    /* Data rows (alternating background) */
-    ...["Widget A", "Widget B", "Gadget X", "Gadget Y"].map((name, ri) =>
-      ["$4,500", "$5,200", "$4,800", "$5,600"].map((v, ci) => {
-        const isFirst = ci === 0;
-        const bgColor = ri % 2 === 0 ? "FFFFFF" : "F8FAFC";
-        return (
+    ))}
+  </TableRow>
+  {/* Data rows (alternating background) */}
+  {["Widget A", "Widget B", "Gadget X", "Gadget Y"].map((name, ri) => {
+    const bgColor = ri % 2 === 0 ? "FFFFFF" : "F8FAFC";
+    return (
+      <TableRow key={ri}>
+        <TableCell
+          fontSize={11}
+          color="334155"
+          fill={{ color: "FAF5FF" }}
+          align="left"
+          valign="middle"
+          bold
+        >
+          {name}
+        </TableCell>
+        {["$4,500", "$5,200", "$4,800", "$5,600"].map((v, ci) => (
           <TableCell
-            key={`${ri}-${ci}`}
+            key={ci}
             fontSize={11}
             color="334155"
-            fill={{ color: isFirst ? "FAF5FF" : bgColor }}
-            align={isFirst ? "left" : "center"}
+            fill={{ color: bgColor }}
+            align="center"
             valign="middle"
-            bold={isFirst}
           >
-            {isFirst ? name : v}
+            {v}
           </TableCell>
-        );
-      }),
-    ),
-    /* Total row */
-    ...["Total", "$22,500", "$25,800", "$24,100", "$28,400"].map((v, i) => (
+        ))}
+      </TableRow>
+    );
+  })}
+  {/* Total row */}
+  <TableRow>
+    {["Total", "$22,500", "$25,800", "$24,100", "$28,400"].map((v, i) => (
       <TableCell
         key={`total-${i}`}
         bold
@@ -98,7 +116,7 @@
       >
         {v}
       </TableCell>
-    )),
-  ]}
+    ))}
+  </TableRow>
 </Table>
 ```

@@ -45,7 +45,7 @@ web/index.html               # Browser PPTX viewer
 ### Positioning & Canvas
 
 - **Absolute inches** — every element needs `x`, `y`, `w`, `h`. No flexbox, no grid.
-- Canvas: **13.333 × 7.5 in** (WIDE), set via `<Deck layout="LAYOUT_WIDE">`.
+- Canvas size — `<Deck layout={...}>` accepts a built-in enum (e.g. `"LAYOUT_WIDE"`) or a custom `{ width, height }` object. For enums, look up dimensions in `.agents/skills/pptxgenjsx/references/deck.md` (built-in layout table).
 
 ### Colors
 
@@ -116,10 +116,10 @@ export default async function () {
 
 ## NPM Scripts
 
-| Command                                        | Action                                                          |
-| ---------------------------------------------- | --------------------------------------------------------------- |
-| `npm run dev`                                  | Dev server at `localhost:5173` (refresh browser to see changes) |
-| `npm run generate`                             | Build `output/presentation.pptx`                                |
-| `npm run typecheck`                            | Type check, no emit                                             |
-| `npm run lint`                                 | Lint with oxlint                                                |
-| `npm run format`                               | Format with oxfmt                                               |
+| Command             | Action                                                          |
+| ------------------- | --------------------------------------------------------------- |
+| `npm run dev`       | Dev server at `localhost:5173` (refresh browser to see changes) |
+| `npm run generate`  | Build `output/presentation.pptx`                                |
+| `npm run typecheck` | Type check, no emit                                             |
+| `npm run lint`      | Lint with oxlint                                                |
+| `npm run format`    | Format with oxfmt                                               |

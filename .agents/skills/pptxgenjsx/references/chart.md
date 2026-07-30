@@ -39,17 +39,17 @@
 
 Shortcut components that set the `type` prop automatically. Accept all the same options as `<Chart>`.
 
-| Component        | Equivalent `type`   |
-| ---------------- | ------------------- |
-| `<AreaChart>`    | `"area"`            |
-| `<BarChart>`     | `"bar"`             |
-| `<Bar3DChart>`   | `"bar3D"`           |
-| `<BubbleChart>`  | `"bubble"`          |
-| `<DoughnutChart>`| `"doughnut"`        |
-| `<LineChart>`    | `"line"`            |
-| `<PieChart>`     | `"pie"`             |
-| `<RadarChart>`   | `"radar"`           |
-| `<ScatterChart>` | `"scatter"`         |
+| Component         | Equivalent `type` |
+| ----------------- | ----------------- |
+| `<AreaChart>`     | `"area"`          |
+| `<BarChart>`      | `"bar"`           |
+| `<Bar3DChart>`    | `"bar3D"`         |
+| `<BubbleChart>`   | `"bubble"`        |
+| `<DoughnutChart>` | `"doughnut"`      |
+| `<LineChart>`     | `"line"`          |
+| `<PieChart>`      | `"pie"`           |
+| `<RadarChart>`    | `"radar"`         |
+| `<ScatterChart>`  | `"scatter"`       |
 
 ```tsx
 <BarChart
@@ -149,7 +149,10 @@ plotArea: {
 ```tsx
 <Chart
   type="bar"
-  x={0.5} y={1.5} w={9} h={5.5}
+  x={0.5}
+  y={1.5}
+  w={9}
+  h={5.5}
   data={[{ name: "Bars", labels: ["A", "B", "C", "D"], values: [30, 45, 35, 50] }]}
   options={{
     multi: [

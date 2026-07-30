@@ -6,12 +6,12 @@ Wraps all slides. Must be the **default export** of `src/ppt.tsx`. Maps to `new 
 
 ## Props
 
-| Prop      | Type                                  | Description                                          |
-| --------- | ------------------------------------- | ---------------------------------------------------- |
-| `title`   | `string`                              | Presentation title                                   |
-| `author`  | `string`                              | Author name                                          |
-| `layout`  | `string` or `{ name, width, height }` | Slide dimensions (built-in name or custom object)    |
-| `layouts` | `PresLayout[]`                        | Multiple named layouts (see below)                   |
+| Prop      | Type                                  | Description                                       |
+| --------- | ------------------------------------- | ------------------------------------------------- |
+| `title`   | `string`                              | Presentation title                                |
+| `author`  | `string`                              | Author name                                       |
+| `layout`  | `string` or `{ name, width, height }` | Slide dimensions (built-in name or custom object) |
+| `layouts` | `PresLayout[]`                        | Multiple named layouts (see below)                |
 
 ## Layout — Slide Dimensions
 
@@ -19,12 +19,12 @@ Controls the canvas size that all position/size props (`x`, `y`, `w`, `h`) are r
 
 ### Built-in Layout Names
 
-| Name              | Dimensions    | Aspect Ratio |
-| ----------------- | ------------- | ------------ |
-| `"LAYOUT_4x3"`    | 10" × 7.5"    | 4:3          |
-| `"LAYOUT_16x9"`   | 10" × 5.625"  | 16:9         |
-| `"LAYOUT_16x10"`  | 10" × 6.25"   | 16:10        |
-| `"LAYOUT_WIDE"`   | 13.33" × 7.5" | 16:9 (wide)  |
+| Name             | Dimensions    | Aspect Ratio |
+| ---------------- | ------------- | ------------ |
+| `"LAYOUT_4x3"`   | 10" × 7.5"    | 4:3          |
+| `"LAYOUT_16x9"`  | 10" × 5.625"  | 16:9         |
+| `"LAYOUT_16x10"` | 10" × 6.25"   | 16:10        |
+| `"LAYOUT_WIDE"`  | 13.33" × 7.5" | 16:9 (wide)  |
 
 **Default**: `"LAYOUT_WIDE"` (13.333 × 7.5).
 
@@ -33,9 +33,7 @@ Controls the canvas size that all position/size props (`x`, `y`, `w`, `h`) are r
 Define arbitrary dimensions with `name`, `width`, `height` (in inches):
 
 ```tsx
-<Deck layout={{ name: "A4", width: 10.83, height: 7.82 }}>
-  ...
-</Deck>
+<Deck layout={{ name: "A4", width: 10.83, height: 7.82 }}>...</Deck>
 ```
 
 ### Multiple Named Layouts
@@ -43,10 +41,13 @@ Define arbitrary dimensions with `name`, `width`, `height` (in inches):
 Use the `layouts` prop (array) to define multiple named layouts, then reference one via `layout`:
 
 ```tsx
-<Deck layout="A4" layouts={[
-  { name: "A4", width: 10.83, height: 7.82 },
-  { name: "Letter", width: 10, height: 7.5 },
-]}>
+<Deck
+  layout="A4"
+  layouts={[
+    { name: "A4", width: 10.83, height: 7.82 },
+    { name: "Letter", width: 10, height: 7.5 },
+  ]}
+>
   ...
 </Deck>
 ```

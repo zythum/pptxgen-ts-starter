@@ -18,7 +18,9 @@ export default function () {
       <Slide component={() => import("./slides/03-text")} />
       <Slide component={() => import("./slides/04-layout")} />
       <Slide component={() => import("./slides/05-shape")} />
-      <Slide component={() => import("./slides/06-end")} />
+      <Slide component={() => import("./slides/06-table")} />
+      <Slide component={() => import("./slides/07-chart")} />
+      <Slide component={() => import("./slides/08-end")} />
     </Deck>
   );
 }

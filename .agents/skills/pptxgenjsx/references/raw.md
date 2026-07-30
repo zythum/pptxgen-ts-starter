@@ -4,9 +4,9 @@ For pptxgenjs features not covered by a dedicated component. Provides direct acc
 
 ## Props
 
-| Prop     | Type                                                                               | Description                              |
-| -------- | ---------------------------------------------------------------------------------- | ---------------------------------------- |
-| `render` | `(args: { pptx: PptxGenJS, slide: Slide, node: PptxNode }) => void \| Promise<void>` | Function called during rendering         |
+| Prop     | Type                                                                                 | Description                      |
+| -------- | ------------------------------------------------------------------------------------ | -------------------------------- |
+| `render` | `(args: { pptx: PptxGenJS, slide: Slide, node: PptxNode }) => void \| Promise<void>` | Function called during rendering |
 
 ## Usage
 

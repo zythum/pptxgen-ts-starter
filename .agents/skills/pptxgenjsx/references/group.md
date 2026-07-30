@@ -4,12 +4,12 @@ A logical container that offsets all child elements relative to the group's posi
 
 ## Props
 
-| Prop | Type               | Description                                   |
-| ---- | ------------------ | --------------------------------------------- |
-| `x`  | `Coord`            | Left offset of the group (inches or `"%"`)    |
-| `y`  | `Coord`            | Top offset                                    |
-| `w`  | `Coord`            | Virtual canvas width                          |
-| `h`  | `Coord`            | Virtual canvas height                         |
+| Prop | Type    | Description                                |
+| ---- | ------- | ------------------------------------------ |
+| `x`  | `Coord` | Left offset of the group (inches or `"%"`) |
+| `y`  | `Coord` | Top offset                                 |
+| `w`  | `Coord` | Virtual canvas width                       |
+| `h`  | `Coord` | Virtual canvas height                      |
 
 ## How It Works
 
@@ -43,9 +43,7 @@ Each nested group offsets its children by its own cumulative position:
     <Rect x={0} y={0} w={10} h={4} fill={{ color: "EDE9FE" }} />
 
     <Text x={0.5} y={0.5} w={9} h={0.8}>
-      <TextRun options={{ fontSize: 20, color: "5B21B6" }}>
-        Nested content
-      </TextRun>
+      <TextRun options={{ fontSize: 20, color: "5B21B6" }}>Nested content</TextRun>
     </Text>
   </Group>
 </Group>
@@ -66,7 +64,7 @@ function ProgressBar({ pct }: { pct: number }) {
 // Usage inside a Group:
 <Group x={1} y={6} w={11} h={0.5}>
   <ProgressBar pct={0.7} />
-</Group>
+</Group>;
 ```
 
 > When called outside a `<Group>`, `useGroupContext()` falls back to deck dimensions with zero offset.
@@ -78,8 +76,14 @@ function ProgressBar({ pct }: { pct: number }) {
   <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "0F172A" }} />
 
   <Group x={0.8} y={0.8} w={5.5} h={3}>
-    <Rect x={0} y={0} w={5.5} h={3} fill={{ color: "1E293B" }}
-      shadow={{ type: "outer", blur: 12, offset: 4, color: "000000", opacity: 0.3 }} />
+    <Rect
+      x={0}
+      y={0}
+      w={5.5}
+      h={3}
+      fill={{ color: "1E293B" }}
+      shadow={{ type: "outer", blur: 12, offset: 4, color: "000000", opacity: 0.3 }}
+    />
     <Text x={0.5} y={0.5} w={4.5} h={0.6}>
       <TextRun options={{ fontSize: 22, bold: true, color: "FFFFFF" }}>Revenue</TextRun>
     </Text>

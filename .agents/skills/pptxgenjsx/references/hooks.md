@@ -23,10 +23,10 @@ function SlideNumber() {
 
 ### Returns
 
-| Prop           | Type     | Description                              |
-| -------------- | -------- | ---------------------------------------- |
-| `index`        | `number` | Current slide index (1-based)            |
-| `total`        | `number` | Total number of slides                   |
+| Prop           | Type                  | Description                                    |
+| -------------- | --------------------- | ---------------------------------------------- |
+| `index`        | `number`              | Current slide index (1-based)                  |
+| `total`        | `number`              | Total number of slides                         |
 | `sectionTitle` | `string \| undefined` | Current section title, if inside a `<Section>` |
 
 ## `useDeckContext`
@@ -44,10 +44,10 @@ function FullBleedBackground() {
 
 ### Returns
 
-| Prop     | Type     | Description                |
-| -------- | -------- | -------------------------- |
-| `width`  | `number` | Slide width in inches      |
-| `height` | `number` | Slide height in inches     |
+| Prop     | Type     | Description            |
+| -------- | -------- | ---------------------- |
+| `width`  | `number` | Slide width in inches  |
+| `height` | `number` | Slide height in inches |
 
 ## `useGroupContext`
 
@@ -64,12 +64,12 @@ function ProgressBar({ pct }: { pct: number }) {
 
 ### Returns
 
-| Prop      | Type     | Description                                |
-| --------- | -------- | ------------------------------------------ |
-| `width`   | `number` | Virtual canvas width in inches             |
-| `height`  | `number` | Virtual canvas height in inches            |
-| `offsetX` | `number` | Group's absolute X offset on the slide     |
-| `offsetY` | `number` | Group's absolute Y offset on the slide     |
+| Prop      | Type     | Description                            |
+| --------- | -------- | -------------------------------------- |
+| `width`   | `number` | Virtual canvas width in inches         |
+| `height`  | `number` | Virtual canvas height in inches        |
+| `offsetX` | `number` | Group's absolute X offset on the slide |
+| `offsetY` | `number` | Group's absolute Y offset on the slide |
 
 ## Percentage Coordinates
 

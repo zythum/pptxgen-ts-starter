@@ -179,7 +179,7 @@
       const errorModalBody = document.getElementById("errorModalBody");
 
       function showError(err, stack) {
-        const parts = [''];
+        const parts = [""];
         parts.push(`<div class="error-message">${escapeHtml(err.message)}</div>`);
         const st = stack ?? err.stack;
         if (st) parts.push(`<div class="error-stack">${escapeHtml(st)}</div>`);

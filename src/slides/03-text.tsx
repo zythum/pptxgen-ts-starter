@@ -58,63 +58,63 @@ export default async function () {
 
         {/* Code-like text block — each JSX element formatted with one prop per line */}
         <Text x={0.4} y={0.9} w={5.0} h={4.2} align="left" valign="top" lineSpacing={15}>
-        <TextRun
-          text={"<Text x={0.8} y={2.9} w={5.0} h={3.5}>"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "F87171", breakLine: true }}
-        />
-        <TextRun
-          text={"  <TextRun"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
-        />
-        <TextRun
-          text={'    text="Bold text"'}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
-        />
-        <TextRun
-          text={"    options={{bold: true}}"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
-        />
-        <TextRun
-          text={"  />"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
-        />
-        <TextRun
-          text={"  <TextRun"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
-        />
-        <TextRun
-          text={'    text="Italic text"'}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
-        />
-        <TextRun
-          text={"    options={{italic: true}}"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
-        />
-        <TextRun
-          text={"  />"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
-        />
-        <TextRun
-          text={"  <TextRun"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
-        />
-        <TextRun
-          text={'    text="Colored text"'}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
-        />
-        <TextRun
-          text={'    options={{color:"7C3AED"}}'}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
-        />
-        <TextRun
-          text={"  />"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
-        />
-        <TextRun
-          text={"</Text>"}
-          options={{ fontSize: 11, fontFace: "Courier New", color: "F87171", breakLine: true }}
-        />
-      </Text>
+          <TextRun
+            text={"<Text x={0.8} y={2.9} w={5.0} h={3.5}>"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "F87171", breakLine: true }}
+          />
+          <TextRun
+            text={"  <TextRun"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
+          />
+          <TextRun
+            text={'    text="Bold text"'}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
+          />
+          <TextRun
+            text={"    options={{bold: true}}"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
+          />
+          <TextRun
+            text={"  />"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
+          />
+          <TextRun
+            text={"  <TextRun"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
+          />
+          <TextRun
+            text={'    text="Italic text"'}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
+          />
+          <TextRun
+            text={"    options={{italic: true}}"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
+          />
+          <TextRun
+            text={"  />"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
+          />
+          <TextRun
+            text={"  <TextRun"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
+          />
+          <TextRun
+            text={'    text="Colored text"'}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
+          />
+          <TextRun
+            text={'    options={{color:"7C3AED"}}'}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "E2E8F0", breakLine: true }}
+          />
+          <TextRun
+            text={"  />"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "A78BFA", breakLine: true }}
+          />
+          <TextRun
+            text={"</Text>"}
+            options={{ fontSize: 11, fontFace: "Courier New", color: "F87171", breakLine: true }}
+          />
+        </Text>
       </Group>
 
       <Notes>

@@ -28,9 +28,7 @@ export async function MySlide() {
       <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "FFFFFF" }} />
 
       <Text x={0.8} y={0.6} w={8} h={0.8} align="left" valign="middle">
-        <TextRun options={{ fontSize: 24, bold: true, color: "1E293B" }}>
-          Slide Title
-        </TextRun>
+        <TextRun options={{ fontSize: 24, bold: true, color: "1E293B" }}>Slide Title</TextRun>
       </Text>
 
       <Notes>Notes go here.</Notes>
@@ -65,8 +63,12 @@ Groups multiple children without producing a wrapper element. Useful when a comp
 export default function TitleContent() {
   return (
     <>
-      <Text x={1} y={3} w={10} h={1.5} fontSize={44} bold>Welcome</Text>
-      <Text x={1} y={4.5} w={10} h={1} fontSize={18} color="666666">Subtitle</Text>
+      <Text x={1} y={3} w={10} h={1.5} fontSize={44} bold>
+        Welcome
+      </Text>
+      <Text x={1} y={4.5} w={10} h={1} fontSize={18} color="666666">
+        Subtitle
+      </Text>
     </>
   );
 }
@@ -78,8 +80,12 @@ export default function TitleContent() {
 <Slide>
   {items.map((item) => (
     <Fragment key={item.id}>
-      <Text x={1} y={item.y}>{item.name}</Text>
-      <Text x={5} y={item.y}>{item.value}</Text>
+      <Text x={1} y={item.y}>
+        {item.name}
+      </Text>
+      <Text x={5} y={item.y}>
+        {item.value}
+      </Text>
     </Fragment>
   ))}
 </Slide>
@@ -113,8 +119,12 @@ export default async function DataSlide() {
   return (
     <Slide>
       <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "FFFFFF" }} />
-      <Text x={1} y={1} w={8} h={1} fontSize={32} bold>{data.title}</Text>
-      <Text x={1} y={2.5} w={8} h={4} fontSize={16}>{data.description}</Text>
+      <Text x={1} y={1} w={8} h={1} fontSize={32} bold>
+        {data.title}
+      </Text>
+      <Text x={1} y={2.5} w={8} h={4} fontSize={16}>
+        {data.description}
+      </Text>
     </Slide>
   );
 }
@@ -133,7 +143,9 @@ Use the `component` prop on `<Slide>` to defer loading of slide definitions — 
 export default function TitleSlide() {
   return (
     <>
-      <Text x={1} y={3} w={10} h={1.5} fontSize={44} bold>Welcome</Text>
+      <Text x={1} y={3} w={10} h={1.5} fontSize={44} bold>
+        Welcome
+      </Text>
     </>
   );
 }
@@ -180,7 +192,9 @@ Define slide masters with reusable layout objects.
 
   <Slide masterName="myMaster">
     <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "FFFFFF" }} />
-    <Text x={1} y={2} w={8} h={1}>Content goes here</Text>
+    <Text x={1} y={2} w={8} h={1}>
+      Content goes here
+    </Text>
   </Slide>
 </Deck>
 ```
@@ -189,8 +203,6 @@ Define slide masters with reusable layout objects.
 
 ```tsx
 <Master name="content">
-  <Placeholder
-    options={{ name: "Body", type: "body", x: 1, y: 1, w: 10, h: 5 }}
-  />
+  <Placeholder options={{ name: "Body", type: "body", x: 1, y: 1, w: 10, h: 5 }} />
 </Master>
 ```

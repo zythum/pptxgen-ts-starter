@@ -27,14 +27,14 @@ See individual reference files for per-component imports and exact props.
 
 ## Core Concepts
 
-| Rule              | Detail                                                              |
-| ----------------- | ------------------------------------------------------------------- |
-| **Canvas**        | 13.333 × 7.5 in (WIDE) by default, configured on `<Deck>`           |
-| **Positioning**   | Absolute inches — every element needs `x`, `y`, `w`, `h`            |
-| **Colors**        | Hex **without `#`** (`"FFFFFF"`) or theme color name (`"accent1"`)  |
-| **Async**         | Slide components can be `async` — auto-detected and resolved        |
-| **Return types**  | **Never annotate** — let TypeScript infer from JSX                  |
-| **Entry point**   | `src/ppt.tsx` — `export default function ()` returning `Deck`       |
+| Rule             | Detail                                                             |
+| ---------------- | ------------------------------------------------------------------ |
+| **Canvas**       | 13.333 × 7.5 in (WIDE) by default, configured on `<Deck>`          |
+| **Positioning**  | Absolute inches — every element needs `x`, `y`, `w`, `h`           |
+| **Colors**       | Hex **without `#`** (`"FFFFFF"`) or theme color name (`"accent1"`) |
+| **Async**        | Slide components can be `async` — auto-detected and resolved       |
+| **Return types** | **Never annotate** — let TypeScript infer from JSX                 |
+| **Entry point**  | `src/ppt.tsx` — `export default function ()` returning `Deck`      |
 
 ## Quick Start
 
@@ -83,13 +83,13 @@ export default async function () {
 
 ## NPM Scripts
 
-| Command            | Action                           |
-| ------------------ | -------------------------------- |
-| `npm run dev`      | Dev server at localhost:5173     |
-| `npm run generate` | Build `output/presentation.pptx` |
-| `npm run typecheck`| Type check with tsc (no emit)    |
-| `npm run lint`     | Lint with oxlint                 |
-| `npm run format`   | Format with oxfmt                |
+| Command             | Action                           |
+| ------------------- | -------------------------------- |
+| `npm run dev`       | Dev server at localhost:5173     |
+| `npm run generate`  | Build `output/presentation.pptx` |
+| `npm run typecheck` | Type check with tsc (no emit)    |
+| `npm run lint`      | Lint with oxlint                 |
+| `npm run format`    | Format with oxfmt                |
 
 ## API Reference
 
@@ -110,15 +110,15 @@ references/
 
 ## Common Mistakes
 
-| ❌ Mistake                                        | ✅ Correct                                              |
-| ------------------------------------------------- | ------------------------------------------------------- |
-| `<RoundRect rectRadius={0}>`                      | `<Rect>`                                                |
-| `color="#FFFFFF"`                                 | `color="FFFFFF"` (no `#`)                               |
-| `<div>`, `<span>`, `<p>`                          | `<Text>` + `<TextRun>`                                  |
-| Named export in `src/ppt.tsx`                     | `export default function ()`                            |
-| Missing full-size background                      | Add `<SlideBackground />` or `<Rect>` as first child    |
-| Forgetting `breakLine: true`                      | Set on last `TextRun` of each line                      |
-| Pixels instead of inches                          | Use inches for all position props                       |
-| `function Foo(): Promise<PptxNode>`               | `async function Foo()` — no return type annotation      |
-| `type` instead of `mediaType` on `<Media>`        | Use `mediaType="video"` / `mediaType="audio"`           |
-| HTML elements inside JSX                          | Only imported components are valid JSX children         |
+| ❌ Mistake                                 | ✅ Correct                                           |
+| ------------------------------------------ | ---------------------------------------------------- |
+| `<RoundRect rectRadius={0}>`               | `<Rect>`                                             |
+| `color="#FFFFFF"`                          | `color="FFFFFF"` (no `#`)                            |
+| `<div>`, `<span>`, `<p>`                   | `<Text>` + `<TextRun>`                               |
+| Named export in `src/ppt.tsx`              | `export default function ()`                         |
+| Missing full-size background               | Add `<SlideBackground />` or `<Rect>` as first child |
+| Forgetting `breakLine: true`               | Set on last `TextRun` of each line                   |
+| Pixels instead of inches                   | Use inches for all position props                    |
+| `function Foo(): Promise<PptxNode>`        | `async function Foo()` — no return type annotation   |
+| `type` instead of `mediaType` on `<Media>` | Use `mediaType="video"` / `mediaType="audio"`        |
+| HTML elements inside JSX                   | Only imported components are valid JSX children      |
