@@ -95,6 +95,9 @@ structure is accepted.
 
 After confirmation, save the full outline — chapters + time budgets, page list
 with roles + one-sentence core messages, speaker notes, choreography — to
-`.deck/outline.md` (fixed filename, project root). Format and mandatory
-fields: `workflow/00-deck-workspace.md` → `outline.md`. It is the contract for
-composition (`05`) and the reference for any later page-level modification.
+`.deck/outline.md` (fixed filename, project root). **If the file already
+exists (the shipped example), overwrite it entirely with the new deck's
+outline — an existing file does not mean this step is done.** Format and
+mandatory fields: `workflow/00-deck-workspace.md` → `outline.md`. It is the
+contract for composition (`05`) and the reference for any later page-level
+modification.

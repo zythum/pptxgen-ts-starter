@@ -82,8 +82,14 @@ filenames** (no numeric prefixes):
 | `.deck/spec.md`     | 04-spec     | Locked design spec (canvas/style/palette/fonts) |
 
 **Format guidance:** the required content and template of each file is defined
-in `workflow/00-deck-workspace.md`. The `.deck/` directory at the project root
-is reference data only (a filled example) — the guidance lives in the skill.
+in `workflow/00-deck-workspace.md` — the guidance lives in the skill.
+
+**⚠️ The example files currently in `.deck/` are reference data ONLY. They are
+NOT working documents.** For every new deck, **overwrite all four files** at
+their stages (01 → `brief.md`, 02 → `research.md`, 03 → `outline.md`,
+04 → `spec.md`). A file already existing in `.deck/` never means that stage is
+done — writing each file is a mandatory deliverable of its stage, not a
+"create if missing" step.
 
 **Maintain `.deck/` for the whole build** — write each file at its stage and
 keep it in sync when things change. **For any modification request, read

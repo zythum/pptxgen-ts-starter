@@ -57,7 +57,9 @@ layout tendencies. Document the choice with a one-line rationale.
 ## 6. Lock the spec
 
 Save the locked spec to `.deck/spec.md` (fixed filename, project root) — the
-single source of truth for the deck's visual system. Format and mandatory
+single source of truth for the deck's visual system. **If the file already
+exists (the shipped example), overwrite it entirely with the new deck's spec —
+an existing file does not mean this step is done.** Format and mandatory
 fields (§1–§9): `workflow/00-deck-workspace.md` → `spec.md`. When
 colors/fonts change later, edit this file first, then propagate to every
 slide. Keep `src/token/colors.ts` and `src/token/typography.ts` in sync with

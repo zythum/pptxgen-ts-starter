@@ -1,8 +1,12 @@
 # Outline
 
-> Reference example: the outline output for a demo deck (8 pages), showing
-> the expected structure and depth of `outline.md`.
-> Format spec: see `workflow/00-deck-workspace.md`.
+> # ⚠️ WARNING — EXAMPLE FILE, MUST OVERWRITE
+>
+> This is a **filled reference example** (a demo deck), NOT working data.
+> Every NEW deck **must overwrite this file** at its stage:
+> brief → 01-clarify · research → 02-research · outline → 03-outline · spec → 04-spec.
+> A file existing here does NOT mean the work is done — it is still the example.
+> Format spec: `workflow/00-deck-workspace.md`.
 
 ## Narrative Arc
 

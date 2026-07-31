@@ -3,9 +3,11 @@
 **Purpose:** `.deck/` is the per-deck working directory at the project root. It
 holds the four planning documents that drive the build and act as the source of
 truth for every later modification. This file defines the **required content
-and format** of each document. A filled example lives in the project-root
-`.deck/` directory — treat that directory as **reference data** (what a
-finished result looks like), not as this guidance.
+and format** of each document.
+
+**⚠️ The `.deck/` directory currently holds filled EXAMPLE files (reference
+data — what a finished result looks like). Every new deck MUST overwrite them
+at their stages; their presence never means the work is done.**
 
 ## Files & lifecycle
 
@@ -20,6 +22,9 @@ Rules:
 
 - **Fixed filenames** — `brief.md`, `research.md`, `outline.md`, `spec.md`;
   no numeric prefixes, no version suffixes. Location: project-root `.deck/`.
+- **A new deck overwrites the example files** — the four files currently in
+  `.deck/` are examples; each stage must replace its file with the new deck's
+  content. Never leave example content in a real deck's workspace.
 - **Written once, kept in sync** — each file is created at its stage and
   updated whenever the deck changes; stale `.deck/` files are a defect.
 - **Modification flow** — for any change request, read `.deck/` + the slide-top
@@ -154,6 +159,8 @@ layout outside the locked set must be **registered here** before use.
 ## Anti-patterns
 
 - ❌ Numeric prefixes (`01-brief.md`) or extra files that split one document.
+- ❌ Skipping a `.deck/` write because the file already exists — the example
+  files must be overwritten for every new deck.
 - ❌ Re-writing `.deck/` from memory at modification time — it is the memory.
 - ❌ A slide-top comment citing `F-N` or a layout that does not exist in `.deck/`.
 - ❌ Deleting `.deck/` after delivery — modification requests are the norm.

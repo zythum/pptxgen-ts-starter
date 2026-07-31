@@ -49,10 +49,11 @@ Keep 5–15 cards. More than that is noise; less than 3 means research was thin.
 ## Output — `.deck/research.md`
 
 Save the 5–15 fact cards to `.deck/research.md` (fixed filename, project
-root), numbered `F-1, F-2, …` as in the example above. Format and mandatory
-fields: `workflow/00-deck-workspace.md` → `research.md`. Slide-top comments
-reference these IDs (`source: F-3`), so every page can be traced back to its
-evidence.
+root), numbered `F-1, F-2, …` as in the example above. **If the file already
+exists (the shipped example), overwrite it entirely — do not reuse example
+cards.** Format and mandatory fields: `workflow/00-deck-workspace.md` →
+`research.md`. Slide-top comments reference these IDs (`source: F-3`), so
+every page can be traced back to its evidence.
 
 Group the cards by chapter (from `03-outline`), or by theme if the outline does
 not exist yet. Pass the file to the outline stage — it becomes the evidence

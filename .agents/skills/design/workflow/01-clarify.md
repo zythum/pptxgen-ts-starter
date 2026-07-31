@@ -41,7 +41,9 @@ proceed until confirmed.
 ## Output — `.deck/brief.md`
 
 After the user confirms, save the confirmed brief verbatim (the 7 answers +
-the restatement) to `.deck/brief.md` — fixed filename, project root. Format
+the restatement) to `.deck/brief.md` — fixed filename, project root. **If the
+file already exists (the shipped example), overwrite it entirely with the new
+deck's brief — an existing file does not mean this step is done.** Format
 and mandatory fields: `workflow/00-deck-workspace.md` → `brief.md`. It is the
 source of truth for content planning and for every later modification: when
 the user asks to change the deck, re-read this file first.
