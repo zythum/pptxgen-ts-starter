@@ -19,26 +19,26 @@
 
 **Content pages (Light Professional; actual background pure white FFFFFF)**
 
-| Role       | Hex             | Usage                                        |
-| ---------- | --------------- | -------------------------------------------- |
-| background | FFFFFF          | Content-page background (SlideBackground light) |
-| surface    | F3F0FF          | Light-purple cards (agenda / rich-text cards) |
-| primary    | 1F2937          | Titles, card titles, body                     |
+| Role       | Hex             | Usage                                                                |
+| ---------- | --------------- | -------------------------------------------------------------------- |
+| background | FFFFFF          | Content-page background (SlideBackground light)                      |
+| surface    | F3F0FF          | Light-purple cards (agenda / rich-text cards)                        |
+| primary    | 1F2937          | Titles, card titles, body                                            |
 | accent     | 7C3AED          | **The deck's single accent**: divider/underline/title/chart series 1 |
-| text       | 6B7280          | Secondary text, footer                        |
-| faint      | 9CA3AF          | De-emphasized (captions, page numbers)        |
-| border     | E5E7EB / E2E8F0 | Card borders / table gridlines                |
+| text       | 6B7280          | Secondary text, footer                                               |
+| faint      | 9CA3AF          | De-emphasized (captions, page numbers)                               |
+| border     | E5E7EB / E2E8F0 | Card borders / table gridlines                                       |
 
 **Dark pages (S1/S8, borrowed from Dark Premium)**
 
-| Role        | Hex    | Usage            |
-| ----------- | ------ | ---------------- |
+| Role        | Hex    | Usage                    |
+| ----------- | ------ | ------------------------ |
 | background  | 18181B | Cover/closing background |
-| surface     | 27272A | Command pill     |
-| primary     | FFFFFF | Main title       |
-| accent-soft | A78BFA | Subtitle on dark |
-| muted       | 6B7280 | Footer on dark   |
-| code-green  | 6EE7B7 | Command text (mono) |
+| surface     | 27272A | Command pill             |
+| primary     | FFFFFF | Main title               |
+| accent-soft | A78BFA | Subtitle on dark         |
+| muted       | 6B7280 | Footer on dark           |
+| code-green  | 6EE7B7 | Command text (mono)      |
 
 **Semantic colors (demo pages/charts only, ≤3 with explicit meaning)**:
 `10B981` green=success · `DC2626` red=warning · `F59E0B` orange=attention · `3B82F6` blue=info
@@ -68,16 +68,16 @@
 
 ## 7. Layout mapping (locked layouts from layouts.md)
 
-| Page | Layout                 | Notes                                       |
-| ---- | ---------------------- | ------------------------------------------- |
-| S1   | **L1 Cover** (dark variant) | Centered hero + double divider + footer command |
-| S2   | **L5 Cards-3 variant** | 3 cards + bottom workflow strip (RoundRect + two-line text) |
-| S3   | **L4 Split**           | Left rich-text card + right code block (18181B background) |
-| S4   | **L5 variant Cards-4 (2×2)** | 2×2 card grid, registered variant (see §8) |
-| S5   | **L4 variant Gallery** | Left 8.1-wide double group (Rect/Oval) + right 3.2 narrow column (RoundRect) |
-| S6   | **Data-Table** (full width) | Header / banded rows / total row, registered variant (see §8) |
-| S7   | **L4 Split**           | Left bar + right doughnut                   |
-| S8   | **L9 Closing** (dark)  | Mirrors L1 ✓ (same palette, double divider, centered) |
+| Page | Layout                       | Notes                                                                        |
+| ---- | ---------------------------- | ---------------------------------------------------------------------------- |
+| S1   | **L1 Cover** (dark variant)  | Centered hero + double divider + footer command                              |
+| S2   | **L5 Cards-3 variant**       | 3 cards + bottom workflow strip (RoundRect + two-line text)                  |
+| S3   | **L4 Split**                 | Left rich-text card + right code block (18181B background)                   |
+| S4   | **L5 variant Cards-4 (2×2)** | 2×2 card grid, registered variant (see §8)                                   |
+| S5   | **L4 variant Gallery**       | Left 8.1-wide double group (Rect/Oval) + right 3.2 narrow column (RoundRect) |
+| S6   | **Data-Table** (full width)  | Header / banded rows / total row, registered variant (see §8)                |
+| S7   | **L4 Split**                 | Left bar + right doughnut                                                    |
+| S8   | **L9 Closing** (dark)        | Mirrors L1 ✓ (same palette, double divider, centered)                        |
 
 ## 8. Design decision log
 

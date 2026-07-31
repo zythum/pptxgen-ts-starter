@@ -82,12 +82,12 @@ add a `weight` token group.
 
 ## 3. Naming conventions
 
-| ❌ Bad               | ✅ Good                               | Why                          |
-| -------------------- | ------------------------------------- | ---------------------------- |
+| ❌ Bad               | ✅ Good                               | Why                           |
+| -------------------- | ------------------------------------- | ----------------------------- |
 | `purple`, `brand`    | `accent`, `accentLight`, `accentSoft` | role semantics, not hue names |
-| `color1`, `color2`   | `ink`, `muted`, `border`              | self-explanatory             |
-| `h24`, `f18`         | `size.title`, `size.subtitle`         | express purpose, not values  |
-| `darkBg1`, `darkBg2` | `darkBackground`, `darkSurface`       | hierarchy semantics          |
+| `color1`, `color2`   | `ink`, `muted`, `border`              | self-explanatory              |
+| `h24`, `f18`         | `size.title`, `size.subtitle`         | express purpose, not values   |
+| `darkBg1`, `darkBg2` | `darkBackground`, `darkSurface`       | hierarchy semantics           |
 
 Derived variants: name = base role + modifier (`accent.hover` →
 `accentHover`, `surface.alt` → `surfaceAlt`). Never use Tailwind-style
@@ -95,22 +95,22 @@ numeric suffixes for roles that are not a color ramp.
 
 ## 4. Lifecycle
 
-| Event              | Action                                                                                          |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| **Create**         | after 04-spec confirmation, mirror spec §3/§4 values into both token files, then start 05-compose |
-| **Change palette/fonts** | update `.deck/spec.md` first → then token files → entire deck picks it up                |
-| **New color variant** | run `scripts/color-tool.ts` (e.g. `--darken 10`) for an exact hex → add a semantic key to `colors.ts` → record the derivation in spec §8 |
-| **New size**       | update spec §4 → propagate to `typography.ts`; measured one-off exceptions: literal value + comment in the slide |
-| **Remove**         | delete keys with no references; keep files to values the deck actually uses                       |
+| Event                    | Action                                                                                                                                   |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **Create**               | after 04-spec confirmation, mirror spec §3/§4 values into both token files, then start 05-compose                                        |
+| **Change palette/fonts** | update `.deck/spec.md` first → then token files → entire deck picks it up                                                                |
+| **New color variant**    | run `scripts/color-tool.ts` (e.g. `--darken 10`) for an exact hex → add a semantic key to `colors.ts` → record the derivation in spec §8 |
+| **New size**             | update spec §4 → propagate to `typography.ts`; measured one-off exceptions: literal value + comment in the slide                         |
+| **Remove**               | delete keys with no references; keep files to values the deck actually uses                                                              |
 
 ## 5. Boundary rules (hard vs soft)
 
-| Dimension    | Rule                                                                             | Nature                                   |
-| ------------ | -------------------------------------------------------------------------------- | ---------------------------------------- |
-| Color values | never hand-compute or invent hex; presets from `palettes.md`, variants from `color-tool.ts` | **hard constraint**            |
-| Color refs   | slides use `colors.*` only; bare hex is a defect                                 | **hard constraint**                      |
-| Font sizes   | default `typography.*`; measured one-off tweaks may use literals + comment       | **soft constraint** (consistency, not safety) |
-| Font weights | write `bold: boolean` directly                                                   | capability boundary, not a token concern |
+| Dimension    | Rule                                                                                        | Nature                                        |
+| ------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Color values | never hand-compute or invent hex; presets from `palettes.md`, variants from `color-tool.ts` | **hard constraint**                           |
+| Color refs   | slides use `colors.*` only; bare hex is a defect                                            | **hard constraint**                           |
+| Font sizes   | default `typography.*`; measured one-off tweaks may use literals + comment                  | **soft constraint** (consistency, not safety) |
+| Font weights | write `bold: boolean` directly                                                              | capability boundary, not a token concern      |
 
 ## 6. QA linkage
 

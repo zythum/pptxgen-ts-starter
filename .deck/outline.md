@@ -12,12 +12,12 @@ matching Sectioned's workshop scenario.
 
 ## Chapters & Time Budget (total ~8 min)
 
-| Ch | Name          | Pages | Budget     | Content                                      |
-| -- | ------------- | ----- | ---------- | --------------------------------------------- |
-| 1  | Opening       | S1    | 0.5–1 min  | Hook: write PPT in JSX                        |
-| 2  | Preview       | S2    | ~1 min     | Three blocks + edit → preview → generate loop |
-| 3  | Feature demos | S3–S7 | ~5 min     | Text / Layout / Shapes / Table / Chart, ~1 min each |
-| 4  | Closing       | S8    | ~1 min     | CTA: fork + three commands                    |
+| Ch  | Name          | Pages | Budget    | Content                                             |
+| --- | ------------- | ----- | --------- | --------------------------------------------------- |
+| 1   | Opening       | S1    | 0.5–1 min | Hook: write PPT in JSX                              |
+| 2   | Preview       | S2    | ~1 min    | Three blocks + edit → preview → generate loop       |
+| 3   | Feature demos | S3–S7 | ~5 min    | Text / Layout / Shapes / Table / Chart, ~1 min each |
+| 4   | Closing       | S8    | ~1 min    | CTA: fork + three commands                          |
 
 ## Page List (role + one-sentence core message)
 
