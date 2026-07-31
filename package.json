@@ -23,6 +23,7 @@
   "dependencies": {
     "@silurus/ooxml": "^0.74.1",
     "@zythum02/pptxgenjsx": "^0.1.3",
+    "color": "^5.0.3",
     "pptxgenjs": "^4.0.1"
   },
   "devDependencies": {

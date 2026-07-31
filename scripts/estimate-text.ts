@@ -6,9 +6,9 @@
  * line-spacing.  Uses the `@napi-rs/canvas` package for real font
  * metrics — no guessing.
  *
- * 核心规则：在 pptxgenjs 中，总高度 (in) = lineCount × lineSpacing / 72
- * 本脚本使用 Canvas 2D measureText 进行精确 word-wrap，换行后的行数
- * 直接带入公式。
+ * Core rule: in pptxgenjs, total height (in) = lineCount × lineSpacing / 72.
+ * This script uses Canvas 2D measureText for exact word-wrap; the resulting
+ * line count plugs directly into that formula.
  *
  * Usage:
  *   npx tsx scripts/estimate-text.ts [options] "<text>"
@@ -92,11 +92,7 @@ interface LayoutResult {
   lineWidthsPx: number[];
 }
 
-function wordWrap(
-  text: string,
-  ctx: SKRSContext2D,
-  containerWidthPx: number,
-): LayoutResult {
+function wordWrap(text: string, ctx: SKRSContext2D, containerWidthPx: number): LayoutResult {
   const lines: string[] = [];
   const lineWidthsPx: number[] = [];
 
@@ -238,18 +234,20 @@ function writeCache(cache: FontCache) {
 /** HTTP(S) GET returning body as string. */
 function httpGet(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { "User-Agent": "pptxgen-ts-starter" } }, (res) => {
-      const chunks: Buffer[] = [];
-      res.on("data", (c) => chunks.push(c));
-      res.on("end", () => {
-        const body = Buffer.concat(chunks).toString("utf-8");
-        if (res.statusCode && res.statusCode >= 400) {
-          reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
-        } else {
-          resolve(body);
-        }
-      });
-    }).on("error", reject);
+    https
+      .get(url, { headers: { "User-Agent": "pptxgen-ts-starter" } }, (res) => {
+        const chunks: Buffer[] = [];
+        res.on("data", (c) => chunks.push(c));
+        res.on("end", () => {
+          const body = Buffer.concat(chunks).toString("utf-8");
+          if (res.statusCode && res.statusCode >= 400) {
+            reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
+          } else {
+            resolve(body);
+          }
+        });
+      })
+      .on("error", reject);
   });
 }
 
@@ -258,20 +256,22 @@ async function httpDownload(url: string, dest: string): Promise<void> {
   await fs.promises.mkdir(path.dirname(dest), { recursive: true });
   await new Promise<void>((resolve, reject) => {
     const file = fs.createWriteStream(dest);
-    https.get(url, { headers: { "User-Agent": "pptxgen-ts-starter" } }, (res) => {
-      if (res.statusCode && res.statusCode >= 400) {
-        reject(new Error(`HTTP ${res.statusCode} downloading font`));
-        return;
-      }
-      res.pipe(file);
-      file.on("finish", () => {
+    https
+      .get(url, { headers: { "User-Agent": "pptxgen-ts-starter" } }, (res) => {
+        if (res.statusCode && res.statusCode >= 400) {
+          reject(new Error(`HTTP ${res.statusCode} downloading font`));
+          return;
+        }
+        res.pipe(file);
+        file.on("finish", () => {
+          file.close();
+          resolve();
+        });
+      })
+      .on("error", (e) => {
         file.close();
-        resolve();
+        reject(e);
       });
-    }).on("error", (e) => {
-      file.close();
-      reject(e);
-    });
   });
 }
 
@@ -303,7 +303,7 @@ async function downloadFont(family: string): Promise<string> {
   const fontUrl = urlMatch[1];
 
   // Determine file extension from URL
-  const extMatch = fontUrl.match(/\.(\w+)(?:[\?#]|$)/);
+  const extMatch = fontUrl.match(/\.(\w+)(?:[?#]|$)/);
   const ext = extMatch?.[1] ?? "woff2";
 
   const fileName = `${family.replace(/\s+/g, "-")}.${ext}`;
@@ -342,23 +342,35 @@ function parseArgs(): Opts {
 
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
-    if (a === "--width" || a === "-w") { kv.width = args[++i]; }
-    else if (a === "--font" || a === "-f") { kv.font = args[++i]; }
-    else if (a === "--leading" || a === "-l") { kv.leading = args[++i]; }
-    else if (a === "--margin") { kv.margin = args[++i]; }
-    else if (a === "--stdin") { stdin = true; }
-    else if (a === "--json") { kv.json = "true"; }
-    else if (a === "--download-font" || a === "-d") { kv.downloadFont = args[++i]; }
-    else if (a === "--font-file") { fontFiles.push(args[++i]); }
-    else if (a.startsWith("-")) { console.error(`Unknown flag: ${a}`); process.exit(1); }
-    else { positional.push(a); }
+    if (a === "--width" || a === "-w") {
+      kv.width = args[++i];
+    } else if (a === "--font" || a === "-f") {
+      kv.font = args[++i];
+    } else if (a === "--leading" || a === "-l") {
+      kv.leading = args[++i];
+    } else if (a === "--margin") {
+      kv.margin = args[++i];
+    } else if (a === "--stdin") {
+      stdin = true;
+    } else if (a === "--json") {
+      kv.json = "true";
+    } else if (a === "--download-font" || a === "-d") {
+      kv.downloadFont = args[++i];
+    } else if (a === "--font-file") {
+      fontFiles.push(args[++i]);
+    } else if (a.startsWith("-")) {
+      console.error(`Unknown flag: ${a}`);
+      process.exit(1);
+    } else {
+      positional.push(a);
+    }
   }
 
   if (!stdin && positional.length === 0 && !kv.downloadFont) {
     console.error("Usage:");
-    console.error("  estimate-text.ts [options] \"<text>\"");
-    console.error("  echo \"...\" | estimate-text.ts --stdin [options]");
-    console.error("  estimate-text.ts --download-font Inter [options] \"<text>\"");
+    console.error('  estimate-text.ts [options] "<text>"');
+    console.error('  echo "..." | estimate-text.ts --stdin [options]');
+    console.error('  estimate-text.ts --download-font Inter [options] "<text>"');
     process.exit(1);
   }
 
@@ -401,7 +413,10 @@ async function main() {
   }
 
   // Auto-download font from --font if it looks like a web font and isn't on system
-  const fontFamilyName = opts.fontCss.replace(/^[\d.]+(?:pt|px)\s+/, "").split(",")[0].trim();
+  const fontFamilyName = opts.fontCss
+    .replace(/^[\d.]+(?:pt|px)\s+/, "")
+    .split(",")[0]
+    .trim();
   if (!opts.downloadFont && !isFontAvailable(fontFamilyName)) {
     try {
       const fontPath = await downloadFont(fontFamilyName);

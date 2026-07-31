@@ -1,4 +1,5 @@
 import { RoundRect, Group, type PptxNode, type PptxNodePromise } from "@zythum02/pptxgenjsx";
+import { colors } from "../token/colors";
 
 /** Union of all types produced by JSX expressions under this jsxImportSource */
 type PptxChildNode = PptxNode | PptxNodePromise | Promise<PptxNode>;
@@ -12,7 +13,7 @@ export type CardProps = {
   w: number;
   /** Height (inches) */
   h: number;
-  /** Background fill color (hex without #). Default: "FFFFFF" */
+  /** Background fill color (token from src/token/colors). Default: colors.white */
   fill?: string;
   /**
    * Optional left accent bar color.
@@ -35,7 +36,7 @@ export type CardProps = {
  * card's own top-left corner.
  *
  * Usage:
- *   <Card x={0.8} y={2.0} w={5.6} h={2.2} fill="F3F0FF">
+ *   <Card x={0.8} y={2.0} w={5.6} h={2.2} fill={colors.accentSoft}>
  *     <Text x={0.3} y={0.2} ...>...</Text>
  *     <Text x={0.3} y={0.8} ...>...</Text>
  *   </Card>
@@ -45,7 +46,7 @@ export function Card({
   y,
   w,
   h,
-  fill = "FFFFFF",
+  fill = colors.white,
   accentColor,
   border = false,
   shadow = false,
@@ -60,14 +61,14 @@ export function Card({
         h={h}
         fill={{ color: fill }}
         rectRadius={0.15}
-        line={border ? { color: "E5E7EB" as const, width: 1 } : undefined}
+        line={border ? { color: colors.border, width: 1 } : undefined}
         shadow={
           shadow
             ? ({
                 type: "outer" as const,
                 blur: 8,
                 offset: 2,
-                color: "000000" as const,
+                color: colors.black,
                 opacity: 0.06,
               } as const)
             : undefined

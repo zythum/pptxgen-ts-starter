@@ -2,6 +2,8 @@ import { Text, TextRun, BarChart, DoughnutChart, Notes } from "@zythum02/pptxgen
 import { SlideBackground } from "../components/SlideBackground";
 import { SectionHeader } from "../components/SectionHeader";
 import { PageNumber } from "../components/PageNumber";
+import { colors } from "../token/colors";
+import { typography } from "../token/typography";
 
 export default async function () {
   return (
@@ -14,7 +16,7 @@ export default async function () {
       <Text x={0.8} y={1.5} w={11.733} h={0.5} align="left" valign="middle">
         <TextRun
           text="Quarterly Performance Overview — 2026"
-          options={{ fontSize: 16, color: "6B7280" }}
+          options={{ fontSize: typography.size.lead, color: colors.muted }}
         />
       </Text>
 
@@ -45,12 +47,12 @@ export default async function () {
           showLegend: true,
           showValue: false,
           barGrouping: "clustered",
-          chartColors: ["7C3AED", "10B981", "F59E0B"],
+          chartColors: [colors.accent, colors.success, colors.amber500],
           catAxisLabelFontSize: 11,
-          catAxisLabelColor: "475569",
+          catAxisLabelColor: colors.slate600,
           valAxisLabelFontSize: 10,
-          valAxisLabelColor: "94A3B8",
-          valGridLine: { color: "E2E8F0", size: 0.5, style: "dash" },
+          valAxisLabelColor: colors.slate400,
+          valGridLine: { color: colors.borderLight, size: 0.5, style: "dash" },
           valAxisMinVal: 0,
           valAxisMaxVal: 200,
           valAxisMajorUnit: 50,
@@ -75,10 +77,16 @@ export default async function () {
           showLegend: true,
           showPercent: true,
           showTitle: false,
-          chartColors: ["7C3AED", "10B981", "F59E0B", "3B82F6", "94A3B8"],
+          chartColors: [
+            colors.accent,
+            colors.success,
+            colors.amber500,
+            colors.blue500,
+            colors.slate400,
+          ],
           holeSize: 50,
           dataLabelFontSize: 11,
-          dataLabelColor: "1E293B",
+          dataLabelColor: colors.slate800,
           dataLabelPosition: "ctr",
         }}
       />

@@ -19,12 +19,21 @@ src/
 ├── ppt.tsx                  # Entry — default export, composes all slides in <Deck>
 ├── slides/                  # One file per slide, numbered: 01-title.tsx, 02-*.tsx …
 ├── components/              # Shared UI: SlideBackground, SectionHeader, Card
+├── token/
+│   ├── colors.ts            # Color tokens — single source of truth for slide colors
+│   └── typography.ts        # Font & size tokens — single source of truth for slide typography
 └── media/images/            # Image assets — paths relative to src/ppt.tsx
 scripts/
+├── color-tool.ts            # Derive palette variants + check WCAG contrast
 ├── dev-server.ts            # Dev server — do not modify
-└── generate.ts              # .pptx builder — do not modify
+├── estimate-text.ts         # Measure rendered text height (prevent overflow)
+├── generate.ts              # .pptx builder — do not modify
+└── image-tool.ts            # Query image metadata, crop, resize
 web/index.html               # Browser PPTX viewer
 .agents/skills/pptxgenjsx/   # Component API reference (loaded on demand)
+.agents/skills/design/       # Design guidance: workflow + templates & themes
+.deck/                       # Per-deck workspace: brief.md / research.md / outline.md / spec.md
+output/                      # Generated .pptx files
 ```
 
 ## Conventions
@@ -50,7 +59,24 @@ web/index.html               # Browser PPTX viewer
 ### Colors
 
 - Hex **without `#`** — `"7C3AED"` not `"#7C3AED"`.
-- Transparency: `fill: { color: "1E1E2E", transparency: 50 }` (0–100).
+- Transparency: `fill: { color: "18181B", transparency: 50 }` (0–100).
+- **Single source of truth** — all colors used in slides must come from
+  `src/token/colors.ts` (`colors.background`, `colors.primary`, …). Never
+  hardcode bare hex in slide files. Fill the token file from a chosen palette
+  (see `.agents/skills/design/templates-themes/palettes.md`) when starting a
+  deck; derive new variants with `scripts/color-tool.ts`, then register them
+  in `colors.ts` under a semantic name.
+
+### Typography
+
+- **Single source of truth** — `fontFace` / `fontSize` come from
+  `src/token/typography.ts` (`typography.font.*`, `typography.size.*`) — no
+  magic numbers in slides.
+- `bold: true/false` is written directly — pptxgenjs has no numeric
+  `fontWeight`.
+- New sizes: update `.deck/spec.md` §4 first, then propagate to `typography.ts`.
+- Per-slide exceptions (measured with `estimate-text.ts`) may use literal
+  values, with a comment explaining why.
 
 ### Shapes
 
@@ -65,7 +91,7 @@ web/index.html               # Browser PPTX viewer
 - **No return type annotations** — let TypeScript infer from JSX.
 - `src/ppt.tsx` must be a **default export** (`export default function ()`).
 - **No HTML elements** — `<div>`, `<span>`, `<p>` are not in `JSX.IntrinsicElements`. Only imported components are valid.
-- **Don't modify** `scripts/*.ts` — infrastructure, not content.
+- **Don't modify** `scripts/*` `web/*` — infrastructure, not content.
 
 ## Workflow: Add or Edit a Slide
 
@@ -81,6 +107,8 @@ web/index.html               # Browser PPTX viewer
 import { Slide, Text, TextRun, Notes } from "@zythum02/pptxgenjsx";
 import { SlideBackground } from "../components/SlideBackground";
 import { SectionHeader } from "../components/SectionHeader";
+import { colors } from "../token/colors";
+import { typography } from "../token/typography";
 
 export default async function () {
   return (
@@ -89,7 +117,10 @@ export default async function () {
       <SectionHeader title="My Section" />
 
       <Text x={0.8} y={2.0} w={6} h={0.8} align="left" valign="middle">
-        <TextRun text="Content goes here" options={{ fontSize: 18, color: "1F2937" }} />
+        <TextRun
+          text="Content goes here"
+          options={{ fontSize: typography.size.body, color: colors.ink }}
+        />
       </Text>
 
       <Notes>Speaker notes.</Notes>
@@ -126,6 +157,7 @@ npx tsx scripts/estimate-text.ts -w 4 -f "12pt Arial" --json "Body text"
 ```
 
 Manually sum `y + height` for each element and confirm it's ≤ the next element's `y`. Common overlap points:
+
 - `<SectionHeader>` fixed height vs. content below it
 - Multi-column text layouts where columns share vertical space
 - `<Image>` + caption `<Text>` stacked vertically
@@ -149,20 +181,22 @@ npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 --resize 624x351 --o
 
 ## Common Mistakes
 
-| ❌ Wrong                      | ✅ Correct                                             |
-| ----------------------------- | ------------------------------------------------------ |
-| `color="#FFFFFF"`             | `color="FFFFFF"` (no `#`)                              |
-| `<RoundRect rectRadius={0}>`  | `<Rect>`                                               |
-| `<div>`, `<span>`, `<p>`      | `<Text>` + `<TextRun>`                                 |
-| Named export in `src/ppt.tsx` | `export default function ()`                           |
-| Missing full-size background  | `<SlideBackground />` as first child                   |
-| `function Foo(): PptxNode`    | `async function Foo()` — no return type                |
-| Modifying `scripts/*.ts`      | Content belongs in `src/slides/` and `src/components/` |
-| Forgetting `breakLine: true`  | Set on the last `<TextRun>` of each line               |
+| ❌ Wrong                      | ✅ Correct                                                        |
+| ----------------------------- | ----------------------------------------------------------------- |
+| `color="#FFFFFF"`             | `color="FFFFFF"` (no `#`)                                         |
+| `fontSize: 18` literal        | `fontSize: typography.size.body` (from `src/token/typography.ts`) |
+| `<RoundRect rectRadius={0}>`  | `<Rect>`                                                          |
+| `<div>`, `<span>`, `<p>`      | `<Text>` + `<TextRun>`                                            |
+| Named export in `src/ppt.tsx` | `export default function ()`                                      |
+| Missing full-size background  | `<SlideBackground />` as first child                              |
+| `function Foo(): PptxNode`    | `async function Foo()` — no return type                           |
+| Modifying `scripts/*.ts`      | Content belongs in `src/slides/` and `src/components/`            |
+| Forgetting `breakLine: true`  | Set on the last `<TextRun>` of each line                          |
 
 ## Skills
 
-- [pptxgenjsx](.agents/skills/pptxgenjsx/SKILL.md) - Component API reference
+- [pptxgenjsx](.agents/skills/pptxgenjsx/SKILL.md) — Component API reference. Use when authoring slide components.
+- [design](.agents/skills/design/SKILL.md) — Design guidance: 7-stage workflow + templates & themes. Use when planning a deck, choosing styles/colors/typography, or running pre-delivery QA.
 
 ## CLI Tools
 
@@ -191,6 +225,30 @@ npx tsx scripts/image-tool.ts --image photo.png --crop 1:1 --resize 400
 ```
 
 **Options:** `--image <path>` (required), `--resize <w>` or `<w>x<h>`, `--crop <aspect>` (e.g. `16:9`, `1:1`) or `<w>x<h>` or `<w>x<h>+<x>+<y>`, `--output <path>`.
+
+### `scripts/color-tool.ts` — Color derivation & contrast
+
+Derive colors from a base hex (lighten / darken / desaturate) and check WCAG
+contrast ratios. Never hand-compute hex math — the design skill forbids
+inventing colors, and derived values must come from this tool. Color math is
+delegated to the `color` npm package.
+
+```
+npx tsx scripts/color-tool.ts --hex 7C3AED --lighten 15   # lighter
+npx tsx scripts/color-tool.ts --hex 7C3AED --darken 10    # darker
+npx tsx scripts/color-tool.ts --hex 7C3AED --gray         # desaturated
+npx tsx scripts/color-tool.ts --hex 1F2937 --hex F9FAFB --contrast  # WCAG ratio
+```
+
+**Options:** `--hex <color>` (accepts `7C3AED` / `#7C3AED` / `7C3`; repeat for
+`--contrast`), `--lighten <0-100>`, `--darken <0-100>` (HSL lightness points),
+`--gray` (desaturate), `--contrast`, `--json`.
+
+**Output:** derivation mode prints ONLY the resulting hex, e.g.
+`npx tsx scripts/color-tool.ts --hex 7C3AED --darken 10` → `5F14E0`
+(6-digit uppercase, no `#` — the pptxgenjs format). `--contrast` prints the
+ratio + WCAG AA pass flags; add `--json` for structured output
+(`contrast`, `passesAA`, `passesAALarge`).
 
 ## NPM Scripts
 

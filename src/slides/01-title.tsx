@@ -1,21 +1,23 @@
 import { Text, TextRun, Notes, Rect } from "@zythum02/pptxgenjsx";
 import { SlideBackground } from "../components/SlideBackground";
 import { PageNumber } from "../components/PageNumber";
+import { colors } from "../token/colors";
+import { typography } from "../token/typography";
 
 export default async function () {
   return (
     <>
       <SlideBackground color="dark" />
-      <PageNumber color="6B7280" />
+      <PageNumber color={colors.muted} />
 
       {/* Accent line */}
-      <Rect x={4.667} y={2.1} w={4.0} h={0.06} fill={{ color: "7C3AED" }} />
+      <Rect x={4.667} y={2.1} w={4.0} h={0.06} fill={{ color: colors.accent }} />
 
       {/* Title */}
       <Text x={1.5} y={2.3} w={10.333} h={1.5} align="center" valign="middle">
         <TextRun
           text="Getting Started with pptxgen-ts-starter"
-          options={{ fontSize: 36, bold: true, color: "FFFFFF" }}
+          options={{ fontSize: typography.size.display, bold: true, color: colors.white }}
         />
       </Text>
 
@@ -23,18 +25,18 @@ export default async function () {
       <Text x={1.5} y={3.6} w={10.333} h={0.8} align="center" valign="middle">
         <TextRun
           text="Build PowerPoint Presentations with JSX + TypeScript"
-          options={{ fontSize: 18, color: "A78BFA" }}
+          options={{ fontSize: typography.size.subtitle, color: colors.accentLight }}
         />
       </Text>
 
       {/* Divider */}
-      <Rect x={4.667} y={4.6} w={4.0} h={0.06} fill={{ color: "7C3AED" }} />
+      <Rect x={4.667} y={4.6} w={4.0} h={0.06} fill={{ color: colors.accent }} />
 
       {/* Footer info */}
       <Text x={1.5} y={4.9} w={10.333} h={0.5} align="center" valign="middle">
         <TextRun
           text="npm run dev  →  npm run generate"
-          options={{ fontSize: 13, color: "6B7280" }}
+          options={{ fontSize: typography.size.table, color: colors.muted }}
         />
       </Text>
 

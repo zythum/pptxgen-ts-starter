@@ -141,9 +141,7 @@ async function resizeImage(
   field("Operation:", `scale to ${targetW} × ${targetH} px`);
   field("Output:", path.resolve(outPath));
 
-  await sharp(src)
-    .resize(targetW, targetH, { fit: "cover", position: "centre" })
-    .toFile(outPath);
+  await sharp(src).resize(targetW, targetH, { fit: "cover", position: "centre" }).toFile(outPath);
 
   return outPath;
 }
@@ -303,12 +301,21 @@ function parseArgs(): Opts {
 
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
-    if (a === "--image") { kv.image = args[++i]; }
-    else if (a === "--resize") { kv.resize = args[++i]; }
-    else if (a === "--crop") { kv.crop = args[++i]; }
-    else if (a === "--output") { kv.output = args[++i]; }
-    else if (a.startsWith("-")) { console.error(`Unknown flag: ${a}`); process.exit(1); }
-    else { console.error(`Unexpected argument: ${a}`); process.exit(1); }
+    if (a === "--image") {
+      kv.image = args[++i];
+    } else if (a === "--resize") {
+      kv.resize = args[++i];
+    } else if (a === "--crop") {
+      kv.crop = args[++i];
+    } else if (a === "--output") {
+      kv.output = args[++i];
+    } else if (a.startsWith("-")) {
+      console.error(`Unknown flag: ${a}`);
+      process.exit(1);
+    } else {
+      console.error(`Unexpected argument: ${a}`);
+      process.exit(1);
+    }
   }
 
   if (!kv.image) {

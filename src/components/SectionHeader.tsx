@@ -1,4 +1,6 @@
 import { Text, TextRun, RoundRect } from "@zythum02/pptxgenjsx";
+import { colors } from "../token/colors";
+import { typography } from "../token/typography";
 
 /**
  * Slide section title with a purple accent underline.
@@ -17,9 +19,19 @@ export function SectionHeader({ title }: { title: string }) {
   return (
     <>
       <Text x={0.8} y={0.6} w={6} h={0.9} align="left" valign="middle">
-        <TextRun text={title} options={{ fontSize: 30, bold: true, color: "1F2937" }} />
+        <TextRun
+          text={title}
+          options={{ fontSize: typography.size.hero, bold: true, color: colors.ink }}
+        />
       </Text>
-      <RoundRect x={0.8} y={1.4} w={2.0} h={0.05} fill={{ color: "7C3AED" }} rectRadius={0.025} />
+      <RoundRect
+        x={0.8}
+        y={1.4}
+        w={2.0}
+        h={0.05}
+        fill={{ color: colors.accent }}
+        rectRadius={0.025}
+      />
     </>
   );
 }

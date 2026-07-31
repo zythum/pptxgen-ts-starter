@@ -28,17 +28,18 @@ Positions and styles a text block on the slide. All children must be `<TextRun>`
 
 ---
 
-> 💡 **Tip：背景块 + 文字加 `margin`**
+> 💡 **Tip: add `margin` to text on a colored background**
 >
-> 当 `<Text>` 放在有色背景（如 `<Rect>` / `<RoundRect>`）上方时，**务必给 `<Text>` 加上 `margin`**，否则文字会贴紧背景边缘，显得拥挤。
+> When a `<Text>` sits on a colored background (e.g. `<Rect>` / `<RoundRect>`),
+> **always give the `<Text>` a `margin`** — otherwise the text hugs the shape
+> edge and looks cramped.
 >
 > ```tsx
 > <Rect x={0.5} y={1} w={7} h={2} fill={{ color: "F3F4F6" }} />
 > <Text x={0.5} y={1} w={7} h={2} margin={0.3}>
->   <TextRun text="这段文字四周有 0.3in 留白，不会贴边" options={{ fontSize: 14 }} />
+>   <TextRun text="0.3in of padding keeps the text off the edge" options={{ fontSize: 14 }} />
 > </Text>
 > ```
->
 
 ---
 

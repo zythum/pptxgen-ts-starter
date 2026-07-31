@@ -60,7 +60,7 @@ import { Rect, Text, TextRun, Notes } from "@zythum02/pptxgenjsx";
 export default async function () {
   return (
     <>
-      <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "1E1E2E" }} />
+      <Rect x={0} y={0} w={13.333} h={7.5} fill={{ color: "18181B" }} />
       <Text x={1.5} y={2.5} w={10.333} h={1.5} align="center" valign="middle">
         <TextRun options={{ fontSize: 44, bold: true, color: "FFFFFF" }}>
           Hello, PowerPoint!

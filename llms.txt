@@ -7,17 +7,21 @@
 ```
 pptxgen-ts-starter/
 ├── scripts/
+│   ├── color-tool.ts        # Color derivation + WCAG contrast (color npm). Run via `npx tsx scripts/color-tool.ts --hex <color> [--lighten|--darken|--gray|--contrast]`
 │   ├── dev-server.ts        # HTTP dev server (localhost:5173)
-│   ├── generate.ts          # CLI build tool (generates .pptx)
 │   ├── estimate-text.ts     # Text measurement: word-wrap + measureText (Canvas 2D). Run via `npx tsx scripts/estimate-text.ts [options] "<text>"`
+│   ├── generate.ts          # CLI build tool (generates .pptx)
 │   └── image-tool.ts        # Image query/resize/crop (sharp). Run via `npx tsx scripts/image-tool.ts --image <path> [--resize <spec>] [--crop <spec>]`
 ├── src/
 │   ├── ppt.tsx              # Deck entry — composes all slides into <Deck>
 │   ├── slides/              # One file per slide, numbered by presentation order
 │   ├── components/          # Reusable slide-building primitives.
+│   ├── token/               # colors.ts + typography.ts — design tokens, single source of truth
 │   └── media/images/        # Image assets
 ├── web/
 │   └── index.html           # Browser PPTX viewer
+├── .agents/skills/          # Agent skills: pptxgenjsx (component API) + design (workflow + templates & themes)
+├── .deck/                   # Per-deck workspace: brief.md / research.md / outline.md / spec.md
 ├── output/                  # Generated .pptx files
 ├── package.json
 ├── tsconfig.json
@@ -28,6 +32,7 @@ pptxgen-ts-starter/
 ## Agent Skills
 
 - [pptxgenjsx SKILL.md](.agents/skills/pptxgenjsx/SKILL.md) — Complete skill for creating and editing PPTX slides using JSX + pptxgenjs
+- [design SKILL.md](.agents/skills/design/SKILL.md) — Design workflow (clarity → research → outline → spec → compose → visuals → QA) and design knowledge (styles, palettes, typography, layouts, density, narrative)
 
 ## NPM Scripts
 

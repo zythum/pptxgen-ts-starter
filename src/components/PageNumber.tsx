@@ -1,5 +1,7 @@
 import { Text, TextRun } from "@zythum02/pptxgenjsx";
 import { useSlideContext, useGroupContext } from "@zythum02/pptxgenjsx";
+import { colors } from "../token/colors";
+import { typography } from "../token/typography";
 
 /**
  * Page number indicator — displays "index / total" in the bottom-right corner.
@@ -26,15 +28,15 @@ import { useSlideContext, useGroupContext } from "@zythum02/pptxgenjsx";
  *     <PageNumber />
  *   </Group>
  *
- * @param color  Text color (hex without #). Default: "9CA3AF" (gray-400).
- *               Use a lighter color (e.g. "6B7280") for dark backgrounds.
+ * @param color  Text color (token from src/token/colors). Default: colors.mutedLight.
+ *               Use colors.muted for dark backgrounds.
  */
-export function PageNumber({ color = "9CA3AF" }: { color?: string }) {
+export function PageNumber({ color = colors.mutedLight }: { color?: string }) {
   const { index, total } = useSlideContext();
   const { width, height } = useGroupContext();
   return (
     <Text x={0} y={height - 0.5} w={width - 0.5} h={0.4} align="right" valign="middle">
-      <TextRun text={`${index} / ${total}`} options={{ fontSize: 10, color }} />
+      <TextRun text={`${index} / ${total}`} options={{ fontSize: typography.size.tiny, color }} />
     </Text>
   );
 }

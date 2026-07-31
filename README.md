@@ -34,13 +34,37 @@ cd pptxgen-ts-starter
 npm install
 ```
 
-## Checklist
+## Project Structure
 
-Start customizing:
-
-- Change the `name` field in `package.json`
-- Replace slide files in `src/slides/` with your own content
-- Clean up this `README.md`
+```
+pptxgen-ts-starter/
+├── scripts/
+│   ├── color-tool.ts      # derive palette variants + check WCAG contrast
+│   ├── dev-server.ts      # dev server with browser preview
+│   ├── estimate-text.ts   # measure rendered text height (prevent overflow)
+│   ├── generate.ts        # CLI .pptx builder
+│   └── image-tool.ts      # query image metadata, crop, resize
+├── src/
+│   ├── ppt.tsx            # deck entry — compose slides here
+│   ├── slides/            # one file per slide: 01-title.tsx, 02-*.tsx …
+│   ├── components/        # shared UI: SlideBackground, SectionHeader, Card
+│   ├── token/             # design tokens — single source of truth
+│   │   ├── colors.ts      #   palette roles (mirror of .deck/spec.md §3)
+│   │   └── typography.ts  #   font + size scale (mirror of .deck/spec.md §4)
+│   └── media/images/      # image assets (paths relative to src/ppt.tsx)
+├── web/
+│   └── index.html         # browser-based PPTX viewer
+├── .agents/
+│   └── skills/
+│       ├── pptxgenjsx/    # component API reference
+│       └── design/        # design guidance: workflow + templates & themes
+├── .deck/                 # per-deck workspace: brief.md / research.md / outline.md / spec.md
+├── output/                # generated .pptx files
+├── AGENTS.md              # detailed slide authoring guide (primary reference for agents)
+├── package.json
+├── tsconfig.json
+└── .gitignore
+```
 
 ## Usage
 
@@ -56,35 +80,30 @@ The starter contains the following npm scripts:
 
 ### CLI Tools
 
-Two utility scripts help verify slide layout before generating the final `.pptx`:
+Utility scripts help verify slide layout and derive design tokens before generating the final `.pptx`:
 
 - **`scripts/estimate-text.ts`** — measure rendered text height to prevent overflow
 - **`scripts/image-tool.ts`** — query image metadata, crop, or resize images
+- **`scripts/color-tool.ts`** — derive palette variants (lighten / darken / desaturate) and check WCAG contrast ratios
 
 See [AGENTS.md](AGENTS.md#cli-tools) for full usage details and examples.
 
-## Project Structure
+## Checklist
 
-```
-pptxgen-ts-starter/
-├── scripts/
-│   ├── dev-server.ts      # dev server with browser preview
-│   └── generate.ts        # CLI .pptx builder
-├── src/
-│   ├── ppt.tsx            # deck entry — compose slides here
-│   ├── slides/            # individual slide components
-│   ├── components/        # shared UI: SlideBackground, SectionHeader, Card
-│   └── media/images/      # place your images here
-├── web/
-│   └── index.html         # browser-based PPTX viewer
-├── .agents/
-│   └── skills/pptxgenjsx/ # component API reference
-├── output/                # generated .pptx files
-├── AGENTS.md              # detailed slide authoring guide
-├── package.json
-├── tsconfig.json
-└── .gitignore
-```
+Start customizing:
+
+- Change the `name` field in `package.json`
+- Replace slide files in `src/slides/` with your own content
+- Clean up this `README.md`
+
+## Agent Skills
+
+`.agents/skills/` ships two skills that teach AI assistants how to build slides in this starter:
+
+- **`pptxgenjsx`** — component API reference: every component, prop, and pattern for authoring slides with JSX.
+- **`design`** — design guidance: a 7-stage workflow (clarify → research → outline → spec → compose → visuals → QA) plus templates & themes (styles, palettes, typography, locked layouts, density, narrative).
+
+Skills are loaded on demand — see the [AGENTS.md](AGENTS.md#skills) guide for when and how to use each one.
 
 ## Agent Guide
 

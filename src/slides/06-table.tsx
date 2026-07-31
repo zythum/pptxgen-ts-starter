@@ -2,6 +2,8 @@ import { Text, TextRun, Table, TableRow, TableCell, Notes } from "@zythum02/pptx
 import { SlideBackground } from "../components/SlideBackground";
 import { SectionHeader } from "../components/SectionHeader";
 import { PageNumber } from "../components/PageNumber";
+import { colors } from "../token/colors";
+import { typography } from "../token/typography";
 
 export default async function () {
   return (
@@ -12,7 +14,10 @@ export default async function () {
 
       {/* Subtitle */}
       <Text x={0.8} y={1.5} w={11.733} h={0.5} align="left" valign="middle">
-        <TextRun text="Quarterly Sales Report — 2026" options={{ fontSize: 16, color: "6B7280" }} />
+        <TextRun
+          text="Quarterly Sales Report — 2026"
+          options={{ fontSize: typography.size.lead, color: colors.muted }}
+        />
       </Text>
 
       {/* Table */}
@@ -23,15 +28,15 @@ export default async function () {
         h={4.6}
         colW={[3.2, 2.133, 2.133, 2.133, 2.134]}
         rowH={[0.55, 0.42, 0.42, 0.42, 0.42, 0.42, 0.42, 0.42, 0.42, 0.55]}
-        border={{ type: "solid", color: "E2E8F0", pt: 1 }}
+        border={{ type: "solid", color: colors.borderLight, pt: 1 }}
       >
         {/* Header row */}
         <TableRow>
           <TableCell
             bold
-            fontSize={13}
-            color="FFFFFF"
-            fill={{ color: "1E293B" }}
+            fontSize={typography.size.table}
+            color={colors.white}
+            fill={{ color: colors.slate800 }}
             align="center"
             valign="middle"
           >
@@ -39,9 +44,9 @@ export default async function () {
           </TableCell>
           <TableCell
             bold
-            fontSize={13}
-            color="FFFFFF"
-            fill={{ color: "1E293B" }}
+            fontSize={typography.size.table}
+            color={colors.white}
+            fill={{ color: colors.slate800 }}
             align="center"
             valign="middle"
           >
@@ -49,9 +54,9 @@ export default async function () {
           </TableCell>
           <TableCell
             bold
-            fontSize={13}
-            color="FFFFFF"
-            fill={{ color: "1E293B" }}
+            fontSize={typography.size.table}
+            color={colors.white}
+            fill={{ color: colors.slate800 }}
             align="center"
             valign="middle"
           >
@@ -59,9 +64,9 @@ export default async function () {
           </TableCell>
           <TableCell
             bold
-            fontSize={13}
-            color="FFFFFF"
-            fill={{ color: "1E293B" }}
+            fontSize={typography.size.table}
+            color={colors.white}
+            fill={{ color: colors.slate800 }}
             align="center"
             valign="middle"
           >
@@ -69,9 +74,9 @@ export default async function () {
           </TableCell>
           <TableCell
             bold
-            fontSize={13}
-            color="FFFFFF"
-            fill={{ color: "1E293B" }}
+            fontSize={typography.size.table}
+            color={colors.white}
+            fill={{ color: colors.slate800 }}
             align="center"
             valign="middle"
           >
@@ -90,12 +95,12 @@ export default async function () {
           { name: "Flux Capacitor", q1: "1.8", q2: "2.1", q3: "1.5", q4: "2.0" },
           { name: "Sprocket", q1: "4.2", q2: "4.5", q3: "4.0", q4: "4.7" },
         ].map((row, ri) => {
-          const bgColor = ri % 2 === 0 ? "FFFFFF" : "F8FAFC";
+          const bgColor = ri % 2 === 0 ? colors.white : colors.slate50;
           return (
             <TableRow>
               <TableCell
-                fontSize={12}
-                color="1F2937"
+                fontSize={typography.size.caption}
+                color={colors.ink}
                 fill={{ color: bgColor }}
                 align="left"
                 valign="middle"
@@ -104,8 +109,8 @@ export default async function () {
                 {row.name}
               </TableCell>
               <TableCell
-                fontSize={12}
-                color="334155"
+                fontSize={typography.size.caption}
+                color={colors.slate700}
                 fill={{ color: bgColor }}
                 align="center"
                 valign="middle"
@@ -113,8 +118,8 @@ export default async function () {
                 {row.q1}
               </TableCell>
               <TableCell
-                fontSize={12}
-                color="334155"
+                fontSize={typography.size.caption}
+                color={colors.slate700}
                 fill={{ color: bgColor }}
                 align="center"
                 valign="middle"
@@ -122,8 +127,8 @@ export default async function () {
                 {row.q2}
               </TableCell>
               <TableCell
-                fontSize={12}
-                color="334155"
+                fontSize={typography.size.caption}
+                color={colors.slate700}
                 fill={{ color: bgColor }}
                 align="center"
                 valign="middle"
@@ -131,8 +136,8 @@ export default async function () {
                 {row.q3}
               </TableCell>
               <TableCell
-                fontSize={12}
-                color="334155"
+                fontSize={typography.size.caption}
+                color={colors.slate700}
                 fill={{ color: bgColor }}
                 align="center"
                 valign="middle"
@@ -147,9 +152,9 @@ export default async function () {
         <TableRow>
           <TableCell
             bold
-            fontSize={13}
-            color="1E293B"
-            fill={{ color: "EDE9FE" }}
+            fontSize={typography.size.table}
+            color={colors.slate800}
+            fill={{ color: colors.violetSoft }}
             align="left"
             valign="middle"
           >
@@ -157,9 +162,9 @@ export default async function () {
           </TableCell>
           <TableCell
             bold
-            fontSize={13}
-            color="1E293B"
-            fill={{ color: "EDE9FE" }}
+            fontSize={typography.size.table}
+            color={colors.slate800}
+            fill={{ color: colors.violetSoft }}
             align="center"
             valign="middle"
           >
@@ -167,9 +172,9 @@ export default async function () {
           </TableCell>
           <TableCell
             bold
-            fontSize={13}
-            color="1E293B"
-            fill={{ color: "EDE9FE" }}
+            fontSize={typography.size.table}
+            color={colors.slate800}
+            fill={{ color: colors.violetSoft }}
             align="center"
             valign="middle"
           >
@@ -177,9 +182,9 @@ export default async function () {
           </TableCell>
           <TableCell
             bold
-            fontSize={13}
-            color="1E293B"
-            fill={{ color: "EDE9FE" }}
+            fontSize={typography.size.table}
+            color={colors.slate800}
+            fill={{ color: colors.violetSoft }}
             align="center"
             valign="middle"
           >
@@ -187,9 +192,9 @@ export default async function () {
           </TableCell>
           <TableCell
             bold
-            fontSize={13}
-            color="1E293B"
-            fill={{ color: "EDE9FE" }}
+            fontSize={typography.size.table}
+            color={colors.slate800}
+            fill={{ color: colors.violetSoft }}
             align="center"
             valign="middle"
           >

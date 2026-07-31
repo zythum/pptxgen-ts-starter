@@ -38,7 +38,7 @@ import { useDeckContext } from "@zythum02/pptxgenjsx";
 
 function FullBleedBackground() {
   const { width, height } = useDeckContext();
-  return <Rect x={0} y={0} w={width} h={height} fill={{ color: "1E1E2E" }} />;
+  return <Rect x={0} y={0} w={width} h={height} fill={{ color: "18181B" }} />;
 }
 ```
 
