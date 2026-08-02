@@ -88,9 +88,6 @@ async function fixGeneratedChartTableRefs(output: string) {
   if (result.fixedTableRefs === 0) return;
 
   await fs.promises.writeFile(output, result.data);
-  console.log(
-    `🔧 PptxGenJS chart table refs: fixed ${result.fixedTableRefs} range(s) in ${result.fixedWorkbooks} embedded workbook(s)`,
-  );
 }
 
 // ── CLI entry point ───────────────────────────────────────────────
