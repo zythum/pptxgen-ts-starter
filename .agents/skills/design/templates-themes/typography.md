@@ -9,6 +9,34 @@ Use at most two primary families per deck: one title family and one body family.
 A mono family is the second family when code/data requires it, not a free third
 font. Platform/CJK fallbacks may be documented without becoming a visual style.
 
+`serif`, `sans-serif`, and `monospace` are classification or token roles only.
+PPTX does not apply CSS generic families or fallback stacks: never pass values
+such as `fontFace="sans-serif"` or `fontFace="Arial, sans-serif"`. Resolve every
+font token to one exact installed family name.
+
+Choose the delivery environment before the family:
+
+| Environment          | Latin sans / serif / mono         | Safety note                                                           |
+| -------------------- | --------------------------------- | --------------------------------------------------------------------- |
+| PowerPoint + Keynote | Arial / Georgia / Courier New     | High compatibility, but font versions and metrics may still differ    |
+| Modern PowerPoint    | Aptos / Aptos Serif / Aptos Mono  | Office cloud fonts; requires supported Office and is not Keynote-safe |
+| Managed devices      | Exact approved font files         | Install the same family, faces, and version on every target           |
+| Single platform      | Windows- or macOS-native families | Use only when the delivery OS is fixed                                |
+
+### Latin categories
+
+| Category   | High-compatibility choices              | Managed-install choices            |
+| ---------- | --------------------------------------- | ---------------------------------- |
+| Sans serif | Arial; Tahoma, Trebuchet MS, or Verdana | Inter or Source Sans 3             |
+| Serif      | Georgia or Times New Roman              | Playfair Display or Source Serif 4 |
+| Monospace  | Courier New                             | JetBrains Mono                     |
+
+Use managed-install choices only after verifying the exact files on the
+generation, editing, and presentation devices. Office cloud availability does
+not make a font available to Keynote.
+
+### Style pairings
+
 | Pair        | Title            | Body                                          | Best for                     |
 | ----------- | ---------------- | --------------------------------------------- | ---------------------------- |
 | Neo-Grotesk | Inter            | Inter                                         | Minimal, consulting, general |
@@ -17,17 +45,26 @@ font. Platform/CJK fallbacks may be documented without becoming a visual style.
 | Scientific  | Inter            | Source Serif 4                                | Research/academic            |
 | Mono accent | Inter            | JetBrains Mono for code/data; Inter for prose | Dev/data                     |
 
+These pairings require a managed installation; they are design options, not
+zero-install defaults.
+
 ### CJK options
 
-| Pair             | Title               | Body                         | Portability note                        |
-| ---------------- | ------------------- | ---------------------------- | --------------------------------------- |
-| CJK Sans         | Noto Sans SC        | Noto Sans SC                 | Verify/install exact files              |
-| Apple CJK        | PingFang SC         | PingFang SC                  | macOS-centric; define delivery fallback |
-| CJK Serif accent | Source Han Serif SC | Noto Sans SC                 | Two-family limit reached                |
-| CJK Dev          | Noto Sans SC        | Noto Sans Mono for code only | Check Latin/CJK baseline                |
+There is no dependable zero-install, same-family CJK intersection across
+Windows and macOS. Prefer one exact managed family for cross-platform delivery;
+otherwise use a platform-native family and verify each target separately.
 
-Never invent a font name. Record exact family/face and target environment in
-spec §4.
+| Use                | Family examples                                   | Portability note                                       |
+| ------------------ | ------------------------------------------------- | ------------------------------------------------------ |
+| Managed CJK sans   | Noto Sans CJK SC or Source Han Sans SC            | Install the exact selected family/files everywhere     |
+| Managed CJK serif  | Noto Serif CJK SC or Source Han Serif SC          | Two-family limit is reached when paired with sans      |
+| Windows-native CJK | Microsoft YaHei; SimSun for serif                 | Windows-centric; not Keynote-safe                      |
+| macOS-native CJK   | PingFang SC or Hiragino Sans GB; Songti SC serif  | macOS-centric; verify the family is enabled/downloaded |
+| CJK code           | A verified CJK-capable mono, or split script runs | Do not assume a Latin mono contains CJK glyphs         |
+
+Related Noto/Source Han packages can expose different family names. Never
+invent or normalize a font name: record the exact family, face, file/version,
+and target environment in spec §4.
 
 ## 2. Weight capability
 
