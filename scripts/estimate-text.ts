@@ -7,9 +7,11 @@
  * metrics — no guessing.
  *
  * Core rules for pptxgenjs:
- *   content height (in) = lineCount × lineSpacing / 72
- *   total height (in)   = content height + top margin + bottom margin
+ *   content height (in) = lineCount × lineSpacing(pt) / 72
+ *   total height (in)   = content height + (top + bottom margin, pt) / 72
  * `--json` reports the total as `layout.height`; it includes both vertical margins.
+ * Margin values are in POINTS everywhere (input and output) — same unit as
+ * pptxgenjs <Text margin={N}>; no inch conversion anywhere.
  * Canvas 2D measureText determines the wrapped line count used by these formulas.
  *
  * Usage:
@@ -20,7 +22,13 @@
  *   --width, -w     Container width in inches          (default: 7.0)
  *   --font,  -f     CSS font string                     (default: "18pt Arial")
  *   --leading, -l   lineSpacing in pt                   (default: fontSize × 1.35)
- *   --margin        Container margin on all sides (in) (default: 0)
+ *   --margin        Container margin in pt (default: 0). Unit is POINTS —
+ *                   same as pptxgenjs <Text margin={N}> and --leading.
+ *                   Single value applies to all sides:  --margin 10
+ *                   Four values apply per side in [left, right, bottom, top]
+ *                   order (the runtime order of <Text margin={[l,r,b,t]}>):
+ *                   --margin 5,10,15,20   (brackets optional: [5,10,15,20])
+ *                   --json reports margin in pt (top-level), layout.height in inches.
  *   --stdin         Read text from stdin
  *   --json          Output raw JSON instead of human-readable description
  *
@@ -431,14 +439,51 @@ function parseFontFamily(fontCss: string): string {
   return afterLeading.split(",")[0].trim();
 }
 
+/**
+ * Format a pt value for output, trimming trailing zeros: 10 → "10pt", 10.01 → "10.01pt".
+ */
+function formatPt(pt: number): string {
+  const rounded = Math.round(pt * 100) / 100;
+  return `${rounded}pt`;
+}
+
+/** Margin values in POINTS, same unit as pptxgenjs <Text margin={N}>. */
+interface MarginPts {
+  left: number;
+  right: number;
+  bottom: number;
+  top: number;
+}
+
+/** Format margins as pt for JSON: "10pt" (symmetric) or "5pt,10pt,15pt,20pt" ([L,R,B,T]). */
+function formatMargin(margin: MarginPts): string {
+  const { left, right, bottom, top } = margin;
+  if (left === right && right === bottom && bottom === top) return formatPt(left);
+  return `${formatPt(left)},${formatPt(right)},${formatPt(bottom)},${formatPt(top)}`;
+}
+
+/** Human-readable label: "10pt margin each side" or "5pt/10pt/15pt/20pt margins (L/R/B/T)". */
+function describeMargin(margin: MarginPts): string {
+  const { left, right, bottom, top } = margin;
+  if (left === right && right === bottom && bottom === top) {
+    return `${formatPt(left)} margin each side`;
+  }
+  return `${formatPt(left)}/${formatPt(right)}/${formatPt(bottom)}/${formatPt(top)} margins (L/R/B/T)`;
+}
+
+/** Total box height in inches: (lineCount × leading + top + bottom margins, all pt) / 72. */
+function totalHeightIn(margin: MarginPts, leadingPt: number, lineCount: number): number {
+  return (lineCount * leadingPt + margin.top + margin.bottom) / 72;
+}
+
 function printDescription(
   fontCss: string,
   widthIn: number,
   leadingPt: number,
-  marginIn: number,
+  margin: MarginPts,
   result: LayoutResult,
 ) {
-  const totalHeightIn = (result.lineCount * leadingPt) / 72 + marginIn * 2;
+  const height = totalHeightIn(margin, leadingPt, result.lineCount);
   const family = parseFontFamily(fontCss);
   const fontSizePt = parseFontSizePt(fontCss);
 
@@ -448,12 +493,18 @@ function printDescription(
     lines.push(`  Line ${i + 1}: "${result.lines[i].trim()}" (${w}in)`);
   }
 
+  const isZeroMargin =
+    margin.left === 0 && margin.right === 0 && margin.bottom === 0 && margin.top === 0;
+  const containerLine = isZeroMargin
+    ? `Container:    ${widthIn.toFixed(1)}in wide`
+    : `Container:    ${widthIn.toFixed(1)}in wide, ${describeMargin(margin)}`;
+
   const output = [
     `Font:         ${family} ${fontSizePt}pt`,
-    `Container:    ${widthIn.toFixed(1)}in wide${marginIn > 0 ? `, ${marginIn.toFixed(2)}in margin each side` : ""}`,
+    containerLine,
     `Leading:      ${leadingPt}pt`,
     `Line count:   ${result.lineCount}`,
-    `Total height: ${totalHeightIn.toFixed(2)}in  ← use this for <Text h={...}>`,
+    `Total height: ${height.toFixed(2)}in  ← use this for <Text h={...}>`,
     `Lines:`,
     ...lines,
   ].join("\n");
@@ -465,12 +516,16 @@ function printJson(
   fontCss: string,
   widthIn: number,
   leadingPt: number,
-  marginIn: number,
+  margin: MarginPts,
   result: LayoutResult,
 ) {
-  // Preserve the public JSON shape: layout.height is the total box height,
-  // including top and bottom margins.
-  const totalHeightIn = (result.lineCount * leadingPt) / 72 + marginIn * 2;
+  // JSON shape (per project decision 2026-08): layout holds width/height in
+  // inches only — height is the total box height including top and bottom
+  // margins (matches <Text h={...}>); margin is a TOP-LEVEL field in pt,
+  // same unit as <Text margin={N}>:
+  //   "10pt"            → symmetric margin
+  //   "5pt,10pt,15pt,20pt" → [left, right, bottom, top]
+  const height = totalHeightIn(margin, leadingPt, result.lineCount);
 
   const lines = result.lines.map((text, i) => ({
     index: i,
@@ -484,10 +539,10 @@ function printJson(
     fontSize: `${parseFontSizePt(fontCss)}pt`,
     layout: {
       width: `${widthIn.toFixed(1)}in`,
-      height: `${totalHeightIn.toFixed(2)}in`,
-      margin: `${marginIn.toFixed(2)}in`,
+      height: `${height.toFixed(2)}in`,
     },
     leading: `${leadingPt}pt`,
+    margin: formatMargin(margin),
     lineCount: result.lineCount,
     lines,
   };
@@ -619,11 +674,48 @@ interface Opts {
   widthIn: number;
   fontCss: string;
   leadingPt: number | undefined;
-  marginIn: number;
+  margin: MarginPts;
   stdin: boolean;
   json: boolean;
   downloadFont?: string;
   fontFiles: string[];
+}
+
+/**
+ * Parse a --margin value. Unit is POINTS — the same as pptxgenjs
+ * <Text margin={N}> and --leading. No unit suffixes are accepted.
+ *   "10"          → 10 pt on all sides
+ *   "5,10,15,20"  → [left, right, bottom, top] in pt (component runtime order)
+ *   "[5,10,15,20]" → same as above (brackets optional)
+ */
+function parseMargin(raw: string | undefined): { margin: MarginPts } {
+  if (raw === undefined || raw === "") {
+    return { margin: { left: 0, right: 0, bottom: 0, top: 0 } };
+  }
+
+  let cleaned = raw.trim();
+  if (cleaned.startsWith("[") && cleaned.endsWith("]")) {
+    cleaned = cleaned.slice(1, -1).trim();
+  }
+  const parts = cleaned
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+  const nums = parts.map(Number);
+
+  if (parts.length === 1 && Number.isFinite(nums[0])) {
+    const v = nums[0];
+    return { margin: { left: v, right: v, bottom: v, top: v } };
+  }
+  if (parts.length === 4 && nums.every((n) => Number.isFinite(n))) {
+    const [left, right, bottom, top] = nums;
+    return { margin: { left, right, bottom, top } };
+  }
+
+  console.error(
+    `Error: invalid --margin value "${raw}" (expected a pt number, or 4 pt values as [left,right,bottom,top], e.g. "10" or "5,10,15,20")`,
+  );
+  process.exit(1);
 }
 
 function parseArgs(): Opts {
@@ -674,7 +766,7 @@ function parseArgs(): Opts {
     widthIn: parseFloat(kv.width ?? "7.0"),
     fontCss,
     leadingPt: kv.leading !== undefined ? parseFloat(kv.leading) : undefined,
-    marginIn: parseFloat(kv.margin ?? "0"),
+    ...parseMargin(kv.margin),
     stdin,
     json: kv.json === "true",
     downloadFont: kv.downloadFont,
@@ -719,11 +811,13 @@ async function main() {
     }
   }
 
-  const marginPx = opts.marginIn * DPI;
-  const containerWidthPx = opts.widthIn * DPI - marginPx * 2;
+  // Margins are in pt; convert left/right to px so text wraps inside them.
+  const marginLeftPx = (opts.margin.left / 72) * DPI;
+  const marginRightPx = (opts.margin.right / 72) * DPI;
+  const containerWidthPx = opts.widthIn * DPI - marginLeftPx - marginRightPx;
 
   if (containerWidthPx <= 0) {
-    console.error("Error: container too narrow (width - 2×margin <= 0)");
+    console.error("Error: container too narrow (width - left - right margins <= 0)");
     process.exit(1);
   }
 
@@ -736,9 +830,9 @@ async function main() {
   const result = wordWrap(text, ctx, containerWidthPx);
 
   if (opts.json) {
-    printJson(opts.fontCss, opts.widthIn, leadingPt, opts.marginIn, result);
+    printJson(opts.fontCss, opts.widthIn, leadingPt, opts.margin, result);
   } else {
-    printDescription(opts.fontCss, opts.widthIn, leadingPt, opts.marginIn, result);
+    printDescription(opts.fontCss, opts.widthIn, leadingPt, opts.margin, result);
   }
 }
 

@@ -23,7 +23,7 @@ Positions and styles a text block on the slide. All children must be `<TextRun>`
 | `autoFit`     | `boolean`                         | —        | Shrink text to fit                                   |
 | `shrinkText`  | `boolean`                         | —        | Shrink overflow text                                 |
 | `wrap`        | `boolean`                         | `true`   | Word wrap                                            |
-| `margin`      | `number \| number[]`              | —        | Margin: single value or `[top, right, bottom, left]` |
+| `margin`      | `number \| number[]`              | —        | Margin in **points (pt)**; single value or `[left, right, bottom, top]` |
 | `inset`       | `number`                          | —        | Internal padding in inches                           |
 
 ---
@@ -36,9 +36,11 @@ Positions and styles a text block on the slide. All children must be `<TextRun>`
 >
 > ```tsx
 > <Rect x={0.5} y={1} w={7} h={2} fill={{ color: "F3F4F6" }} />
-> <Text x={0.5} y={1} w={7} h={2} margin={0.3}>
->   <TextRun text="0.3in of padding keeps the text off the edge" options={{ fontSize: 14 }} />
+> <Text x={0.5} y={1} w={7} h={2} margin={10}>
+>   <TextRun text="10pt of padding keeps the text off the edge" options={{ fontSize: 14 }} />
 > </Text>
+> **`margin` is in points (pt), not inches** — `margin={10}` ≈ 0.14 in of padding each side.
+> (The deprecated `inset` prop was inches; prefer `margin`.)
 > ```
 
 ---

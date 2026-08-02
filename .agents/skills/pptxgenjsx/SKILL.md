@@ -1,5 +1,6 @@
 ---
 name: pptxgenjsx
+version: 1.0.0
 description: >
   Creates and edits PowerPoint slides using JSX components from @zythum02/pptxgenjsx.
   Use when generating or modifying .pptx files, writing slide components, composing

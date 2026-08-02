@@ -152,6 +152,15 @@ When text content has variable length (data-driven, speaker names, long titles),
 ```
 npx tsx scripts/estimate-text.ts -w 6.5 -f "18pt Inter" --leading 26 \
   "Variable-length text that might overflow its box"
+
+# Match a <Text margin={10}> box — pass the same pt value (margin unit is always pt)
+npx tsx scripts/estimate-text.ts -w 6.5 -f "18pt Inter" --leading 26 --margin 10 \
+  "Text with 10pt internal padding"
+
+# Asymmetric padding — four pt values as [left, right, bottom, top]
+# (same order as <Text margin={[l, r, b, t]}> runtime behavior)
+npx tsx scripts/estimate-text.ts -w 6.5 -f "18pt Inter" --leading 26 --margin 5,10,15,20 \
+  "Text with asymmetric padding"
 ```
 
 **Check against container** — if the reported height exceeds your `h`, widen the box, reduce font size, or add `shrinkText` to the `<Text>` component.
@@ -198,6 +207,7 @@ npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 --resize 624x351 --o
 | `color="#FFFFFF"`             | `color="FFFFFF"` (no `#`)                                         |
 | `fontSize: 18` literal        | `fontSize: typography.size.body` (from `src/token/typography.ts`) |
 | `<RoundRect rectRadius={0}>`  | `<Rect>`                                                          |
+| `margin={0.3}` expecting 0.3in | `margin={21.6}` — `<Text margin>` is in **points** (0.3in ≈ 21.6pt) |
 | `<div>`, `<span>`, `<p>`      | `<Text>` + `<TextRun>`                                            |
 | Named export in `src/ppt.tsx` | `export default function ()`                                      |
 | Missing full-size background  | `<SlideBackground />` as first child                              |
@@ -221,7 +231,19 @@ npx tsx scripts/estimate-text.ts -w 3.5 -f "11pt Arial" --leading 22 "Long text 
 echo "..." | npx tsx scripts/estimate-text.ts --stdin -w 5 -f "14pt Inter"
 ```
 
-**Options:** `--width/-w` (container width in inches), `--font/-f` (CSS font string), `--leading/-l` (line spacing in pt), `--margin` (container padding), `--json` (structured JSON output), `--download-font/-d` (download from Google Fonts), `--font-file` (register local .ttf/.otf/.woff2), `--stdin` (read from stdin).
+**Options:**
+
+- `--width/-w` — container width in inches
+- `--font/-f` — CSS font string
+- `--leading/-l` — line spacing in pt (default: `fontSize × 1.35`)
+- `--margin` — container padding in **pt**, same unit as `<Text margin={N}>` and `--leading` (default: `0`)
+  - single value for all sides: `--margin 10`
+  - four values as `[left, right, bottom, top]`: `--margin 5,10,15,20` (brackets optional)
+  - no unit suffixes accepted
+- `--json` — structured JSON output (`margin` in pt, `layout.height` in inches)
+- `--download-font/-d` — download from Google Fonts
+- `--font-file` — register local .ttf/.otf/.woff2
+- `--stdin` — read from stdin
 
 **Output:** human-readable description by default; use `--json` for structured output.
 
@@ -236,7 +258,15 @@ npx tsx scripts/image-tool.ts --image photo.png --crop 16:9    # center crop to 
 npx tsx scripts/image-tool.ts --image photo.png --crop 1:1 --resize 400
 ```
 
-**Options:** `--image <path>` (required), `--resize <w>` or `<w>x<h>`, `--crop <aspect>` (e.g. `16:9`, `1:1`) or `<w>x<h>` or `<w>x<h>+<x>+<y>`, `--output <path>`.
+**Options:**
+
+- `--image <path>` — (required) path to the image file
+- `--resize <w>` — scale to width `w` px (maintain aspect ratio)
+- `--resize <w>x<h>` — scale to exact `w × h` px
+- `--crop <aspect>` — center crop by aspect ratio, e.g. `16:9`, `4:3`, `1:1`
+- `--crop <w>x<h>` — center crop to exact pixel dimensions
+- `--crop <w>x<h>+<x>+<y>` — crop rectangle with offset from top-left
+- `--output <path>` — output path (default: auto-named next to source)
 
 ### `scripts/color-tool.ts` — Color derivation & contrast
 
@@ -252,9 +282,14 @@ npx tsx scripts/color-tool.ts --hex 7C3AED --gray         # desaturated
 npx tsx scripts/color-tool.ts --hex 1F2937 --hex F9FAFB --contrast  # WCAG ratio
 ```
 
-**Options:** `--hex <color>` (accepts `7C3AED` / `#7C3AED` / `7C3`; repeat for
-`--contrast`), `--lighten <0-100>`, `--darken <0-100>` (HSL lightness points),
-`--gray` (desaturate), `--contrast`, `--json`.
+**Options:**
+
+- `--hex <color>` — base color; accepts `7C3AED` / `#7C3AED` / `7C3`; repeat for `--contrast`
+- `--lighten <0-100>` — lighten by N HSL lightness points
+- `--darken <0-100>` — darken by N HSL lightness points
+- `--gray` — desaturate (HSL saturation → 0, lightness kept)
+- `--contrast` — compute WCAG contrast ratio against the second `--hex`
+- `--json` — structured JSON output (for `--contrast`)
 
 **Output:** derivation mode prints ONLY the resulting hex, e.g.
 `npx tsx scripts/color-tool.ts --hex 7C3AED --darken 10` → `5F14E0`

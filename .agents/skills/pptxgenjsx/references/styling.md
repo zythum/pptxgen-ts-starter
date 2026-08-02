@@ -35,11 +35,11 @@ Percentage strings are also supported — resolved against the enclosing context
 
 ### Margins & Padding
 
-| Prop     | Component     | Unit   |
-| -------- | ------------- | ------ |
-| `margin` | `<Text>`      | inches |
-| `inset`  | `<Text>`      | inches |
-| `margin` | `<TableCell>` | inches |
+| Prop     | Component     | Unit                                                                   |
+| -------- | ------------- | ---------------------------------------------------------------------- |
+| `margin` | `<Text>`      | **points (pt)** — `margin={10}` ≈ 0.14 in                              |
+| `inset`  | `<Text>`      | inches (deprecated — prefer `margin`)                                  |
+| `margin` | `<TableCell>` | mixed: `>= 1` is pt, `< 1` is inches (pptxgenjs backwards-compat hack) |
 
 ### Stroke / Line Width
 
@@ -160,6 +160,6 @@ These props are available on components that contain text (like `<TableCell>`):
 | `bullet`    | `boolean \| object`                          | Bullet/numbered list |
 | `align`     | `HAlign`                                     | Horizontal alignment |
 | `valign`    | `VAlign`                                     | Vertical alignment   |
-| `margin`    | `number \| [number, number, number, number]` | Margin               |
+| `margin`    | `number \| [number, number, number, number]` | Margin in points (`<TableCell>`: `>=1` pt, `<1` inches) |
 
 ---

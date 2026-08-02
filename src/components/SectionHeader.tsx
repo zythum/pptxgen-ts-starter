@@ -1,4 +1,4 @@
-import { Text, TextRun, RoundRect } from "@zythum02/pptxgenjsx";
+import { Text, TextRun, RoundRect, useGroupContext } from "@zythum02/pptxgenjsx";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
@@ -16,9 +16,10 @@ import { typography } from "../token/typography";
  *   </Slide>
  */
 export function SectionHeader({ title }: { title: string }) {
+  const { width } = useGroupContext();
   return (
     <>
-      <Text x={0.8} y={0.6} w={6} h={0.9} align="left" valign="middle">
+      <Text x={0.8} y={0.6} w={width - 0.8} h={0.9} align="left" valign="middle">
         <TextRun
           text={title}
           options={{ fontSize: typography.size.hero, bold: true, color: colors.ink }}
