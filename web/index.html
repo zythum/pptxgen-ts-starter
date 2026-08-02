@@ -52,6 +52,12 @@
         outline-offset: 2px;
       }
 
+      /* 文字选中高亮 — 浅于浏览器暗色默认值；不设 color，
+         因为 ooxml 的透明选中层文字需保持透明以免与画布文字重影 */
+      ::selection {
+        background: rgba(169, 156, 255, 0.35);
+      }
+
       /* ── Preview workspace ── */
       .pptx {
         width: 100%;
@@ -669,6 +675,7 @@
 
           viewer = new PptxViewer(canvas, {
             useGoogleFonts: true,
+            enableTextSelection: true,
             onSlideChange: (current, total) => {
               updateSlideUi(current, total);
               if (!suppressHashUpdate) {
