@@ -1,64 +1,90 @@
 # Workflow 01 — Clarify Requirements
 
-**Goal:** before writing any content or code, confirm WHAT the deck is about,
-FOR WHOM, and WITH WHICH constraints. A deck built on guesses fails late; a deck
-built on a confirmed brief fails early and cheaply.
+## Contract
 
-**Gate ⛔:** do not start research, outline, or design until the user has
-confirmed the brief (explicitly or by approving your restatement).
+**Inputs:** user request, supplied materials, existing `.deck/` when editing.
+**Decision:** choose execution mode and resolve only missing requirements.
+**Output:** `.deck/brief.md` with `Status: confirmed`.
+**Gate:** explicit approval, or explicit delegation recorded in the brief.
+**Validation:** all seven fields are answered, unknown, or delegated — never
+silently invented.
+**Resume:** read the brief's mode, authority, delegation, and constraints.
 
-## The 7 questions
+## 1. Choose the mode
 
-Ask in order. Skip only what the user already answered.
+Use the mode table in `SKILL.md`:
 
-| #   | Question                                                                              | Why it matters                                            |
-| --- | ------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| 1   | **Topic & core message** — what is it about, what should the audience remember?       | Defines every page's one-idea.                            |
-| 2   | **Audience** — who is in the room (execs, clients, peers, students, public)?          | Sets tone, vocabulary, evidence depth.                    |
-| 3   | **Purpose / scene** — pitch, review, teaching, sharing, recap?                        | Sets narrative structure and density.                     |
-| 4   | **Duration** — how long is the talk?                                                  | Derives page count and depth per page.                    |
-| 5   | **Style preference** — any brand style, reference deck, or aesthetic direction?       | Avoids rework; or pick from `templates-themes/styles.md`. |
-| 6   | **Materials** — existing data, images, documents, or must-have content?               | Avoids re-searching what the user already has.            |
-| 7   | **Hard constraints** — brand colors, template, confidential items, required sections? | Non-negotiable; violating them is fatal.                  |
+- `new-interactive`
+- `new-delegated`
+- `existing-edit`
+- `single-slide`
+- `layout-only`
 
-## Restate, then confirm
+For an existing deck, read `.deck/` and relevant slide comments first. Do not
+re-ask settled questions unless the request invalidates them.
 
-After the answers, write a **brief** back to the user in 3–5 lines:
+## 2. Resolve the seven requirements
 
+Ask only what the user has not already supplied. Combine missing questions into
+one concise prompt when practical.
+
+| #   | Requirement                | Why it matters                         |
+| --- | -------------------------- | -------------------------------------- |
+| 1   | Topic and one core message | Defines every page's purpose           |
+| 2   | Audience and concern       | Sets language, proof, and density      |
+| 3   | Purpose/context            | Selects narrative and CTA              |
+| 4   | Duration or reading mode   | Derives page count and pace            |
+| 5   | Style/brand preference     | Prevents visual rework                 |
+| 6   | Existing materials         | Determines research and asset work     |
+| 7   | Hard constraints           | Prevents fatal omissions or disclosure |
+
+Never invent brand colors, legal claims, confidentiality rules, or required
+sections. If style is open, propose one style with a rationale; it remains a
+proposal until the applicable gate or delegation covers it.
+
+## 3. Restate and handle the Gate
+
+Restate in a compact block:
+
+```text
+Mode:        <mode>
+Topic:       <core message>
+Audience:    <audience + concern>
+Purpose:     <context + outcome>
+Duration:    <minutes/reading mode> → target <N> slides
+Style:       <preference or proposal>
+Materials:   <available/missing/confidential>
+Constraints: <non-negotiables>
+Delegation:  <scope or none>
 ```
-Topic:      <one line, the core message>
-Audience:   <who, and what they care about>
-Purpose:    <scene + outcome>
-Duration:   <minutes> → target <N> slides
-Style:      <style name / "let me propose one">
-Materials:  <what exists / what is missing>
-Constraints:<brand colors, must-cover items, exclusions>
-```
 
-Then **stop and ask**: "Is this brief correct? Anything to change?" — do not
-proceed until confirmed.
+### Interactive mode
 
-## Output — `.deck/brief.md`
+Ask: “Is this brief correct? Anything to change?” Stop until approved.
 
-After the user confirms, save the confirmed brief verbatim (the 7 answers +
-the restatement) to `.deck/brief.md` — fixed filename, project root. **If the
-file already exists (the shipped example), overwrite it entirely with the new
-deck's brief — an existing file does not mean this step is done.** Format
-and mandatory fields: `workflow/00-deck-workspace.md` → `brief.md`. It is the
-source of truth for content planning and for every later modification: when
-the user asks to change the deck, re-read this file first.
+### Delegated mode
 
-## Handling unclear answers
+Proceed only when the user explicitly authorized autonomous decisions. Record:
 
-- If the user has no style preference, propose **one** style from
-  `templates-themes/styles.md` with a one-line rationale, and confirm it in the brief.
-- If duration is unknown, ask for a rough range; fall back to ~1 min/slide.
-- If materials are missing, note that research (`02`) will fill the gap.
-- Never invent brand colors or required sections; ask instead.
+- the wording/scope of delegation;
+- assumptions made under it;
+- decisions that still require confirmation because they exceed that scope.
+
+### Existing/single-slide mode
+
+If the request fits the confirmed brief and spec, do not reopen the global
+brief gate. Update only affected brief fields when the request changes them.
+
+## 4. Write `.deck/brief.md`
+
+After the gate condition is satisfied, overwrite the example with the schema in
+`00-deck-workspace.md`. Use `Decision authority: user-delegated` only when the
+delegation is explicit.
 
 ## Anti-patterns
 
-- ❌ Starting layout work before the brief is confirmed.
-- ❌ Silently choosing a style the user later rejects.
-- ❌ Assuming "make it look professional" = any default template.
-- ❌ Skipping the audience question — it changes everything downstream.
+- Asking all seven questions again when most were answered.
+- Treating “make it professional” as approval of an arbitrary style.
+- Proceeding from silence rather than approval or delegation.
+- Rebuilding an existing deck without reading its planning files.
+- Writing the brief before the gate and labeling it confirmed.

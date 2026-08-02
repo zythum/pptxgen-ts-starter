@@ -11,6 +11,87 @@ import fs from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { validateDeck, renderPptx, writePptx } from "@zythum02/pptxgenjsx/render";
 import arg from "arg";
+import JSZip from "jszip";
+
+// PptxGenJS 4.0.1 writes a trailing apostrophe in table ranges for embedded
+// workbooks used by non-scatter charts, e.g. ref="A1:D5'". PowerPoint tolerates
+// it, while stricter OOXML consumers such as Keynote may reject the workbook.
+// Upstream fix: https://github.com/gitbrent/PptxGenJS/pull/1327
+const INVALID_EMBEDDED_TABLE_REF = /\bref="([A-Z]{1,3}[1-9]\d*:[A-Z]{1,3}[1-9]\d*)'"/g;
+
+export interface ChartTableRefFixResult {
+  data: Uint8Array;
+  fixedTableRefs: number;
+  fixedWorkbooks: number;
+}
+
+/**
+ * Repair PptxGenJS's malformed table-range apostrophe in embedded XLSX files.
+ * The transformation is intentionally narrow and safe to run more than once.
+ */
+export async function fixPptxGenJsChartTableRefs(
+  input: ArrayBuffer | Uint8Array,
+): Promise<ChartTableRefFixResult> {
+  const pptx = await JSZip.loadAsync(input);
+  const embeddedWorkbooks = pptx.file(/^ppt\/embeddings\/[^/]+\.xlsx$/i);
+  let fixedTableRefs = 0;
+  let fixedWorkbooks = 0;
+
+  for (const embeddedWorkbook of embeddedWorkbooks) {
+    const workbook = await JSZip.loadAsync(await embeddedWorkbook.async("uint8array"));
+    const tables = workbook.file(/^xl\/tables\/table[^/]*\.xml$/i);
+    let workbookFixes = 0;
+
+    for (const table of tables) {
+      const xml = await table.async("string");
+      const sanitized = xml.replace(INVALID_EMBEDDED_TABLE_REF, (_match, range: string) => {
+        workbookFixes += 1;
+        return `ref="${range}"`;
+      });
+
+      if (sanitized !== xml) {
+        workbook.file(table.name, sanitized);
+      }
+    }
+
+    if (workbookFixes > 0) {
+      const sanitizedWorkbook = await workbook.generateAsync({
+        type: "uint8array",
+        compression: "DEFLATE",
+        compressionOptions: { level: 6 },
+      });
+      pptx.file(embeddedWorkbook.name, sanitizedWorkbook);
+      fixedTableRefs += workbookFixes;
+      fixedWorkbooks += 1;
+    }
+  }
+
+  if (fixedTableRefs === 0) {
+    return {
+      data: input instanceof Uint8Array ? input : new Uint8Array(input),
+      fixedTableRefs,
+      fixedWorkbooks,
+    };
+  }
+
+  const data = await pptx.generateAsync({
+    type: "uint8array",
+    compression: "DEFLATE",
+    compressionOptions: { level: 6 },
+  });
+  return { data, fixedTableRefs, fixedWorkbooks };
+}
+
+async function fixGeneratedChartTableRefs(output: string) {
+  const source = await fs.promises.readFile(output);
+  const result = await fixPptxGenJsChartTableRefs(source);
+  if (result.fixedTableRefs === 0) return;
+
+  await fs.promises.writeFile(output, result.data);
+  console.log(
+    `🔧 PptxGenJS chart table refs: fixed ${result.fixedTableRefs} range(s) in ${result.fixedWorkbooks} embedded workbook(s)`,
+  );
+}
 
 // ── CLI entry point ───────────────────────────────────────────────
 const currentUrl = pathToFileURL(process.argv[1]!).href;
@@ -135,6 +216,7 @@ export async function generate(options: GenerateOptions): Promise<ArrayBuffer | 
     }
     try {
       await renderPptx(deck, { fileName: outputAbs, pptx });
+      await fixGeneratedChartTableRefs(outputAbs);
     } catch (err) {
       const e = err instanceof Error ? err : new Error(String(err));
       e.message = `Failed to render PPTX to "${outputAbs}":\n  ${e.message}`;
@@ -146,7 +228,8 @@ export async function generate(options: GenerateOptions): Promise<ArrayBuffer | 
   if (options.outputType === "arraybuffer") {
     try {
       const buf = (await writePptx(deck, { outputType: "arraybuffer", pptx })) as ArrayBuffer;
-      return buf;
+      const result = await fixPptxGenJsChartTableRefs(buf);
+      return new Uint8Array(result.data).buffer;
     } catch (err) {
       const e = err instanceof Error ? err : new Error(String(err));
       e.message = `Failed to write PPTX buffer:\n  ${e.message}`;

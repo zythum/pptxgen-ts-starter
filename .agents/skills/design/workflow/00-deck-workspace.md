@@ -1,166 +1,255 @@
 # Workflow 00 — The `.deck/` Workspace (Canonical Format)
 
-**Purpose:** `.deck/` is the per-deck working directory at the project root. It
-holds the four planning documents that drive the build and act as the source of
-truth for every later modification. This file defines the **required content
-and format** of each document.
+**Purpose:** define the four planning files that drive a deck and preserve its
+intent for later edits. The shipped files are examples, not active project
+state.
 
-**⚠️ The `.deck/` directory currently holds filled EXAMPLE files (reference
-data — what a finished result looks like). Every new deck MUST overwrite them
-at their stages; their presence never means the work is done.**
+## Fixed files and lifecycle
 
-## Files & lifecycle
-
-| File                | Written by  | When                | Purpose                                          |
-| ------------------- | ----------- | ------------------- | ------------------------------------------------ |
-| `.deck/brief.md`    | 01-clarify  | after user confirms | Locked brief; source of truth for content        |
-| `.deck/research.md` | 02-research | after research      | Fact cards `F-1…`; evidence backbone             |
-| `.deck/outline.md`  | 03-outline  | after user confirms | Chapters, pages, speaker notes; compose contract |
-| `.deck/spec.md`     | 04-spec     | after user confirms | Locked design tokens; mirrored to `src/ppt.tsx`  |
+| File                | Written by  | Valid status              | Purpose                                         |
+| ------------------- | ----------- | ------------------------- | ----------------------------------------------- |
+| `.deck/brief.md`    | 01 Clarify  | `confirmed`               | Content authority and delegation record         |
+| `.deck/research.md` | 02 Research | `completed`, `not-needed` | Evidence or explicit no-research decision       |
+| `.deck/outline.md`  | 03 Outline  | `confirmed`               | Page contract, notes, preliminary visual intent |
+| `.deck/spec.md`     | 04 Spec     | `confirmed`               | Approved design system, layout/visual mapping   |
 
 Rules:
 
-- **Fixed filenames** — `brief.md`, `research.md`, `outline.md`, `spec.md`;
-  no numeric prefixes, no version suffixes. Location: project-root `.deck/`.
-- **A new deck overwrites the example files** — the four files currently in
-  `.deck/` are examples; each stage must replace its file with the new deck's
-  content. Never leave example content in a real deck's workspace.
-- **Written once, kept in sync** — each file is created at its stage and
-  updated whenever the deck changes; stale `.deck/` files are a defect.
-- **Modification flow** — for any change request, read `.deck/` + the slide-top
-  comments first, edit incrementally, and update the affected `.deck/` files.
-  Never regenerate the deck from scratch or guess the original intent.
+- Keep exactly these four filenames; no numeric prefixes, versions, or fifth
+  planning file.
+- Replace shipped examples for every new deck.
+- Update affected files whenever content or design changes; stale planning
+  files are a defect.
+- On an existing-deck request, read all four files and relevant slide-top
+  comments before editing. Reopen only affected gates.
+- `confirmed` means either explicit user approval or explicit delegated
+  authority documented in `brief.md`; it never means silent assumption.
 
-## Cross-reference rules (traceability)
+## Common metadata header
 
-The four files + slide-top comments form one traceability chain:
+Each file begins with:
 
-| Reference                                | Where it appears                            | Links to                    |
-| ---------------------------------------- | ------------------------------------------- | --------------------------- |
-| Fact card `F-N`                          | `research.md` card IDs                      | slide-top `source: F-N`     |
-| Layout ID (`L1–L9`, registered variants) | `spec.md` §7 mapping, slide-top comment     | `layouts.md` locked set     |
-| Slide role                               | `outline.md` page list                      | `narrative.md` roles table  |
-| Palette / style                          | `spec.md` §2–§3 (+ `src/token/colors.ts`)   | `styles.md` / `palettes.md` |
-| Runtime colors                           | `src/token/colors.ts` (mirrors spec §3)     | `spec.md` §3 role table     |
-| Runtime typography                       | `src/token/typography.ts` (mirrors spec §4) | `spec.md` §4 type scale     |
-
-If a slide-top comment cites a fact, that fact must exist in `research.md`.
-If a page uses a layout, that layout must be in the locked set or registered
-in `spec.md` §8. The runtime mirrors of §3/§4 (`src/token/colors.ts`,
-`src/token/typography.ts`) have their own format & lifecycle spec:
-`workflow/04b-token-files.md`.
-
-## `brief.md` — required structure
-
+```md
+Status: confirmed | completed | not-needed
+Updated: YYYY-MM-DD
+Decision authority: user-confirmed | user-delegated | workflow-decision
 ```
+
+Use only status values permitted by that file's table above.
+
+## Traceability chain
+
+| Identifier           | Defined in                      | Referenced by                         |
+| -------------------- | ------------------------------- | ------------------------------------- |
+| `F-N` external fact  | `research.md`                   | outline source refs + slide `sources` |
+| `user-material:<id>` | `research.md` user materials    | outline source refs + slide `sources` |
+| Slide role           | `outline.md`                    | spec mapping + slide `role`           |
+| Layout ID            | `layouts.md` or spec §8 variant | spec mapping + slide `layout`         |
+| Visual decision      | outline page row + spec §7      | slide `visual` and `asset`            |
+| Palette/type roles   | spec §3/§4                      | runtime token files                   |
+
+A slide may cite multiple comma-separated sources. Every source ID must resolve;
+external claims never point only to `outline.md`.
+
+Canonical slide comment:
+
+```ts
+// slide: 03 | role: Evidence | layout: L10 | core: Growth is concentrated in one segment | sources: F-3,F-4 | visual: chart/bar | asset: none
+```
+
+Use `sources: none` only for original framing, transitions, or non-factual
+statements. Use `asset: none` for code-native charts/tables and text-only pages.
+
+## `brief.md` schema
+
+```md
 # Deck Brief
 
+Status: confirmed
+Updated: YYYY-MM-DD
+Decision authority: user-confirmed | user-delegated
+
+## Execution Mode
+
+<new-interactive | new-delegated | existing-edit | single-slide | layout-only>
+
 ## The 7 Questions
-1. **Topic & core message** — <topic + the one thing to remember>
-2. **Audience** — <who + what they care about>
-3. **Purpose / context** — <scene + outcome>
-4. **Duration** — <minutes> → derive page count (see outline)
-5. **Style preference** — <chosen or "unspecified → propose X (rationale), awaiting confirmation">
-6. **Materials** — <existing materials / gaps>
-7. **Hard constraints** — <brand colors, must-cover, exclusions>
 
-## Brief Restatement (Confirmed)
-Topic:      <one line>
-Audience:   <who + their concern>
-Purpose:    <scene + outcome>
-Duration:   <minutes> → target <N> slides
-Style:      <style name / "let me propose one">
-Materials:  <exists / missing>
-Constraints:<non-negotiables>
+1. **Topic & core message** — ...
+2. **Audience** — ...
+3. **Purpose / context** — ...
+4. **Duration** — ... → target N slides
+5. **Style preference** — ...
+6. **Materials** — ...
+7. **Hard constraints** — ...
 
-> ⛔ Locked after confirmation; proceed to workflow/02-research.md.
+## Delegation & Assumptions
+
+<what the user delegated; assumptions approved or none>
+
+## Brief Restatement
+
+...
 ```
 
-Mandatory fields: all 7 answers + the confirmed restatement + the lock marker.
-Style choices must name the style ID from `styles.md` (or explicitly say
-"proposed, awaiting confirmation").
+Mandatory: all known answers; explicit unknowns; mode; authority; restatement.
+If delegated, record the exact scope. Do not invent brand constraints.
 
-## `research.md` — required structure
+## `research.md` schema
 
-```
+### Completed branch
+
+```md
 # Research
 
-## Content Sources   <optional — a note on search scope / source quality / branch rationale>
+Status: completed
+Updated: YYYY-MM-DD
+Decision authority: workflow-decision
+External search performed: yes
+
+## User Materials
+
+- user-material:brief-data — <description/location>
 
 ## Fact Cards
-F-1 · FACT: <one sentence, specific, verifiable>
-     SOURCE: <name + URL + date>
-     USE: <section/slide it supports>
-F-2 · …
+
+F-1 · FACT: <specific, verifiable sentence>
+SOURCE: <publisher, title, publication date, URL, accessed date>
+USE: <chapter/page>
 ```
 
-Mandatory fields per card: `FACT` (one sentence), `SOURCE` (name + URL + date),
-`USE` (which chapter/slide). 5–15 cards; numbering continuous `F-1, F-2, …`.
-Group cards by chapter when the outline exists, by theme otherwise. Never
-fabricate numbers — omit or mark unverified.
+Each completed fact card requires `FACT`, `SOURCE`, and `USE`. Prefer 5–15
+cards, but stop when each evidence-bearing section is supported; quality beats
+a quota.
 
-## `outline.md` — required structure
+### Not-needed branch
 
+```md
+# Research
+
+Status: not-needed
+Updated: YYYY-MM-DD
+Decision authority: workflow-decision
+External search performed: no
+Reason: <materials complete | layout-only | confidential | user prohibited search>
+
+## User Materials
+
+- user-material:<id> — <description/location>
+
+## Fact Cards
+
+None.
 ```
+
+A `not-needed` file is a valid completed stage. Never search confidential
+content merely to satisfy a count.
+
+## `outline.md` schema
+
+```md
 # Outline
 
+Status: confirmed
+Updated: YYYY-MM-DD
+Decision authority: user-confirmed | user-delegated
+
 ## Narrative Arc
-<arc name from narrative.md> — <one-line rationale>
 
-## Chapters & Time Budget (total = confirmed duration)
-| Ch | Name | Pages | Budget | Content |
+<arc + rationale>
 
-## Page List (role + one-sentence core message)
-01 <Role> — <core message sentence>   [role: <Role>, <density>]
-…
+## Density Target
 
-## Speaker Notes (per page: Hook / Track / Action / Transition)
+<general/narrative 25–40% sparse | executive/data-heavy 15–25% | custom>
+
+## Chapters & Time Budget
+
+| Ch | Name | Pages | Budget | Transition treatment |
+
+## Page List
+
+| Page | Role | Core message | Density | Preliminary visual intent | Source refs |
+
+## Speaker Notes
+
+### 01 — <name>
+
+- Hook:
+- Track:
+- Action:
+- Transition:
+
 ## Speaker Choreography
+
+...
 ```
 
-Mandatory: arc + rationale; chapter table with time budgets summing to the
-confirmed duration; page list with role + one-sentence core message per page;
-speaker notes with the four-part marker (Hook / Track / Action / Transition);
-choreography notes (pauses, interactions, per-chapter time). The page list is
-the compose contract — composition follows it page by page.
+The outline gate approves chapters, page order, roles, messages, timing, and
+preliminary visual intent. After approval, complete all four notes fields before
+composition. Short decks may use non-page transitions instead of section
+slides; record that choice.
 
-## `spec.md` — required structure
+## `spec.md` schema
 
-```
+```md
 # Design Spec
 
-## 1. Canvas & page count   <layout enum + size; pages derived from outline>
-## 2. Style                 <style ID + one-line rationale>
-## 3. Palette               <role table: Role | Hex | usage>
-## 4. Typography            <font pair + size scale + line heights>
-## 5. Background            <light/dark + contrast notes>
-## 6. Layout constants      <margin, content area, header position, card geometry>
-## 7. Layout mapping        <table: page | layout ID | note>
-## 8. Design decision log   <registered variants, exceptions, rationale>
-## 9. Mirror comment        <comment block for src/ppt.tsx top>
+Status: confirmed
+Updated: YYYY-MM-DD
+Decision authority: user-confirmed | user-delegated
+
+## 1. Canvas & page count
+
+## 2. Style
+
+## 3. Palette
+
+## 4. Typography
+
+## 5. Background & accessibility
+
+## 6. Layout constants & density target
+
+## 7. Page layout + visual mapping
+
+## 8. Decision log & registered variants
+
+## 9. Mirror comment for src/ppt.tsx
 ```
 
-Mandatory: canvas enum + page count; one style ID from `styles.md`; palette
-role table with hex values (no `#`); font pair from `typography.md`; background
-decision; layout mapping to locked layouts (IDs `L1–L9` or registered variants
-recorded in §8); the mirror comment block. §8 records every deviation — a
-layout outside the locked set must be **registered here** before use.
+Mandatory:
 
-## When to update which file
+- canvas enum, dimensions, approved page count;
+- style ID and rationale;
+- palette role table, allowed foreground/background combinations, and any
+  fill-only accent restriction;
+- font families, semantic type scale, line-height rules, and delivery fallback;
+- background, layout constants, approved density target;
+- page mapping with role, layout, visual type, slot ratio, source/asset status;
+- every exception and registered layout variant in §8;
+- concise mirror comment for `src/ppt.tsx`.
 
-| Change requested                    | Update order                                                                      |
-| ----------------------------------- | --------------------------------------------------------------------------------- |
-| Topic / audience / duration changes | `brief.md` → redo `outline.md` (+ `spec.md` page count)                           |
-| Add / remove / reorder pages        | `outline.md` → `spec.md` §7 → compose → slide comments                            |
-| Change palette / fonts / background | `spec.md` first → `src/token/colors.ts` / `typography.ts` → propagate to slides   |
-| Edit one slide's content            | read slide-top comment + `outline.md` entry → edit slide → sync both              |
-| Change data / facts                 | `research.md` → affected slides (`source: F-N`) → `outline.md` if message changed |
+`spec.md` is written only after approval. Then mirror §3/§4 into
+`src/token/colors.ts` and `src/token/typography.ts` according to
+`04b-token-files.md`.
+
+## Change propagation
+
+| Change                  | Update order                                        |
+| ----------------------- | --------------------------------------------------- |
+| Topic/audience/duration | brief → outline → spec page count → affected slides |
+| Add/remove/reorder page | outline → spec §7 → ppt composition → comments      |
+| Palette/font/background | spec proposal + approval → token files → render QA  |
+| One slide's content     | outline entry → slide/comment → sources if factual  |
+| Data/fact               | research → outline refs → slide/comment             |
+| Visual/asset            | outline intent → spec §7/§8 → asset → slide/comment |
+| New layout              | spec §8 registration → spec §7 → slide/comment      |
 
 ## Anti-patterns
 
-- ❌ Numeric prefixes (`01-brief.md`) or extra files that split one document.
-- ❌ Skipping a `.deck/` write because the file already exists — the example
-  files must be overwritten for every new deck.
-- ❌ Re-writing `.deck/` from memory at modification time — it is the memory.
-- ❌ A slide-top comment citing `F-N` or a layout that does not exist in `.deck/`.
-- ❌ Deleting `.deck/` after delivery — modification requests are the norm.
+- Numeric `.deck/` filenames or extra planning files.
+- Treating shipped examples or file existence as completion.
+- Writing `confirmed` without approval or recorded delegation.
+- Leaving `research.md` blank instead of using the `not-needed` schema.
+- Citing an unresolved fact, asset, or layout ID.
+- Updating code while `.deck/` documents retain the old decision.

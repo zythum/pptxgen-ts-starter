@@ -1,76 +1,80 @@
-# Narrative — Deck Arcs & Slide Roles
+# Narrative — Deck Arcs and Slide Roles
 
-Used in `workflow/03-outline`: choose ONE arc, then assign a role to every page.
+Used in `workflow/03-outline.md`: choose one dominant arc, assign one role to
+every page, then map roles to layouts and visuals.
 
 ## Deck-level arcs
 
-### 1. Problem → Solution (default for pitches)
+### A1. Problem → Solution
 
-Hook (context) → Problem (pain) → Evidence (data) → Solution (product/idea) →
-Proof (results) → CTA
-_Good for: sales, startup pitches, project proposals._
+Context → pain → evidence → solution → proof → call.
+Best for pitches and proposals.
 
-### 2. Answer Pyramid
+### A2. Answer Pyramid
 
-Conclusion first, evidence below. Each slide supports the claim on slide 1.
-_Good for: executive updates, consulting reports (McKinsey style)._
+Conclusion first; subsequent pages prove or qualify it.
+Best for executive updates and decision documents.
 
-### 3. Journey / Timeline
+### A3. Journey / Timeline
 
-Past → Present → Future. Milestones mark the path.
-_Good for: company history, roadmaps, retrospectives._
+Past → present → future, with milestones and turning points.
+Best for roadmaps, retrospectives, and histories.
 
-### 4. Before → After
+### A4. Before → After
 
-State A (broken) → Intervention → State B (fixed).
-_Good for: case studies, transformation stories._
+State A → intervention → State B → proof/next step.
+Best for case studies and transformation stories.
 
-### 5. Ladder / Escalation
+### A5. Ladder / Escalation
 
-Build one idea step by step; each slide stands on the previous.
-_Good for: teaching, product features, arguments._
+Build one concept or argument step by step.
+Best for teaching and structured persuasion.
 
-### 6. 6-Beat (hook → call)
+### A6. Six Beat
 
-1. Hook — why care
-2. Context — the landscape
-3. Tension — the problem/conflict
-4. Resolution — the answer
-5. Evidence — proof
-6. Call — next step
-   _Good for: short talks, demos._
+Hook → context → tension → resolution → evidence → call.
+Best for short talks and demos.
 
-### 7. Sectioned (encyclopedic)
+### A7. Sectioned
 
-Cover → multiple labeled sections → closing. Each section opens with a section
-divider slide.
-_Good for: workshops, reference decks, internal docs._
+Cover → labeled sections → synthesis/closing.
+Best for workshops, reference decks, and broad internal sharing.
 
-**Rule:** map the arc to slide roles, then assign layouts. Don't mix arcs
-mid-deck — switching from Problem→Solution to Answer Pyramid confuses the
-audience.
+Record one arc and rationale. A deliberate exception must explain where and why
+the secondary pattern appears; accidental arc switching is incoherent.
 
 ## Slide roles
 
-Every slide has ONE job. Assign a role, then pick a layout
-(`templates-themes/layouts.md`).
+| Role      | One job                         | Core layouts | Default density                            |
+| --------- | ------------------------------- | ------------ | ------------------------------------------ |
+| Cover     | Set topic, speaker, tone        | L1           | Sparse                                     |
+| Section   | Announce/reset a chapter        | L2           | Sparse unless explanatory content is added |
+| Statement | Make one claim                  | L3, L6       | Sparse                                     |
+| Explain   | Teach one concept               | L4, L5, L14  | Medium                                     |
+| Evidence  | Prove with data/facts           | L6, L10, L11 | Dense                                      |
+| Contrast  | Compare choices/states          | L4, L13      | Medium                                     |
+| Process   | Show ordered sequence/system    | L7, L14      | Medium                                     |
+| Demo      | Show an interface/product       | L12          | Medium                                     |
+| Moment    | Create emotion/reflection       | L8, L15      | Sparse                                     |
+| Closing   | State action, synthesis, or Q&A | L9           | Sparse                                     |
 
-| Role      | Job                 | Layout                         | Density |
-| --------- | ------------------- | ------------------------------ | ------- |
-| Cover     | Set topic + speaker | L1 Cover                       | Sparse  |
-| Section   | Announce a new part | L2 Section                     | Sparse  |
-| Statement | Make one claim      | L3 Statement                   | Sparse  |
-| Explain   | Teach a concept     | L4 Split / L5 Cards / L8 Quote | Medium  |
-| Evidence  | Prove with data     | L6 Stats / chart               | Dense   |
-| Contrast  | Compare options     | L4 Split / L5 Cards            | Medium  |
-| Process   | Show sequence       | L7 Timeline                    | Medium  |
-| Moment    | Create emotion      | L8 Quote                       | Sparse  |
-| Closing   | Next step / thanks  | L9 Closing                     | Sparse  |
+## Section treatment
 
-## Rules
+A Section role does not always require a separate page:
 
-1. A slide with no role is a slide that should be deleted.
-2. One role per slide — "Explain + Evidence + Moment" is three slides.
-3. Cover and Closing must visually echo (same palette, mirrored composition).
-4. Section slides reset the density rhythm before a dense block.
-5. Composition check: sparse slides ≈ 25–40% of the deck.
+- 12+ pages or A7 Sectioned: dedicated L2 is normally useful;
+- short decks: use a title kicker, background change, or spoken transition;
+- record the treatment and page-count effect in the outline.
+
+## Role rules
+
+1. Every page has one primary role and one core message.
+2. “Explain + Evidence + Moment” normally means multiple pages.
+3. Cover and Closing echo deliberately in palette and composition.
+4. Evidence pages resolve to external `F-N` or user-material sources.
+5. Demo pages record screenshot/product provenance and privacy review.
+6. Assign a preliminary visual intent during outline; finalize it through
+   `06-visuals.md` before layout coordinates.
+7. Sparse proportion follows the deck type locked in spec §6:
+   general/narrative 25–40%, executive/data-heavy 15–25%, or an explained
+   custom target.

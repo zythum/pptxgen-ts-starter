@@ -5,6 +5,8 @@ import { PageNumber } from "../components/PageNumber";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
+// slide: 07 | role: Evidence | layout: L4 | core: Editable native charts can compare trends and part-to-whole shares from fictional data | sources: user-material:source-code,user-material:pptxgenjsx-docs | visual: code-native bar + doughnut | asset: none
+
 export default async function () {
   return (
     <>
@@ -91,11 +93,19 @@ export default async function () {
         }}
       />
 
-      <Notes>
-        This slide demonstrates the Chart component with two chart types: a clustered bar chart
-        showing quarterly Revenue, Costs, and Profit trends, and a doughnut chart displaying market
-        share distribution across product categories.
-      </Notes>
+      <Notes
+        text={`[Hook]
+Choose chart forms by the question: compare a trend or show a share.
+
+[Track]
+Use the clustered bar chart for quarterly revenue, cost, and profit and the doughnut for category share; both are config-driven and editable, and all values are fictional.
+
+[Action]
+Point to the Q4 bar cluster, then the largest doughnut segment.
+
+[Transition]
+With the components understood, only the three-command loop remains.`}
+      />
     </>
   );
 }

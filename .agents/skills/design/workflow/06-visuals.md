@@ -1,77 +1,128 @@
-# Workflow 06 — Visuals: Charts, Stock Images, AI-Generated Images
+# Workflow 06 — Visual Decisions, Assets, and Provenance
 
-**Goal:** decide per page whether it needs a visual, and where the visual comes
-from: data chart (code), user-provided asset, stock library, or AI image
-generation. Every image must match its slot's aspect ratio BEFORE placement.
+This workflow is invoked **inside stage 05 before visual-dependent coordinates
+are finalized**. Its file number is a stable reference, not permission to add
+imagery after composition.
 
-Record per-page visual choices in the slide-top comment (see `05-compose` §8);
-update `.deck/outline.md` / `.deck/spec.md` if a visual decision changes the
-page structure or the locked design.
+## Contract
 
-## 1. Decision tree per page
+**Inputs:** outline page, core message, sources, approved style/palette, candidate
+layout.
+**Decision:** visual type, source, purpose, slot ratio, provenance, and asset
+readiness.
+**Output:** updated outline/spec mapping, prepared asset when needed, slide
+comment fields.
+**Gate:** changing a global style/layout rule reopens stage 04; ordinary
+per-page asset choice does not.
+**Validation:** ratio, resolution, license/policy/provenance, accessibility, and
+path all pass.
+**Resume:** read spec §7/§8 and slide `visual`/`asset` fields.
 
+## 1. Decision tree
+
+```text
+Does this page need a visual to communicate its one idea?
+├─ No → visual: none; use a text-led layout.
+├─ Quantitative data → code-native Chart/Table; editable and source-linked.
+├─ System, relationship, or sequence → code-native diagram/flow when practical.
+├─ Real person/place/product/interface → user asset first; then licensed stock
+│  or verified screenshot with permission/context.
+├─ Abstract metaphor or illustration → generated or licensed illustration,
+│  subject to policy/provenance review.
+└─ Ambience only → restrict to Cover/Section/Closing unless justified.
 ```
-Does the page need a visual?
-├─ No → text-only layout (Statement, Quote, Closing). Fine — many good decks are
-│        mostly text with strong typography.
-├─ Data to show → use pptxgenjsx <Chart> / <Table> (code-native, editable).
-│        Chart choice: bar=compare, line=trend, pie/donut=share, scatter=correlation.
-├─ Real-world subject (person, place, product, screenshot) →
-│        user-provided asset first; else stock library (real photo).
-└─ Abstract concept (metaphor, illustration, mood) →
-│        AI image generation (stylistically consistent, no copyright issue).
-└─ Background ambience → only for Cover/Section/Closing; keep text readable.
-```
 
-## 2. Stock vs AI-generated
+A visual must clarify, prove, orient, or create an intentional moment. Remove
+visuals that only fill empty space.
 
-| Criterion         | Stock (library)          | AI-generated                       |
-| ----------------- | ------------------------ | ---------------------------------- |
-| Needs to be real  | ✅ photos of real things | ❌ risk of fake details            |
-| Style consistency | ❌ mixed styles          | ✅ same prompt style, consistent   |
-| Cost / copyright  | license needed           | ✅ generally clean (verify policy) |
-| Specific/abstract | ❌ hard to find          | ✅ describe exactly what you want  |
+## 2. Record the decision before geometry
 
-## 3. AI image generation rules
+Update the page's plan with:
 
-- **Decide the slot first** (w × h in inches), then generate at a close ratio:
-  a 16:9 slot is 6.5 × 3.656 in; generate 1792×1024 or 1536×1024 px and
-  crop/resize to the exact slot ratio with `image-tool.ts` (never place a
-  mismatched ratio).
-- Include the deck's palette/style in the prompt: "flat illustration, muted
-  background #FAFAFA, one accent #7C3AED, no text".
-- Avoid text in generated images — AI text renders poorly; add captions as
-  pptxgenjsx `<Text>` instead.
-- Generate at high resolution; the image tool resizes down, not up.
+| Field             | Example                                                   |
+| ----------------- | --------------------------------------------------------- |
+| Purpose           | show trend, compare options, identify product             |
+| Type              | `chart/bar`, `image/photo`, `diagram/flow`, `none`        |
+| Source            | `F-3`, `user-material:product-shot`, stock URL, generator |
+| Slot ratio        | `16:9`, `4:3`, `1:1`, or exact `w:h`                      |
+| Asset status      | planned, ready, not-needed                                |
+| Credit/provenance | owner/license/tool/model/date/prompt record               |
 
-## 4. Fit images to slots (never stretch)
+Store the preliminary intent in `outline.md`, final mapping in spec §7, and
+exceptions/provenance in spec §8. Do not add another `.deck/` file.
 
-Always check aspect ratio before placing an `<Image>`:
+## 3. Chart and table choice
 
-```
+- bar: compare categories;
+- line: trend over ordered time;
+- scatter: relationship/distribution;
+- table: exact values or mixed text/data;
+- pie/donut: only a simple part-to-whole with few categories.
+
+Prefer one chart plus one takeaway. Preserve source IDs and units. Do not
+convert an editable chart into a screenshot without a documented reason.
+
+## 4. User, stock, and generated assets
+
+Priority:
+
+1. user-provided, approved asset;
+2. authoritative/official screenshot or media with permitted use;
+3. licensed stock asset;
+4. generated illustration for suitable abstract/non-factual subjects.
+
+Generated assets may reduce stock-search friction, but they do **not** guarantee
+copyright clearance. Verify model terms, client policy, provenance, likeness,
+trademark, sensitive-content, and jurisdictional restrictions. Never present a
+generated person/place/product as documentary evidence.
+
+For generated assets, record at least:
+
+- tool/provider and model/version;
+- generation date;
+- prompt or prompt reference;
+- reviewer/status;
+- known restrictions.
+
+Avoid generated text; add editable captions with pptxgenjsx.
+
+## 5. Slot first, asset second
+
+Lock the slot ratio before acquiring/generating an asset. Check metadata:
+
+```bash
 npx tsx scripts/image-tool.ts --image src/media/images/photo.png
 ```
 
-Compare native width/height to the slot w/h. If they don't match, **crop or
-resize the asset first** (never let pptxgenjs stretch):
+If source and slot ratios differ, crop then resize:
 
+```bash
+npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 \
+  --resize 624x351 --output photo-ready.png
 ```
-# crop to 16:9 then resize to 624×351 px (~6.5in × 3.656in @96dpi)
-npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 --resize 624x351 --output photo-ready.png
-```
 
-Then reference `photo-ready.png` in the slide. Same rule applies to stock and
-AI-generated images.
+Never stretch to fit. Generate/download larger than the required pixel size and
+resize down. Keep prepared assets in `src/media/images/` with stable names.
 
-## 5. Background images
+## 6. Background images and readability
 
-- Only Cover / Section / Closing, or pages needing mood.
-- Keep text readable: darken the image (transparency overlay) or place text on a
-  solid surface block.
-- Never put body text directly on a busy photo.
+Use image backgrounds mainly for Cover, Section, Closing, or a justified Moment.
+Place text on a tested solid surface/overlay and verify contrast with the final
+composite. Do not put body copy directly on a busy image.
 
-## 6. Captions & credits
+Use palette values in prompts when helpful, but token rules apply to slide code;
+prompt text is not a substitute for registered runtime tokens.
 
-- Every image gets a purpose; decorative-only images should be removed in QA.
-- For stock photos, add a small credit/source caption where required
-  (caption style, muted, 10 pt).
+## 7. Caption, credit, and accessibility
+
+- Add required credit/license captions in the approved caption token.
+- Add a concise source or explanatory caption when the visual could be
+  misinterpreted.
+- Do not rely on color alone in charts; combine color with labels/shapes.
+- Ensure critical chart labels and image details remain legible from the back
+  of the room.
+
+## Completion condition
+
+Before stage 05 finalizes the page, the visual decision is `none/not-needed` or
+all required asset, provenance, ratio, and credit checks are complete.

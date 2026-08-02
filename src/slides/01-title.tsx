@@ -4,11 +4,13 @@ import { PageNumber } from "../components/PageNumber";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
+// slide: 01 | role: Cover | layout: L1 | core: Native PPTX presentations can be authored with JSX and TypeScript | sources: user-material:agents-guide,user-material:package-manifest | visual: none | asset: none
+
 export default async function () {
   return (
     <>
       <SlideBackground color="dark" />
-      <PageNumber color={colors.muted} />
+      <PageNumber color={colors.mutedLight} />
 
       {/* Accent line */}
       <Rect x={4.667} y={2.1} w={4.0} h={0.06} fill={{ color: colors.accent }} />
@@ -40,11 +42,19 @@ export default async function () {
         />
       </Text>
 
-      <Notes>
-        Welcome! This is a sample presentation built with pptxgen-ts-starter. The starter uses JSX
-        to define slides and pptxgenjs to render them to .pptx files. Press the next button or use
-        arrow keys to navigate.
-      </Notes>
+      <Notes
+        text={`[Hook]
+Welcome—this entire presentation is generated from JSX and TypeScript.
+
+[Track]
+pptxgenjsx defines editable slide content and pptxgenjs writes the native .pptx; the deck itself is the demonstration.
+
+[Action]
+Pause after “native PPTX,” then advance with the next control or arrow key.
+
+[Transition]
+First, here is the workflow and the three building blocks this starter demonstrates.`}
+      />
     </>
   );
 }

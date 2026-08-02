@@ -4,11 +4,13 @@ import { PageNumber } from "../components/PageNumber";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
+// slide: 08 | role: Closing | layout: L9 | core: Fork, preview, and generate a native PPTX with three commands | sources: user-material:agents-guide,user-material:package-manifest | visual: none | asset: none
+
 export default async function () {
   return (
     <>
       <SlideBackground color="dark" />
-      <PageNumber color={colors.muted} />
+      <PageNumber color={colors.mutedLight} />
 
       {/* Decorative top accent */}
       <Rect x={5.667} y={1.72} w={2.0} h={0.06} fill={{ color: colors.accent }} />
@@ -52,11 +54,19 @@ export default async function () {
       {/* Decorative bottom accent */}
       <Rect x={5.667} y={5.72} w={2.0} h={0.06} fill={{ color: colors.accent }} />
 
-      <Notes>
-        Thanks for exploring the pptxgen-ts-starter template! To get started: fork or clone the
-        repo, run npm install, start editing slides in src/slides/, preview in the browser, and
-        generate your .pptx when ready.
-      </Notes>
+      <Notes
+        text={`[Hook]
+The fastest way to learn the starter is to change one slide.
+
+[Track]
+Summarize fork or clone, npm install, edit src/slides, preview in the browser, and npm run generate.
+
+[Action]
+Invite the audience to fork the template and replace one sample page; pause for questions.
+
+[Transition]
+End of deck and Q&A.`}
+      />
     </>
   );
 }

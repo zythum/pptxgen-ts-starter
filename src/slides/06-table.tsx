@@ -5,6 +5,8 @@ import { PageNumber } from "../components/PageNumber";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
+// slide: 06 | role: Evidence | layout: L11 | core: An editable native table can render headers, banded rows, and totals from fictional data | sources: user-material:source-code,user-material:pptxgenjsx-docs | visual: code-native table | asset: none
+
 export default async function () {
   return (
     <>
@@ -203,10 +205,19 @@ export default async function () {
         </TableRow>
       </Table>
 
-      <Notes>
-        This slide demonstrates the Table component with header row, alternating row backgrounds,
-        and a total row. The table has 5 columns and 10 rows.
-      </Notes>
+      <Notes
+        text={`[Hook]
+This table remains native and editable in PowerPoint.
+
+[Track]
+Explain the header, alternating row fills, total row, and tokenized styling; state clearly that the quarterly values are fictional.
+
+[Action]
+Point to the total row and the capability context rather than presenting the values as business results.
+
+[Transition]
+The same fictional data can also demonstrate editable chart components.`}
+      />
     </>
   );
 }

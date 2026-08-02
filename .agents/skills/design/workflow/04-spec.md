@@ -1,94 +1,115 @@
-# Workflow 04 — Design Spec: Canvas, Style, Palette, Fonts
+# Workflow 04 — Design Spec: Approve Before Mutation
 
-**Goal:** lock the deck's visual system BEFORE composing any slide. Everything
-in `templates-themes/` exists to make this step fast and consistent.
+## Contract
 
-**Gate ⛔:** confirm the design spec (canvas, style, palette, fonts, background)
-with the user before writing slide code. Changing tokens mid-deck is expensive.
+**Inputs:** confirmed outline, brief, research, and design knowledge base.
+**Decision:** canvas, style, palette, type, background, density, layout set, and
+visual constraints.
+**Output:** approved `.deck/spec.md`, then synchronized runtime token files.
+**Gate:** show a proposal before writing spec, tokens, or slides; may be waived
+only by recorded delegation.
+**Validation:** spec §3/§4 equals token values; required contrast combinations
+pass; every page has an allowed layout/visual plan.
+**Resume:** read confirmed spec and token mirrors; do not infer from examples.
 
-## 1. Canvas & page count
+## 1. Build a proposal in memory
 
-- Default canvas: `LAYOUT_WIDE` = 13.333 × 7.5 in (see `pptxgenjsx/references/deck.md`
-  for the layout enum). Use this unless the user has a different format.
-- Page count comes from `03-outline` (duration × pace). Re-confirm it here —
-  if the deck gained/lost content, adjust before designing.
+Do not mutate project files yet. Prepare:
 
-## 2. Style
+### Canvas and count
 
-Pick ONE style from `templates-themes/styles.md`, routed by:
+- Default: `LAYOUT_WIDE`, 13.333 × 7.5 in.
+- Use `pptxgenjsx/references/deck.md` for other enum dimensions.
+- Page count must match the confirmed outline.
 
-1. **Purpose** — pitch / review / teaching / sharing / recap
-2. **Audience** — execs, clients, peers, public, investors
-3. **Content type** — narrative-heavy (human stories) vs fact-heavy (data)
+### Style
 
-The style determines: palette family, font pair, background treatment, and
-layout tendencies. Document the choice with a one-line rationale.
+Pick one style from `templates-themes/styles.md` based on purpose, audience, and
+content type. Record the style system and one-sentence rationale. A hybrid style
+is allowed only when the catalog explicitly defines its boundary.
 
-## 3. Palette
+### Palette
 
-- Pick ONE palette from `templates-themes/palettes.md`. **Do not invent hex
-  colors** unless the user requires brand colors — preset palettes are already
-  contrast-checked and cohesive.
-- If brand colors exist, map them into the role slots (background/surface/
-  primary/accent/text/muted/border) and keep the roles, don't fight them.
-- One accent color for the whole deck.
-- **Write the chosen values into `src/token/colors.ts` and
-  `src/token/typography.ts`** (the runtime single source of truth). Slides
-  reference `colors.*` / `typography.*`; deriving color variants happens via
-  `scripts/color-tool.ts` and the results are added to `colors.ts` with
-  semantic names — never as bare hex in slide files.
-  Structure, naming, lifecycle and boundary rules of these two files:
-  `workflow/04b-token-files.md`.
+Pick one preset from `templates-themes/palettes.md`, or map user-supplied brand
+colors into the required roles. Never invent hex values.
 
-## 4. Typography
+The proposal must include:
 
-- Pick ONE font pair from `templates-themes/typography.md` (title + body,
-  ≤ 2 families). CJK-heavy decks: pick a CJK-safe pair.
-- Set the size scale: hero 32–44 / slide title 24–30 / body 14–18 /
-  caption 10–12 (adjust to canvas).
+- `background`, `surface`, `primary`, `accent`, `text`, `muted`, `border`;
+- optional semantic/variant roles actually needed;
+- allowed foreground/background combinations;
+- any `fill-only` accent restriction;
+- `color-tool.ts` results for derived variants and contrast.
 
-## 5. Background
+### Typography
 
-- Every slide starts with `<SlideBackground color="light" />` (or `"dark"`).
-  Choose once per deck; mixing light/dark is a deliberate style statement.
-- Dark backgrounds: keep text ≥ 4.5:1 contrast; keep accent bright.
-- Background images are a `06-visuals` decision — never default to them.
+Choose no more than two font families. Define semantic roles that cover the
+selected layouts: display, statement, section, title, subtitle, body, caption,
+stat, and code when used. State CJK/fallback and delivery-environment checks.
 
-## 6. Lock the spec
+### Background and density
 
-Save the locked spec to `.deck/spec.md` (fixed filename, project root) — the
-single source of truth for the deck's visual system. **If the file already
-exists (the shipped example), overwrite it entirely with the new deck's spec —
-an existing file does not mean this step is done.** Format and mandatory
-fields (§1–§9): `workflow/00-deck-workspace.md` → `spec.md`. When
-colors/fonts change later, edit this file first, then propagate to every
-slide. Keep `src/token/colors.ts` and `src/token/typography.ts` in sync with
-spec §3 / §4 (same role values and type scale).
+- Choose light/dark treatment; mixed backgrounds require a documented purpose.
+- Lock the outline's sparse target range or an explained custom range.
+- Background images remain per-page visual decisions, not a default.
 
-Mirror the tokens as a comment block at the top of `src/ppt.tsx` so every slide
-follows the same values (format: see `04b-token-files.md` → lifecycle):
+### Layout and visual mapping
 
-```tsx
-{
-  /* Design spec
-  Canvas: 13.333 × 7.5 (LAYOUT_WIDE)
-  Style:  Consulting (exec review)
-  Palette: consulting — accent 2251FF
-  Fonts:  Inter (title) / Inter (body)
-  Background: light (FAFAFA)
-  Layout set: Cover, Section, Explain-split, Evidence-data, Closing
-*/
-}
-```
+Map each page to a core layout from `layouts.md`. If no core layout fits,
+propose a registered variant in spec §8 with parent, geometry, reason, and
+affected pages. Include preliminary visual type and slot ratio in §7.
 
-## 7. Confirm
+## 2. Present the Gate
 
-Present the spec to the user:
+Show the user:
 
-- Canvas + page count
-- Style name + one-line rationale
-- Palette name + accent hex
-- Font pair
-- Background (light/dark)
+- canvas and page count;
+- style/system and rationale;
+- palette roles, accent usage, and key contrast results;
+- font pair, semantic size scale, fallback;
+- background and density target;
+- core layout set and any proposed variants;
+- visual constraints that materially affect composition.
 
-**Stop and ask** for approval. Only after approval, start composing slides.
+In interactive mode, stop for approval. In delegated mode, verify the recorded
+scope covers all proposed decisions.
+
+## 3. Write the approved spec
+
+Only after Gate satisfaction:
+
+1. overwrite the example `.deck/spec.md` using the schema in
+   `00-deck-workspace.md`;
+2. set `Status: confirmed` and the correct authority;
+3. record all derivation commands, exceptions, and variants in §8;
+4. add the concise mirror comment for `src/ppt.tsx` in §9.
+
+The mirror comment summarizes the spec; runtime values live in token files, not
+in the comment.
+
+## 4. Mirror runtime tokens
+
+After writing the approved spec, update:
+
+- `src/token/colors.ts` from spec §3;
+- `src/token/typography.ts` from spec §4.
+
+Follow `04b-token-files.md`. Preserve existing semantic key names during an
+incremental edit unless a deliberate migration updates every reference.
+
+## 5. Validate before composition
+
+- Compare every spec §3/§4 value with its token mirror.
+- Run `color-tool.ts --contrast` for required text/background pairs.
+- Confirm no page refers to an unknown layout or unregistered variant.
+- Confirm visual-dependent pages have a preliminary type and slot ratio.
+
+Only then begin stage 05.
+
+## Anti-patterns
+
+- Writing tokens before approval.
+- Calling a proposal “locked” without status/authority.
+- Choosing a palette because it looks attractive but fails required contrast.
+- Adding an unregistered layout during composition.
+- Changing token key names during a small edit and breaking unrelated slides.

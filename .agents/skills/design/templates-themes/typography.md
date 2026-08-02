@@ -1,72 +1,100 @@
 # Typography
 
-Locked in `workflow/04-spec`; applied per slide in `workflow/05-compose`.
+Typography is proposed in stage 04, mirrored to
+`src/token/typography.ts`, applied in stage 05, and verified in stage 07.
 
-## Font selection
+## 1. Font selection
 
-- **Max 2 families per deck**: one for titles, one for body. Same family in
-  different weights counts as one.
-- Titles: bold or semibold, tight tracking.
-- Body: regular, comfortable leading.
-- Numbers: prefer tabular figures so columns of stats align.
-- Chinese text: use a family with good CJK coverage (Noto Sans SC, Source Han
-  Sans, PingFang SC) as primary or fallback; CJK glyphs render from the first
-  family that covers them.
+Use at most two primary families per deck: one title family and one body family.
+A mono family is the second family when code/data requires it, not a free third
+font. Platform/CJK fallbacks may be documented without becoming a visual style.
 
-## Font pairs (quick reference)
+| Pair        | Title            | Body                                          | Best for                     |
+| ----------- | ---------------- | --------------------------------------------- | ---------------------------- |
+| Neo-Grotesk | Inter            | Inter                                         | Minimal, consulting, general |
+| Humanist    | Source Sans 3    | Source Sans 3                                 | Warm, educational            |
+| Editorial   | Playfair Display | Inter                                         | Narrative/editorial          |
+| Scientific  | Inter            | Source Serif 4                                | Research/academic            |
+| Mono accent | Inter            | JetBrains Mono for code/data; Inter for prose | Dev/data                     |
 
-| Pair        | Title                   | Body                    | Vibe                    |
-| ----------- | ----------------------- | ----------------------- | ----------------------- |
-| Neo-Grotesk | Inter (Bold)            | Inter (Regular)         | Default, neutral, safe  |
-| Humanist    | Source Sans 3 (Bold)    | Source Sans 3 (Regular) | Warm, modern            |
-| Editorial   | Playfair Display (Bold) | Inter                   | High-contrast, magazine |
-| Scientific  | Inter (Semibold)        | Source Serif 4          | Academic, trustworthy   |
-| Mono accent | Inter (Bold)            | JetBrains Mono          | Dev / data decks        |
+### CJK options
 
-### Chinese support
+| Pair             | Title               | Body                         | Portability note                        |
+| ---------------- | ------------------- | ---------------------------- | --------------------------------------- |
+| CJK Sans         | Noto Sans SC        | Noto Sans SC                 | Verify/install exact files              |
+| Apple CJK        | PingFang SC         | PingFang SC                  | macOS-centric; define delivery fallback |
+| CJK Serif accent | Source Han Serif SC | Noto Sans SC                 | Two-family limit reached                |
+| CJK Dev          | Noto Sans SC        | Noto Sans Mono for code only | Check Latin/CJK baseline                |
 
-| Pair           | Title                      | Body                            |
-| -------------- | -------------------------- | ------------------------------- |
-| Sans (default) | Noto Sans SC (Bold)        | Noto Sans SC (Regular)          |
-| Sans (Apple)   | PingFang SC (Semibold)     | PingFang SC (Regular)           |
-| Serif accent   | Source Han Serif SC (Bold) | Noto Sans SC (Regular)          |
-| Mono (dev)     | Noto Sans SC (Bold)        | JetBrains Mono / Noto Sans Mono |
+Never invent a font name. Record exact family/face and target environment in
+spec §4.
 
-## Size scale (projected, 13.333 × 7.5 in)
+## 2. Weight capability
 
-| Role               | Size     | Weight             | Use                       |
-| ------------------ | -------- | ------------------ | ------------------------- |
-| Hero / slide title | 32–44 pt | Bold               | Cover, section, statement |
-| Slide title        | 24–30 pt | Bold/Semibold      | Most slides               |
-| Section kicker     | 12–14 pt | Bold, letterspaced | Above titles              |
-| Body               | 14–18 pt | Regular            | Content                   |
-| Caption / footnote | 10–12 pt | Regular, muted     | Sources, notes            |
-| Stat / KPI         | 40–60 pt | Bold, tabular      | Data slides               |
+pptxgenjsx/pptxgenjs uses `bold: boolean`, not numeric `fontWeight` tokens.
+Use `bold: true` for emphasis. “Semibold” is only a valid specification when an
+explicit installed font face reliably resolves to that weight; otherwise write
+the actual supported behavior.
 
-Rule of thumb: title ≈ 2× body size. If a slide has more than ~6 body lines,
-cut content.
+## 3. Semantic size ranges for 13.333 × 7.5 in
 
-## Line height
+| Token role  |    Range | Typical use             |
+| ----------- | -------: | ----------------------- |
+| `display`   | 40–44 pt | Cover/closing title     |
+| `statement` | 36–44 pt | Hero claim/quote        |
+| `section`   | 32–38 pt | Section divider         |
+| `title`     | 24–30 pt | Standard slide title    |
+| `subtitle`  | 18–22 pt | Lead/callout            |
+| `body`      | 14–18 pt | Main copy               |
+| `caption`   | 10–12 pt | Source/credit/footnote  |
+| `stat`      | 40–60 pt | KPI value               |
+| `code`      | 11–14 pt | Code/table-like content |
 
-- Body: leading ≈ 1.2–1.5× font size (`lineSpacing` / `lineSpacingMultiple`).
-- CJK: 1.5× minimum, 1.6–1.8× comfortable.
-- Titles: 1.0–1.1×.
+Pick one exact value per used role in spec §4 and token files. Do not copy
+literal sizes from layout examples. Add a new semantic role only when an
+existing name would misrepresent its purpose.
 
-## Line length
+Rule of thumb: a standard title is about 1.6–2× body size. If body copy exceeds
+about six lines, reduce content before type size.
 
-- Max ~55–65 characters per line (≈ 8–9 in at 16 pt). Longer lines defeat
-  hierarchy. Multi-column layouts shorten lines automatically — prefer them for
-  dense content.
-- CJK: ~25–35 characters per line is comfortable.
+## 4. Line height and length
 
-## Practice rules
+- Body: about 1.2–1.5× font size.
+- CJK body: at least 1.5×; 1.6–1.8× is often comfortable.
+- Display/title: about 1.0–1.15×.
+- Latin body line: roughly 55–65 characters maximum.
+- CJK body line: roughly 25–35 characters.
 
-1. Left-align body; never justify mixed CJK/Latin text.
-2. Center only short hero text (≤ 12 chars).
-3. Italic only for quotes/book titles — not for emphasis on data.
-4. Never letterspace CJK; reserve letter-spacing for Latin uppercase kickers.
-5. Bold one key phrase per slide maximum — the takeaway.
-6. Respect `breakLine: true` on the last `TextRun` of each line in pptxgenjsx.
-7. Measure variable-length text with `scripts/estimate-text.ts` before fixing `h`.
-8. Register custom fonts in `scripts/estimate-text.ts --font-file` when measuring.
-9. Check real rendering in PowerPoint — font fallback differs between OS.
+Use actual text and font with `estimate-text.ts`; these are starting ranges, not
+proof of fit.
+
+## 5. Alignment and emphasis
+
+1. Left-align body copy; do not justify mixed CJK/Latin text.
+2. Center only short hero/moment text that fits one or two lines.
+3. Do not letterspace CJK; reserve tracking for short Latin uppercase kickers.
+4. Use italic mainly for quotes/titles when the font supports it.
+5. Limit emphasis to the core phrase; too many bold fragments erase hierarchy.
+6. Use `breakLine: true` only where separate `TextRun` lines require it.
+7. Use tabular figures when the chosen font/face supports them.
+
+## 6. Measurement and portability
+
+Before fixing a variable text box:
+
+```bash
+npx tsx scripts/estimate-text.ts -w 5.7 -f "16pt Inter" --leading 24 \
+  "Actual slide text"
+```
+
+Register exact font files with `--font-file` when necessary. Measurement is a
+layout estimate; final PowerPoint rendering may differ by platform and font
+fallback.
+
+Before delivery:
+
+- verify the font in the generation environment;
+- define CJK/platform fallback in spec;
+- inspect the generated deck in the target PowerPoint environment when
+  available;
+- remeasure any text changed after QA.

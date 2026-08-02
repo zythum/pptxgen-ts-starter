@@ -1,67 +1,87 @@
 # Workflow 02 — Research & Enrich Content
 
-**Goal:** make the deck substantive, not generic. Use web search to fill content
-gaps: facts, data, cases, examples, and fresh context that the user did not
-provide in the brief.
+## Contract
 
-**When to research:** the brief lacks data/evidence; the topic benefits from
-current numbers, case studies, or comparisons; the user explicitly asked to
-"enrich" or "make it more substantial".
+**Inputs:** confirmed brief and supplied materials.
+**Decision:** `completed` external research or explicit `not-needed`.
+**Output:** `.deck/research.md` in one valid branch.
+**Gate:** none; follow user confidentiality/search constraints.
+**Validation:** every external claim has a resolvable fact card; user materials
+have stable IDs.
+**Resume:** read status, reason, user-material IDs, and fact cards.
 
-**When NOT to research:** the user provided all material and asked for layout
-only; the content is internal/confidential (never leak or seek public sources
-for private info).
+## 1. Choose the branch
 
-## What to search for
+### Research (`Status: completed`)
 
-| Need         | Search for                                      |
-| ------------ | ----------------------------------------------- |
-| Authority    | Industry reports, official stats, named experts |
-| Proof        | Case studies, before/after results, benchmarks  |
-| Context      | Market size, trends, competitor landscape       |
-| Freshness    | Last 12 months if topic is fast-moving          |
-| Alternatives | Comparisons, options, trade-offs                |
+Use external research when the deck lacks evidence, benefits from current data,
+or the user asks for enrichment.
 
-## Extract into fact cards
+Search for:
 
-For each useful finding, write a compact card. **Never fabricate numbers** — if
-you cannot verify a figure, omit it or mark it unverified.
+| Need         | Preferred target                                     |
+| ------------ | ---------------------------------------------------- |
+| Authority    | Official statistics, standards, original reports     |
+| Proof        | Primary case studies and measured outcomes           |
+| Context      | Market/trend/competitor data with geography and date |
+| Alternatives | Explicit trade-offs and comparison criteria          |
+| Freshness    | Recent sources for fast-moving topics                |
 
+### No research (`Status: not-needed`)
+
+Use this branch when:
+
+- user materials fully support the deck;
+- the task is layout-only;
+- content is confidential and external search is inappropriate;
+- the user prohibited external research.
+
+Do not search private content or create filler fact cards to satisfy a quota.
+
+## 2. Register supplied materials
+
+Assign stable IDs even when no web research occurs:
+
+```md
+- user-material:q2-metrics — Q2 metrics spreadsheet supplied by the user
+- user-material:brand-guide — Brand PDF supplied by the user
 ```
-F-1 · FACT: <one sentence, specific>
-     SOURCE: <name + URL + date>
-     USE: <which section/slide it could support>
+
+Slides cite these IDs when facts come from user materials.
+
+## 3. Create external fact cards
+
+```md
+F-1 · FACT: <one specific, verifiable sentence>
+SOURCE: <publisher>, <title>, <publication date>, <URL>, accessed <date>
+USE: <chapter/page>
 ```
 
-Keep 5–15 cards. More than that is noise; less than 3 means research was thin.
+Rules:
 
-## Quality rules
+1. Prefer primary sources; label secondary summaries honestly.
+2. Cross-check decision-critical numbers with two independent sources when
+   practical; keep both IDs.
+3. Preserve year, geography, unit, denominator, and methodology caveats.
+4. Quote briefly, attribute, and do not copy long passages.
+5. For global Chinese decks, search relevant Chinese and English sources and
+   state region/language limitations.
+6. Never mark a third-party palette or article as “official” without an
+   official source.
 
-1. **Prefer primary sources** (official reports, original papers) over
-   second-hand summaries.
-2. **Cross-check key numbers** across ≥ 2 sources before putting them on a slide.
-3. **Prefer recent data**; if using old data, keep the year visible.
-4. **Respect copyright & confidentiality** — quote briefly, attribute, never
-   copy long passages into a deck.
-5. **Chinese decks**: search both Chinese and English sources when the topic is
-   global; note the source language/region for numbers.
+Use 5–15 cards as a working range, not a quota. Stop when every evidence-bearing
+section has sufficient support.
 
-## Output — `.deck/research.md`
+## 4. Write `.deck/research.md`
 
-Save the 5–15 fact cards to `.deck/research.md` (fixed filename, project
-root), numbered `F-1, F-2, …` as in the example above. **If the file already
-exists (the shipped example), overwrite it entirely — do not reuse example
-cards.** Format and mandatory fields: `workflow/00-deck-workspace.md` →
-`research.md`. Slide-top comments reference these IDs (`source: F-3`), so
-every page can be traced back to its evidence.
-
-Group the cards by chapter (from `03-outline`), or by theme if the outline does
-not exist yet. Pass the file to the outline stage — it becomes the evidence
-backbone of each section. Keep it updated if facts change later.
+Use the completed or not-needed schema in `00-deck-workspace.md`. Group fact
+cards by theme until the outline exists, then by chapter. Keep IDs stable during
+edits; add new IDs rather than renumbering cited cards.
 
 ## Anti-patterns
 
-- ❌ Dumping a wall of search results onto slides.
-- ❌ Using an unverified number because it "sounds right".
-- ❌ Copying text verbatim from a webpage.
-- ❌ Researching forever — stop once every chapter has 1–2 solid supports.
+- Blank `research.md` with no status or reason.
+- Researching confidential/internal facts on the public web.
+- A slide citation that points only to `outline.md`.
+- Missing publication/access dates or source ownership.
+- Renumbering cards without updating all references.

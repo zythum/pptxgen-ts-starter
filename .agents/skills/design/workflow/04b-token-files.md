@@ -1,130 +1,146 @@
-# Workflow 04b — Token Files: `src/token/colors.ts` + `src/token/typography.ts`
+# Workflow 04b — Runtime Token Files
 
-**Purpose:** define the required structure, naming, lifecycle, and boundary
-rules of the two runtime token files. They are the **runtime single source of
-truth** that slides actually import — the code mirror of `.deck/spec.md` §3
-(palette) and §4 (typography). Write them once at spec-lock time, then keep
-them in sync with the spec for the life of the deck.
+`src/token/colors.ts` and `src/token/typography.ts` are the runtime mirrors of
+approved `.deck/spec.md` §3 and §4. Slides/components import them; the spec is
+the decision authority for later changes.
 
-Relationship:
+## Contract
 
-```
-templates-themes/palettes.md  ─┐
-templates-themes/typography.md ┘→ pick palette / scale
-        ↓
-.deck/spec.md (§3 palette, §4 type scale)   ← locked spec (source of truth for edits)
-        ↓
-src/token/colors.ts + typography.ts         ← runtime mirror (read by code)
-        ↓
-slides reference colors.* / typography.*    ← never write bare values
-```
+**Inputs:** approved spec only.
+**Output:** two `as const` token objects synchronized with spec.
+**Hard rules:** no invented hex, no bare slide hex, no numeric font weights.
+**Incremental rule:** preserve existing semantic keys unless an explicit
+migration updates all references.
+**Validation:** spec/token equality plus grep/typecheck/generate in stage 07.
 
-## 1. `colors.ts` — required structure
+## 1. Color token minimum
 
-```
-// Head comment: this file = single source of truth + usage rules
-// (create / update / variants / no bare hex)
+For a new deck, use this stable role interface:
+
+```ts
 export const colors = {
-  // Common roles (recommended skeleton; keys may vary but must be semantic)
-  white:            "FFFFFF",
-  black:            "000000",
-  backgroundLight:  "FAFAFA",
-  darkBackground:   "18181B",
-  darkSurface:      "27272A",
-  ink:              "1F2937",   // body text
-  textSecondary:    "4B5563",
-  muted:            "6B7280",
-  mutedLight:       "9CA3AF",
-  accent:           "7C3AED",   // accent (one per deck)
-  accentLight:      "A78BFA",
-  accentSoft:       "F3F0FF",
-  border:           "E5E7EB",
-  borderLight:      "E2E8F0",
-  // semantic colors / hue ramps / chart colors (add or remove as needed)
-  success:          "10B981",
-  dangerText:       "DC2626",
-  blue600:          "2563EB",
-  …
+  background: "FAFAFA",
+  surface: "FFFFFF",
+  primary: "1F2937",
+  accent: "7C3AED",
+  text: "1F2937",
+  muted: "6B7280",
+  border: "E5E7EB",
 } as const;
 ```
 
-Mandatory: `as const`; every key semantic and self-explanatory; no bare hex in
-slide files; role keys (background/ink/accent/border…) always present.
+These values are the Light Professional preset, not arbitrary examples. Replace
+them with the approved palette.
 
-## 2. `typography.ts` — required structure
+Optional roles are added only when used and must be semantic:
 
+```ts
+export const colors = {
+  // required roles ...
+  accentText: "1F2937", // when accent is fill-only and unsafe as text
+  accentHover: "5F14E0", // derived with color-tool.ts
+  surfaceAlt: "F5F5F5", // derived/source value recorded in spec §8
+  success: "059669", // Tailwind emerald-600; approve and record before use
+  warning: "D97706", // Tailwind amber-600; approve and record before use
+  danger: "DC2626", // Tailwind red-600; approve and record before use
+  chartSeries2: "2563EB", // Tailwind blue-600; approve and record before use
+} as const;
 ```
+
+Do not add white/black, dark/light duplicates, hue ramps, or semantic colors
+unless the current deck uses them.
+
+### Existing decks
+
+An existing deck may use keys such as `ink`, `backgroundLight`, or
+`textSecondary`. Preserve them for a small edit and map them explicitly in spec
+§3. A role-key migration is a separate change: update the spec, token file, all
+imports/usages, then run full QA.
+
+## 2. Color derivation
+
+- Preset/source colors come from `palettes.md`, a user brand kit, or another
+  documented published system.
+- New variants must be computed, never guessed:
+
+```bash
+npx tsx scripts/color-tool.ts --hex 7C3AED --darken 10
+npx tsx scripts/color-tool.ts --hex 1F2937 --hex FAFAFA --contrast --json
+```
+
+Record command, result, source role, and use in spec §8 before adding the token.
+Transparency is an element option, not a new hex token.
+
+## 3. Typography token minimum
+
+The scale must cover the approved layouts rather than forcing literals:
+
+```ts
 export const typography = {
   font: {
-    sans: "Inter",          // headings / body (≤2 families)
-    serif: "Source Serif 4", // decorative quotes (drop if unused)
-    mono: "JetBrains Mono", // code / numbers
+    sans: "Inter",
+    mono: "JetBrains Mono",
   },
   size: {
-    display: 36,  // cover main title
-    hero: 30,     // section heading
-    title: 24,    // slide title
+    display: 44,
+    statement: 40,
+    section: 36,
+    title: 28,
     subtitle: 18,
-    body: 14,
-    caption: 12,
-    tiny: 10,
+    body: 16,
+    caption: 11,
+    stat: 48,
+    code: 12,
   },
 } as const;
 ```
 
-Mandatory: `font` group (family names, actual installed/Google fonts — no
-invented font names); `size` group (semantic keys following the scale in
-`templates-themes/typography.md`); no magic numbers in slide files.
+Remove unused font/size keys. Add an approved semantic role instead of reusing a
+misleading key. A measured one-off exception may use a literal value only after
+updating spec §4 or documenting why it is intentionally local.
 
-**Font weights are NOT tokenized** — pptxgenjs supports only `bold: boolean`
-(no numeric `fontWeight`). Write `bold: true/false` directly in slides; do not
-add a `weight` token group.
+### Weight capability
 
-## 3. Naming conventions
+Do not create numeric weight tokens. pptxgenjsx/pptxgenjs exposes
+`bold: boolean`; use it directly. “Semibold” is valid only if an explicitly
+named installed font face produces that weight reliably; otherwise use
+`bold: true` and document the actual rendering choice.
 
-| ❌ Bad               | ✅ Good                               | Why                           |
-| -------------------- | ------------------------------------- | ----------------------------- |
-| `purple`, `brand`    | `accent`, `accentLight`, `accentSoft` | role semantics, not hue names |
-| `color1`, `color2`   | `ink`, `muted`, `border`              | self-explanatory              |
-| `h24`, `f18`         | `size.title`, `size.subtitle`         | express purpose, not values   |
-| `darkBg1`, `darkBg2` | `darkBackground`, `darkSurface`       | hierarchy semantics           |
+## 4. Font portability
 
-Derived variants: name = base role + modifier (`accent.hover` →
-`accentHover`, `surface.alt` → `surfaceAlt`). Never use Tailwind-style
-numeric suffixes for roles that are not a color ramp.
+For each family in the spec:
 
-## 4. Lifecycle
+1. verify it exists in the generation/measurement environment;
+2. register the exact font file with `estimate-text.ts --font-file` when needed;
+3. define a CJK or platform-safe fallback strategy;
+4. check the final deck in the target PowerPoint environment because fonts are
+   not assumed to travel with the file.
 
-| Event                    | Action                                                                                                                                   |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| **Create**               | after 04-spec confirmation, mirror spec §3/§4 values into both token files, then start 05-compose                                        |
-| **Change palette/fonts** | update `.deck/spec.md` first → then token files → entire deck picks it up                                                                |
-| **New color variant**    | run `scripts/color-tool.ts` (e.g. `--darken 10`) for an exact hex → add a semantic key to `colors.ts` → record the derivation in spec §8 |
-| **New size**             | update spec §4 → propagate to `typography.ts`; measured one-off exceptions: literal value + comment in the slide                         |
-| **Remove**               | delete keys with no references; keep files to values the deck actually uses                                                              |
+## 5. Lifecycle
 
-## 5. Boundary rules (hard vs soft)
+| Event               | Required order                                                 |
+| ------------------- | -------------------------------------------------------------- |
+| Create              | spec approval → write spec → write tokens → validate → compose |
+| Palette/font change | proposal → approval → spec → tokens → full render QA           |
+| New color variant   | color-tool → spec §8 → semantic token → use                    |
+| New size            | measure → spec §4 → semantic token → use                       |
+| Existing key rename | spec migration log → replace all refs → typecheck/grep         |
+| Remove              | prove no refs → remove token → validate                        |
 
-| Dimension    | Rule                                                                                        | Nature                                        |
-| ------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| Color values | never hand-compute or invent hex; presets from `palettes.md`, variants from `color-tool.ts` | **hard constraint**                           |
-| Color refs   | slides use `colors.*` only; bare hex is a defect                                            | **hard constraint**                           |
-| Font sizes   | default `typography.*`; measured one-off tweaks may use literals + comment                  | **soft constraint** (consistency, not safety) |
-| Font weights | write `bold: boolean` directly                                                              | capability boundary, not a token concern      |
+## 6. Boundary rules
 
-## 6. QA linkage
-
-- 07-qa checks: `rg` for bare hex in `src/slides/` + `src/components/` (must be
-  clean); `rg` for magic font sizes outside `typography.ts`.
-- 04b files themselves are not generated by scripts — they are hand-written
-  mirrors of the spec. If they drift from `.deck/spec.md` §3/§4, fix the spec
-  first, then the token files.
+| Dimension        | Rule                                          | Nature                  |
+| ---------------- | --------------------------------------------- | ----------------------- |
+| Hex values       | sourced preset/brand or color-tool derivation | hard                    |
+| Color refs       | slides/components use `colors.*` only         | hard                    |
+| Font family/size | use `typography.*` by default                 | hard for reusable roles |
+| One-off size     | literal + measurement/rationale comment       | controlled exception    |
+| Weight           | `bold: boolean`, no numeric token             | capability boundary     |
 
 ## Anti-patterns
 
-- ❌ Inventing hex values or font names — no source, no token.
-- ❌ Adding a `weight` token group (pptxgenjs has no `fontWeight`).
-- ❌ Putting a color ramp in `colors.ts` that no slide uses.
-- ❌ Editing token files while `.deck/spec.md` says something else — spec is
-  the source of truth for modifications; token files are its mirror.
-- ❌ Replacing `colors.*` with hex to "save time" during a slide edit.
+- Editing token files while spec still shows the old decision.
+- Copying a hex from a layout example into a slide.
+- Adding unused ramps “for later”.
+- Calling a yellow fill accent an accessible text color without contrast proof.
+- Assuming a font available on the author's Mac exists on the delivery device.

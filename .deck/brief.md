@@ -1,33 +1,62 @@
 # Deck Brief
 
-> # ⚠️ WARNING — EXAMPLE FILE, MUST OVERWRITE
+Status: confirmed
+Updated: 2026-08-02
+Decision authority: user-delegated
+
+> **⚠️ EXAMPLE FILE — MUST OVERWRITE**
 >
-> This is a **filled reference example** (a demo deck), NOT working data.
-> Every NEW deck **must overwrite this file** at its stage:
-> brief → 01-clarify · research → 02-research · outline → 03-outline · spec → 04-spec.
-> A file existing here does NOT mean the work is done — it is still the example.
-> Format spec: `workflow/00-deck-workspace.md`.
+> This is a filled reference example for the shipped demo deck, not active
+> project data. Every new deck must replace it during stage 01. File existence
+> never means the stage is complete. Canonical format:
+> `.agents/skills/design/workflow/00-deck-workspace.md`.
 
-## Answers to the 7 Questions
+## Execution Mode
 
-1. **Topic & core message** — Getting started with pptxgen-ts-starter: building **native .pptx** presentations with JSX + TypeScript; the takeaway is "code is the design: edit → preview → generate".
-2. **Audience** — Developers (frontend / full-stack engineers familiar with JSX/TS) who care about "how do I start + what can it do".
-3. **Purpose / context** — Tool tutorial + feature showcase (teaching / showcase), demonstrating the starter's full feature set.
-4. **Duration** — ~8 minutes → 8 pages, ~1 min/page (derivation in `outline.md`).
-5. **Style preference** — Not explicitly specified → propose **Dev / Data (8)** (developer audience + tool content, mono for code), awaiting confirmation.
-6. **Materials** — Starter's own sample code + project docs (AGENTS.md / skills); **no external image assets**; all sample data is fictional (demo only).
-7. **Hard constraints** — Do not modify `scripts/*.ts`; brand purple `7C3AED`; fictional data must not be treated as real business data.
+`new-delegated` — for this shipped reference only, the template maintainer
+delegates demo content and design decisions to the sample author.
 
-## Brief Restatement (Confirmed)
+## The 7 Questions
 
+1. **Topic & core message** — Getting started with
+   `pptxgen-ts-starter`: build native, editable `.pptx` presentations with JSX
+   and TypeScript. The takeaway is “code is the design: edit → preview →
+   generate.”
+2. **Audience** — Frontend/full-stack developers familiar with JSX/TypeScript
+   who want to know how to start and what the starter can demonstrate.
+3. **Purpose / context** — An eight-minute tutorial and feature showcase for
+   the starter's text, layout, shape, table, chart, and workflow capabilities.
+4. **Duration** — Approximately 8 minutes → target 8 slides, about one minute
+   per slide.
+5. **Style preference** — `S8. Dev / Data`, with light content pages and
+   deliberate dark cover/closing pages.
+6. **Materials** — Repository-owned materials only: `AGENTS.md`,
+   `package.json`, project source, and the bundled pptxgenjsx documentation. No
+   external image assets or web research.
+7. **Hard constraints** — Preserve the native pptxgenjsx route; do not modify
+   `scripts/*.ts` for this demo content migration; use existing color/type
+   tokens; treat all sales/share figures as fictional capability-demo data.
+
+## Delegation & Assumptions
+
+- Delegated scope: narrative, style, palette, layout selection, demo copy, and
+  fictional sample data for this shipped reference.
+- Assumption: the audience can read English developer terminology and code.
+- Assumption: all visuals are code-native; no external asset license is needed.
+- This delegation applies only to the reference example and must not be copied
+  into a user's new deck without their explicit authorization.
+
+## Brief Restatement
+
+```text
+Mode:        new-delegated reference example
+Topic:       Native PPTX authoring with pptxgenjsx + TypeScript
+Audience:    Developers evaluating how to start and what the starter supports
+Purpose:     Eight-minute tutorial and feature showcase
+Duration:    ~8 minutes → 8 slides
+Style:       S8. Dev / Data; light content with dark cover/closing
+Materials:   Repository docs, manifest, source, and bundled component docs
+Constraints: Native editable PPTX; existing tokens; no external assets;
+             fictional business data must be labeled as fictional
+Delegation:  Template maintainer delegates all reference-demo decisions
 ```
-Topic:      Getting started with pptxgen-ts-starter — native PPTX with JSX+TS
-Audience:   Developers, care about "how to start + what it can do"
-Purpose:    Tutorial demo — show Text/Layout/Shapes/Table/Chart features + workflow
-Duration:   ~8 minutes → 8 pages
-Style:      Dev / Data (8) — Light Professional for content + Dark covers
-Materials:  Starter sample code + project docs; no external assets
-Constraints: scripts/* untouched; brand purple 7C3AED; sample data fictional
-```
-
-> ⛔ Locked after confirmation; proceed to `workflow/02-research.md`.

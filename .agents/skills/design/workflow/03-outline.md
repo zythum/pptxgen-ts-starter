@@ -1,103 +1,127 @@
-# Workflow 03 — Outline: Chapters, Pages, Speaker Notes
+# Workflow 03 — Outline: Chapters, Pages, Notes
 
-**Goal:** turn the confirmed brief + research into a **page-level plan**: how to
-split the topic into chapters, what each page says, and what the presenter says
-while it is on screen.
+## Contract
 
-**Gate ⛔:** the outline (chapter list + per-page core message) must be confirmed
-by the user before design (`04`) and composition (`05`). Speaker notes can be
-drafted later, but the page structure is frozen here.
+**Inputs:** confirmed brief and research in `completed` or `not-needed` state.
+**Decision:** narrative arc, chapters, page roles/messages, timing, density
+range, and preliminary visual intent.
+**Output:** confirmed `.deck/outline.md` with complete speaker notes.
+**Gate:** approve chapter/page structure before final notes and design spec;
+may be waived only by recorded delegation.
+**Validation:** time totals match duration; each page has one role/message;
+every factual page has source refs.
+**Resume:** read page order, core messages, source refs, visual intent, notes.
 
-## 1. Derive page count from duration
+## 1. Derive page count
 
-| Talk length | Target slides | Notes                           |
-| ----------- | ------------- | ------------------------------- |
-| 5 min       | 5–7           | 45–60 s/page, few dense pages   |
-| 10 min      | 9–12          | ~1 min/page                     |
-| 15 min      | 12–16         | ~1 min/page, some 1.5 min pages |
-| 30 min      | 22–30         | mix of 1–1.5 min pages          |
-| 45 min+     | 30–45         | add section dividers + breaks   |
+| Talk length | Starting range | Guidance                              |
+| ----------- | -------------- | ------------------------------------- |
+| 5 min       | 5–7            | Few or no dedicated divider pages     |
+| 10 min      | 9–12           | About one minute per page             |
+| 15 min      | 12–16          | Mix of quick and deeper pages         |
+| 30 min      | 22–30          | Allow section resets and interactions |
+| 45 min+     | 30–45          | Add breaks; avoid continuous density  |
 
-Adjust by content richness: complex material gets _fewer_ pages with more time
-each; a data-heavy deck can have quick KPI pages. Never hit 60+ pages in a
-30-min talk.
+Adjust for complexity and reading mode. Complex material generally needs more
+speaking time per page, not smaller text.
 
-## 2. Split into chapters (3–5 max)
+## 2. Choose one narrative arc
 
-Choose ONE narrative arc from `templates-themes/narrative.md` first. Then split
-the topic into 3–5 chapters that follow the arc. Each chapter:
+Select one arc from `templates-themes/narrative.md` and state why it fits the
+purpose and audience. Do not combine arcs without documenting the deliberate
+exception.
 
-- has one verb (e.g. "Understand the problem", "See the proof", "Take the next step")
-- opens with a **section divider** page
-- ends with a mini-conclusion that hands off to the next chapter
+Use 3–5 chapters for a substantial deck. Give each chapter an action-oriented
+name and a clear handoff to the next.
 
-## 3. Assign one page per idea
+### Section divider rule
 
-For every page, write its **core message in one sentence** — the sentence the
-audience should remember from that page. Rules:
+- Decks with 12+ pages or a Sectioned arc normally use dedicated L2 divider
+  pages.
+- Short decks may use a title kicker, background change, or spoken transition
+  instead.
+- Record the chosen transition treatment and whether divider pages count toward
+  the page total.
 
-- One idea per page. If a page needs two core sentences, split it.
-- Assign a **slide role** from `templates-themes/narrative.md` (Cover, Section,
-  Statement, Explain, Evidence, Contrast, Process, Moment, Closing).
-- A page with no role is a page to delete.
-- Reserve ~1/3 of pages as intentionally sparse (statements, quotes, moments).
+## 3. Define one page per idea
 
-```
-Outline format:
-01 Cover        — <title>, <speaker>                        [role: Cover, sparse]
-02 Section 01   — Chapter divider: <name>                   [role: Section]
-03 Explain      — <core message sentence>                   [role: Explain]
-04 Evidence     — <core message + which stat/case>          [role: Evidence, dense]
-...
-```
+Every page gets:
 
-## 4. Speaker notes (the presentation script)
+- one role from `narrative.md`;
+- one sentence that states the audience takeaway;
+- density: Sparse, Medium, or Dense;
+- preliminary visual intent: none, chart, table, photo, screenshot,
+  illustration, diagram, or undecided;
+- source refs: `F-N`, `user-material:<id>`, or `none`.
 
-For each page, write 3–6 short lines of **Notes** content — what the presenter
-says, not what is on the slide. Include:
+Use the density target appropriate to the deck:
 
-- **Hook line** — the first sentence that frames the page.
-- **Talk track** — what to say; the slide is the summary, the notes are the story.
-- **Transition** — one line connecting to the previous/next page.
-- **Presenter actions** — pointers: "point at the chart", "pause 2s after the
-  stat", "ask the audience", "walk to the other side".
+- general/narrative: 25–40% sparse;
+- executive/data-heavy: 15–25% sparse;
+- custom: explain why.
 
-Example (`<Notes>` in pptxgenjsx):
+These are ranges, not quotas. Lock the final target in `spec.md`.
+
+## 4. Present the outline Gate
+
+Present:
+
+- narrative arc and rationale;
+- chapters and time budgets;
+- ordered page list with role and core message;
+- density target and transition treatment;
+- preliminary visual intent for pages where it affects structure.
+
+In interactive mode, stop for approval. In delegated mode, record the authority
+and assumptions. The Gate approves structure, not pixel-level layout.
+
+## 5. Complete speaker notes after approval
+
+Before composition, every page needs 3–6 concise lines covering:
+
+- **Hook** — first framing sentence;
+- **Track** — explanation not duplicated on-screen;
+- **Action** — pause, point, ask, demo, or movement;
+- **Transition** — connection to the next page.
+
+When writing the final PPTX, keep the notes inline on the slide and use the
+`text` prop so line breaks survive formatting. Use bracketed plain-text labels;
+PowerPoint does not render Markdown, so the brackets are intentional text:
 
 ```tsx
-<Notes>
-  Hook: "Before we look at the numbers, one question — how fast is the market growing?" Track: walk
-  through the two KPIs; the 41% figure is the punchline — pause after it. Action: point at the right
-  chart column while saying the number. Transition: "That growth is why the next section is about
-  our response."
-</Notes>
+<Notes
+  text={`[Hook]
+First framing sentence.
+
+[Track]
+Explanation that is not duplicated on-screen.
+
+[Action]
+Pause, point, ask, demo, or movement cue.
+
+[Transition]
+Connection to the next page.`}
+/>
 ```
 
-## 5. Presenter choreography
+Do not place all four labels in one JSX child paragraph. A shared Notes wrapper
+is optional and should not be introduced unless the project explicitly wants
+that abstraction.
 
-The outline should also note, once per chapter:
+Also add chapter-level choreography and time checks. The sum of chapter budgets
+must equal the confirmed duration.
 
-- Where to **pause** for questions or emphasis.
-- Where to **interact** (poll, ask, demo) — put it on the notes of that page.
-- Rough **time budget** per chapter (e.g. Ch1 3 min, Ch2 5 min, …) so the talk
-  stays on time; total must equal the confirmed duration.
+## 6. Write `.deck/outline.md`
 
-## Output & gate
+After approval/delegation and note completion, write the canonical schema from
+`00-deck-workspace.md` with `Status: confirmed`. Composition must follow this
+page contract; changes update the outline first.
 
-Produce the outline + per-page notes. Present it to the user:
+## Anti-patterns
 
-- Chapters with names + time budgets
-- Page list with role + one-sentence core message
-- Note the intended dense/sparse rhythm
-
-**Stop and ask** for confirmation. Do not proceed to design until the page
-structure is accepted.
-
-After confirmation, save the full outline — chapters + time budgets, page list
-with roles + one-sentence core messages, speaker notes, choreography — to
-`.deck/outline.md` (fixed filename, project root). **If the file already
-exists (the shipped example), overwrite it entirely with the new deck's
-outline — an existing file does not mean this step is done.** Format and
-mandatory fields: `workflow/00-deck-workspace.md` → `outline.md`. It is the
-contract for composition (`05`) and the reference for any later page-level
-modification.
+- Two core messages on one page.
+- Forcing divider pages into a short deck.
+- Using a fact without an `F-N` or user-material reference.
+- Treating preliminary visual intent as final asset approval.
+- Starting design before the outline Gate or recorded delegation.
+- Leaving notes incomplete when composition begins.

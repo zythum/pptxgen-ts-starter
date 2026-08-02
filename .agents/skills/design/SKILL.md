@@ -1,124 +1,158 @@
 ---
 name: design
+version: 1.1.0
 description: >
-  Content & design methodology for presentations built with pptxgen-ts-starter.
-  Use when planning deck content (clarify, research, outline, speaker notes),
-  choosing style/layout/palette/typography, deciding visuals, or running
-  pre-delivery quality checks. Technical line: code-generated .pptx via
-  pptxgenjsx — never HTML.
+  Content and design methodology for presentations built with
+  pptxgen-ts-starter. Use for deck planning, research, narrative, speaker
+  notes, style/layout/palette/typography decisions, visuals, and pre-delivery
+  QA. Technical line: code-generated .pptx via pptxgenjsx — never HTML.
 metadata:
   requires:
-    bins: ["tsx", "npm"]
+    bins: ["npm", "rg"]
 ---
 
 # design — Content & Design Methodology
 
-How to produce the **content** and **design** of a deck built with `pptxgen-ts-starter`.
+Produce the **content** and **design** of a deck built with
+`pptxgen-ts-starter`.
 
-> **Technical line (unchanged):** every deck is **code-generated `.pptx` via
-> `pptxgenjsx` JSX + TypeScript** — NOT HTML, NOT screenshots, NOT image slides.
-> The `pptxgenjsx` skill tells you HOW to write components; this skill tells you
-> WHAT to write and WHY it looks right.
+> **Technical line:** every deck is a code-generated, editable `.pptx` built
+> with `pptxgenjsx` JSX + TypeScript — never deliver HTML, slide screenshots,
+> or image-only slides as the presentation. Verified screenshots may be embedded
+> as assets inside otherwise editable slides. The `pptxgenjsx` skill explains
+> component APIs; this skill defines what to communicate, how to design it, and
+> how to verify the result.
 
 ## Skill boundaries
 
-| Concern                      | Where to look                                                |
-| ---------------------------- | ------------------------------------------------------------ |
-| Component API, syntax        | `.agents/skills/pptxgenjsx/` (deck, slide, text, …)          |
-| Text / image / color tooling | `scripts/estimate-text.ts`, `image-tool.ts`, `color-tool.ts` |
-| **Content planning**         | `workflow/01-clarify → 02-research → 03-outline`             |
-| **Design decisions**         | `workflow/04-spec → 05-compose → 06-visuals → 07-qa`         |
-| **Design knowledge base**    | `templates-themes/` (styles, palettes, typography, …)        |
+| Concern                  | Where to look                                                |
+| ------------------------ | ------------------------------------------------------------ |
+| Component API and syntax | `.agents/skills/pptxgenjsx/`                                 |
+| Text/image/color tools   | `scripts/estimate-text.ts`, `image-tool.ts`, `color-tool.ts` |
+| Planning                 | `workflow/01-clarify.md` → `03-outline.md`                   |
+| Design system            | `workflow/04-spec.md` + `04b-token-files.md`                 |
+| Slide execution          | `workflow/05-compose.md` with `06-visuals.md` preflight      |
+| Delivery review          | `workflow/07-qa.md` + `references/qa/checklist.md`           |
+| Design knowledge         | `templates-themes/`                                          |
 
-## Two modules
+## Structure
 
-```
+```text
 design/
-├── SKILL.md                  # Entry — scope, workflow overview, golden rules
-├── workflow/                 # HOW to make a deck, step by step
-│   ├── 00-deck-workspace.md  #   `.deck/` format: brief/research/outline/spec templates
-│   ├── 01-clarify.md         #   Confirm requirements with the user (⛔ gate)
-│   ├── 02-research.md        #   Enrich content from web search
-│   ├── 03-outline.md         #   Chapters → per-slide content → speaker notes (⛔ gate)
-│   ├── 04-spec.md            #   Canvas / duration / pages / style / palette / fonts (⛔ gate)
-│   ├── 04b-token-files.md    #   `src/token/colors.ts` + `typography.ts` format & lifecycle
-│   ├── 05-compose.md         #   Per-slide layout + typography
-│   ├── 06-visuals.md         #   Visual decision: chart / stock / AI-generated image
-│   └── 07-qa.md              #   Checks + second-pass review (P0–P3)
-└── templates-themes/         # WHAT looks good — the designer's library
-    ├── styles.md             #   Style routing by purpose & audience (dual systems)
-    ├── palettes.md           #   Color roles, 60-30-10, preset palettes
-    ├── typography.md         #   Size scale, line height, CJK rules
-    ├── layouts.md            #   Locked layout library with coordinates
-    ├── density.md            #   Text budgets, deck rhythm, white space
-    └── narrative.md          #   Deck arcs + slide roles
+├── SKILL.md
+├── workflow/
+│   ├── 00-deck-workspace.md
+│   ├── 01-clarify.md
+│   ├── 02-research.md
+│   ├── 03-outline.md
+│   ├── 04-spec.md
+│   ├── 04b-token-files.md
+│   ├── 05-compose.md
+│   ├── 06-visuals.md
+│   └── 07-qa.md
+├── references/
+│   └── qa/checklist.md
+└── templates-themes/
+    ├── styles.md
+    ├── palettes.md
+    ├── typography.md
+    ├── layouts.md
+    ├── density.md
+    └── narrative.md
 ```
 
-## Workflow overview
+## Choose an execution mode first
 
-Every deck passes these stages **in order**. Stages marked ⛔ require explicit
-user confirmation before moving on — never assume, never skip.
+Do not force a full new-deck workflow onto every request.
 
-| #   | Stage    | Goal                                        | Output                                               | Gate |
-| --- | -------- | ------------------------------------------- | ---------------------------------------------------- | ---- |
-| 1   | Clarify  | Know the topic, audience, purpose, duration | `.deck/brief.md`                                     | ⛔   |
-| 2   | Research | Fill content gaps from the web              | `.deck/research.md`                                  |      |
-| 3   | Outline  | Chapters → pages → speaker notes            | `.deck/outline.md`                                   | ⛔   |
-| 4   | Spec     | Lock canvas, style, palette, fonts          | `.deck/spec.md` + `src/token/` (colors + typography) | ⛔   |
-| 5   | Compose  | Translate pages into layout + typography    | `src/slides/*.tsx`                                   |      |
-| 6   | Visuals  | Decide charts / stock / generated images    | Visual plan + assets                                 |      |
-| 7   | QA       | Verify + second-pass review                 | Clean deck                                           |      |
+| Mode                   | Use when                                          | Gate behavior                                                      |
+| ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------ |
+| New deck · interactive | Requirements are incomplete or brand risk is high | Confirm brief, outline, and spec separately                        |
+| New deck · delegated   | User explicitly delegates design decisions        | Record delegation and assumptions; gates may be combined or waived |
+| Existing deck edit     | `.deck/` and slides already exist                 | Read `.deck/` + slide comments; reopen only affected gates         |
+| Single-slide task      | One page is added or changed                      | Reuse confirmed spec; update affected outline/spec entries only    |
+| Layout-only            | Content is supplied and must not change           | Mark research `not-needed`; preserve supplied meaning              |
+
+A gate may be waived only by explicit user delegation recorded in
+`.deck/brief.md`. Silence is not delegation.
+
+## Workflow state machine
+
+Each stage must be **handled**, but its decision may be `completed` or
+`not-needed` where the stage contract allows it. Read
+`workflow/00-deck-workspace.md` for canonical file schemas and status values.
+
+| #   | Stage    | Required result                                        | Gate                |
+| --- | -------- | ------------------------------------------------------ | ------------------- |
+| 1   | Clarify  | Confirmed brief or recorded delegation                 | ⛔ unless delegated |
+| 2   | Research | Fact cards, or explicit `not-needed` record            | —                   |
+| 3   | Outline  | Confirmed chapters/pages/roles; then complete notes    | ⛔ unless delegated |
+| 4   | Spec     | Proposal → approval → write spec and token mirrors     | ⛔ unless delegated |
+| 5   | Compose  | Per-page visual preflight, locked layout, measured TSX | —                   |
+| 6   | Visuals  | Decision/assets/provenance used by stage 05            | coupled with 05     |
+| 7   | QA       | P0/P1 clean, second pass complete                      | delivery gate       |
+
+### The 05/06 coupling
+
+The filenames stay numbered for stable references, but 05 and 06 are not a
+waterfall where imagery is added after layout. For **each page**:
+
+1. read its outline entry;
+2. execute the decision tree in `06-visuals.md`;
+3. lock visual type, source, slot ratio, and asset status;
+4. choose the layout and coordinates in `05-compose.md`;
+5. implement and measure the slide.
+
+No visual-dependent coordinates are finalized before step 2.
 
 ## The `.deck/` workspace
 
-Every deck is planned in the project-root `.deck/` directory with **fixed
-filenames** (no numeric prefixes):
+The project-root `.deck/` directory has exactly four fixed files, with no
+numeric prefixes or version suffixes:
 
-| File                | Written by  | Contains                                        |
-| ------------------- | ----------- | ----------------------------------------------- |
-| `.deck/brief.md`    | 01-clarify  | Confirmed brief (7 answers + restatement)       |
-| `.deck/research.md` | 02-research | Fact cards `F-1, F-2, …` with sources           |
-| `.deck/outline.md`  | 03-outline  | Chapters, per-page core messages, speaker notes |
-| `.deck/spec.md`     | 04-spec     | Locked design spec (canvas/style/palette/fonts) |
+| File                | Owner       | Status                      |
+| ------------------- | ----------- | --------------------------- |
+| `.deck/brief.md`    | 01 Clarify  | `confirmed`                 |
+| `.deck/research.md` | 02 Research | `completed` or `not-needed` |
+| `.deck/outline.md`  | 03 Outline  | `confirmed`                 |
+| `.deck/spec.md`     | 04 Spec     | `confirmed`                 |
 
-**Format guidance:** the required content and template of each file is defined
-in `workflow/00-deck-workspace.md` — the guidance lives in the skill.
+The shipped `.deck/` files are examples only. A new deck replaces their
+content at the appropriate stage. Existing files never prove a stage is done;
+check the status and content.
 
-**⚠️ The example files currently in `.deck/` are reference data ONLY. They are
-NOT working documents.** For every new deck, **overwrite all four files** at
-their stages (01 → `brief.md`, 02 → `research.md`, 03 → `outline.md`,
-04 → `spec.md`). A file already existing in `.deck/` never means that stage is
-done — writing each file is a mandatory deliverable of its stage, not a
-"create if missing" step.
-
-**Maintain `.deck/` for the whole build** — write each file at its stage and
-keep it in sync when things change. **For any modification request, read
-`.deck/` + the slide-top comments first and edit incrementally — never
-regenerate from scratch or guess the original intent.**
+Maintain all four files for the life of the deck. For an edit, read them and
+the slide-top comments first, then update incrementally. Never regenerate an
+existing deck from assumptions.
 
 ## Golden rules
 
-1. **Start from the subject, not from style.** Know what each slide says before
-   choosing how it looks.
-2. **One slide, one idea.** Two main points on one slide = split the slide.
-3. **Design to the canvas.** Default 13.333 × 7.5 in (LAYOUT_WIDE); overflow is a defect.
-4. **Lock tokens first.** Palette + fonts + layout set, then every slide follows.
-   Palette values live in `src/token/colors.ts`; type scale in
-   `src/token/typography.ts` (runtime single source of truth, format &
-   lifecycle: `workflow/04b-token-files.md`) — slides reference
-   `colors.*` / `typography.*`, never bare hex or magic numbers.
-5. **Constraints are features.** One accent, ≤ 2 font families, locked layouts.
-6. **Density must breathe.** Alternate dense (data) and sparse (statement/quote).
-7. **Confirm, don't assume.** At ⛔ gates, stop and ask the user.
-8. **Critique, then remove one thing.** Render, look, delete the least necessary.
+1. **Subject before style.** Define each page's message before its appearance.
+2. **One slide, one idea.** Split competing core messages.
+3. **Design to the canvas.** Default `LAYOUT_WIDE` is 13.333 × 7.5 in.
+4. **Approval before mutation.** Do not write spec, tokens, or slide code before
+   the applicable gate unless the user delegated that decision.
+5. **Tokens are runtime truth.** Slides/components use `colors.*` and
+   `typography.*`; no bare hex or unexplained magic type values.
+6. **No invented hex.** Use a preset/source token or derive with
+   `scripts/color-tool.ts`, then register a semantic token.
+7. **Controlled layouts.** Prefer core layouts; register a justified variant
+   before use.
+8. **Visuals are structural.** Decide visual type and ratio before coordinates.
+9. **Density is intentional.** Lock a target range in spec; do not use a
+   universal sparse-slide quota.
+10. **Critique, then remove one thing.** Render, inspect, simplify, re-check.
 
-## How to read this skill
+## Reading paths
 
-- **Making a deck for the first time:** walk `workflow/01` → `07` in order.
-- **Designing one slide:** read `templates-themes/layouts.md` + `typography.md`.
-- **Choosing a look:** read `templates-themes/styles.md` → pick palette + fonts.
-- **Measuring:** always use `scripts/estimate-text.ts` (text),
-  `scripts/image-tool.ts` (images), and `scripts/color-tool.ts` (derived
-  colors / WCAG contrast) before fixing values.
-- **Modifying an existing deck:** read `.deck/` (brief/research/outline/spec)
-  - the slide-top comments first, then edit incrementally.
+- New deck: `workflow/00-deck-workspace.md`, then stages 01 → 07.
+- One slide in an existing deck: first read all four `.deck/` files and the
+  target slide comment; then use `workflow/05-compose.md`,
+  `workflow/06-visuals.md`, `templates-themes/layouts.md`, and
+  `templates-themes/typography.md`.
+- New standalone slide without `.deck/`: run the minimum Clarify/Spec path or
+  record explicit delegation before initializing the four planning files.
+- Look and feel: `templates-themes/styles.md` →
+  `templates-themes/palettes.md` + `templates-themes/typography.md`.
+- Existing deck edit: `.deck/` + slide comments, then only affected workflow.
+- Final review: `workflow/07-qa.md` + `references/qa/checklist.md`.

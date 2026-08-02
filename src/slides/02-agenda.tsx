@@ -6,6 +6,8 @@ import { PageNumber } from "../components/PageNumber";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
+// slide: 02 | role: Explain | layout: V-L5-workflow-strip | core: The starter combines text, layout/card, and shape primitives in an edit-preview-generate loop | sources: user-material:agents-guide,user-material:source-code | visual: code-native cards/process | asset: none
+
 export default async function () {
   return (
     <>
@@ -116,10 +118,19 @@ export default async function () {
         />
       </Text>
 
-      <Notes>
-        This presentation covers three main areas of the starter template: text elements, layout and
-        card patterns, and shapes. We'll also demonstrate the edit-preview-generate workflow.
-      </Notes>
+      <Notes
+        text={`[Hook]
+The starter becomes simple when you see three primitives and one loop.
+
+[Track]
+Introduce text, layout/cards, and shapes, then follow edit to browser preview to generated .pptx.
+
+[Action]
+Move across the three cards, then point to the bottom workflow strip from left to right.
+
+[Transition]
+We will start with the smallest content unit: a formatted text run.`}
+      />
     </>
   );
 }

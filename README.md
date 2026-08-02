@@ -101,7 +101,7 @@ Start customizing:
 `.agents/skills/` ships two skills that teach AI assistants how to build slides in this starter:
 
 - **`pptxgenjsx`** — component API reference: every component, prop, and pattern for authoring slides with JSX.
-- **`design`** — design guidance: a 7-stage workflow (clarify → research → outline → spec → compose → visuals → QA) plus templates & themes (styles, palettes, typography, locked layouts, density, narrative).
+- **`design`** — design guidance: a seven-stage contract (clarify, research decision, outline, spec, compose/visuals as a per-slide coupled phase, QA) plus templates & themes (styles, palettes, typography, core/registered layouts, density, narrative).
 
 Skills are loaded on demand — see the [AGENTS.md](AGENTS.md#skills) guide for when and how to use each one.
 

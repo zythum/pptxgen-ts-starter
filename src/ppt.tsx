@@ -1,4 +1,16 @@
 import { Deck, Slide } from "@zythum02/pptxgenjsx";
+
+/* Design spec mirror — .deck/spec.md
+   Status: confirmed (reference example, user-delegated)
+   Canvas: LAYOUT_WIDE 13.333 × 7.5 — 8 slides
+   Style: S8 Dev / Data — information-first
+   Palette: white/light content + 18181B cover/closing; accent 7C3AED
+   Fonts: Inter token / Courier New mono; legacy prose uses renderer default
+   Density: tutorial 25–40% Sparse; actual 25%
+   Layouts: L1, V-L5-workflow-strip, L4, V-L5-cards-4,
+            V-L4-shape-gallery, L11, L4, L9
+   Visuals: code-native only; no external assets
+*/
 /**
  * Sample presentation — demonstrates the full feature set of pptxgenjs-jsx.
  *

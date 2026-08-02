@@ -1,78 +1,138 @@
 # Outline
 
-> # ⚠️ WARNING — EXAMPLE FILE, MUST OVERWRITE
+Status: confirmed
+Updated: 2026-08-02
+Decision authority: user-delegated
+
+> **⚠️ EXAMPLE FILE — MUST OVERWRITE**
 >
-> This is a **filled reference example** (a demo deck), NOT working data.
-> Every NEW deck **must overwrite this file** at its stage:
-> brief → 01-clarify · research → 02-research · outline → 03-outline · spec → 04-spec.
-> A file existing here does NOT mean the work is done — it is still the example.
-> Format spec: `workflow/00-deck-workspace.md`.
+> This is a filled reference example, not active project data. Every new deck
+> must replace it during stage 03. Canonical format:
+> `.agents/skills/design/workflow/00-deck-workspace.md`.
 
 ## Narrative Arc
 
-**Sectioned (7)** — demo-style encyclopedia: Cover → feature chapters (one by one) → Closing.
-A tool tutorial doesn't use Problem→Solution; it walks through capabilities feature by feature,
-matching Sectioned's workshop scenario.
+**A7. Sectioned** — a compact capability tour: opening → workflow orientation →
+feature demonstrations → action. Because this is an eight-slide deck, chapters
+use spoken/title transitions rather than dedicated section-divider pages.
 
-## Chapters & Time Budget (total ~8 min)
+## Density Target
 
-| Ch  | Name          | Pages | Budget    | Content                                             |
-| --- | ------------- | ----- | --------- | --------------------------------------------------- |
-| 1   | Opening       | S1    | 0.5–1 min | Hook: write PPT in JSX                              |
-| 2   | Preview       | S2    | ~1 min    | Three blocks + edit → preview → generate loop       |
-| 3   | Feature demos | S3–S7 | ~5 min    | Text / Layout / Shapes / Table / Chart, ~1 min each |
-| 4   | Closing       | S8    | ~1 min    | CTA: fork + three commands                          |
+General/tutorial target: **25–40% Sparse**. This deck has two Sparse pages
+(S1/S8 = 25%), four Medium pages (S2–S5), and two Dense evidence pages
+(S6/S7).
 
-## Page List (role + one-sentence core message)
+## Chapters & Time Budget
 
-```
-01 Cover    — Getting started with pptxgen-ts-starter: native PPTX with JSX+TS
-              [role: Cover, sparse, dark]
-02 Agenda   — Three blocks (text / layout & cards / shapes) + edit → preview → generate loop
-              [role: Section, medium]
-03 Text     — Text + TextRun support per-run rich text: bold / italic / color / size / leading / breakLine
-              [role: Explain, medium]
-04 Layout   — Card containers (RoundRect: shadow / border / accent bar / tinted fill) + absolute inches = pixel-perfect layout
-              [role: Explain, medium]
-05 Shapes   — Native Rect / Oval / RoundRect shapes: fill / transparency / stroke / dash / rectRadius
-              [role: Explain, medium]
-06 Table    — Native table: header / banded rows / total row, data-driven rendering (fictional data)
-              [role: Evidence, dense]
-07 Chart    — Native charts: clustered bar (revenue/cost/profit) + doughnut (market share), config-driven (fictional data)
-              [role: Evidence, dense]
-08 Closing  — Fork the template: npm install → npm run dev → npm run generate
-              [role: Closing, sparse, dark]
-```
+| Ch  | Name                   | Pages        |       Budget | Transition treatment                              |
+| --- | ---------------------- | ------------ | -----------: | ------------------------------------------------- |
+| 1   | Opening                | S1           |     0.75 min | Cover hands off verbally to the workflow          |
+| 2   | Workflow orientation   | S2           |     1.00 min | Title-based transition; no divider page           |
+| 3   | Feature demonstrations | S3–S7        |     5.25 min | Consecutive capability pages with verbal handoffs |
+| 4   | Closing                | S8           |     1.00 min | Dark closing mirrors the cover                    |
+|     | **Total**              | **8 slides** | **8.00 min** |                                                   |
 
-**Density rhythm**: sparse = S1, S2, S8 → 3/8 ≈ 37% ✓ (meets the sparse 25–40% rule);
-dense is concentrated on the two data pages S6/S7; rhythm: sparse → medium → medium → medium → dense → dense → sparse.
+## Page List
 
-## Speaker Notes (per page, Hook / Track / Action / Transition)
+| Page | Role     | Core message                                                                                  | Density | Preliminary visual intent            | Source refs                                                                                |
+| ---- | -------- | --------------------------------------------------------------------------------------------- | ------- | ------------------------------------ | ------------------------------------------------------------------------------------------ |
+| 01   | Cover    | Native PPTX presentations can be authored with JSX and TypeScript                             | Sparse  | none; typography-led dark cover      | `user-material:agents-guide`, `user-material:package-manifest`                             |
+| 02   | Explain  | The starter combines text, layout/card, and shape primitives in an edit-preview-generate loop | Medium  | code-native cards + process strip    | `user-material:agents-guide`, `user-material:source-code`                                  |
+| 03   | Explain  | Text and TextRun provide independently formatted runs inside positioned text boxes            | Medium  | code-native rich text + code block   | `user-material:agents-guide`, `user-material:pptxgenjsx-docs`, `user-material:source-code` |
+| 04   | Explain  | Reusable cards combine surfaces, borders, shadows, accents, and absolute-inch positioning     | Medium  | code-native 2×2 card grid            | `user-material:agents-guide`, `user-material:source-code`                                  |
+| 05   | Explain  | Native shapes expose fill, transparency, stroke, dash, shadow, and corner controls            | Medium  | code-native shape gallery            | `user-material:pptxgenjsx-docs`, `user-material:source-code`                               |
+| 06   | Evidence | An editable native table can render headers, banded rows, and totals from fictional data      | Dense   | code-native table                    | `user-material:source-code`, `user-material:pptxgenjsx-docs`                               |
+| 07   | Evidence | Editable native charts can compare trends and part-to-whole shares from fictional data        | Dense   | code-native clustered bar + doughnut | `user-material:source-code`, `user-material:pptxgenjsx-docs`                               |
+| 08   | Closing  | Fork, preview, and generate a native PPTX with three commands                                 | Sparse  | none; typography-led dark closing    | `user-material:agents-guide`, `user-material:package-manifest`                             |
 
-```
-S1  Hook:   "Welcome! This is a sample presentation built with pptxgen-ts-starter."
-    Track:  JSX defines slides → pptxgenjs renders .pptx; use arrow keys to navigate.
-    Action: none (opening).
-    Transition: "First, a quick preview of what this template can do—"
+## Speaker Notes
 
-S2  Track:  Preview of the three blocks (text, layout & cards, shapes) + edit → preview → generate loop.
-S3  Track:  Each TextRun formats independently (fontSize/bold/italic/color/breakLine);
-            the Text component handles position, alignment, line spacing.
-S4  Track:  Card = RoundRect + shadow/border/accent bar/tinted fill; everything is x,y,w,h absolute positioning.
-S5  Track:  fill/transparency/stroke/dash on three native shapes; RoundRect has rectRadius.
-S6  Track:  Header + banded rows + total row; 5 columns × 10 rows (fictional data).
-S7  Track:  Bar chart quarterly revenue/cost/profit trend + doughnut market-share split (fictional data).
-S8  Hook:   "Thanks for exploring the pptxgen-ts-starter template!"
-    Track:  fork/clone → npm install → edit src/slides/ → preview in browser → generate .pptx.
-    Action: invite to fork and edit one page.
-```
+### 01 — Cover
 
-(S2–S7 are demo pages; Track covers the essentials. For full four-part notes,
-extend Action/Transition following the S1/S8 format.)
+- **Hook:** “Welcome—this entire presentation is generated from JSX and
+  TypeScript.”
+- **Track:** Explain that pptxgenjsx defines editable slide content and
+  pptxgenjs writes the native `.pptx`; the deck itself is the demonstration.
+- **Action:** Pause after “native PPTX”; use the next control or arrow key.
+- **Transition:** “First, here is the workflow and the three building blocks
+  this starter demonstrates.”
 
-## Choreography
+### 02 — Workflow orientation
 
-- **S2**: optionally demo the dev-server workflow live (or describe it).
-- **S6/S7**: point to the total row and the Q4 peak (162K); emphasize the "natively editable" selling point.
-- **S8**: pause at the end, leave room for questions.
-- **Light/dark rhythm**: S1 dark → S2–S7 light → S8 dark — cover/closing mirror, deliberate (see `spec.md` §5).
+- **Hook:** “The starter becomes simple when you see three primitives and one
+  loop.”
+- **Track:** Introduce text, layout/cards, and shapes, then follow edit → browser
+  preview → generated `.pptx`.
+- **Action:** Move across the three cards, then point to the bottom workflow
+  strip from left to right.
+- **Transition:** “We will start with the smallest content unit: a formatted
+  text run.”
+
+### 03 — Text elements
+
+- **Hook:** “A text box can contain multiple runs, each with independent
+  formatting.”
+- **Track:** Contrast Text positioning/alignment with TextRun-level size, bold,
+  italic, color, font, and line-break options.
+- **Action:** Point from the rendered rich-text card to the matching code block.
+- **Transition:** “Once text is measurable, cards give it a reusable visual
+  structure.”
+
+### 04 — Layout and cards
+
+- **Hook:** “Cards are compositions, not a separate layout engine.”
+- **Track:** Show how surfaces, borders, shadows, accent bars, and semantic
+  tokens combine while every element keeps explicit inch coordinates.
+- **Action:** Compare the four card treatments and call out the shared geometry.
+- **Transition:** “The same native approach extends beyond containers to basic
+  drawing primitives.”
+
+### 05 — Shapes
+
+- **Hook:** “The deck can draw its own visual language without image assets.”
+- **Track:** Demonstrate Rect, Ellipse, and RoundRect fill, transparency, line,
+  dash, shadow, and corner-radius controls.
+- **Action:** Point to one fill, one stroked shape, and the rounded example;
+  explain that the multiple hues are intentional demo coverage.
+- **Transition:** “These primitives also support structured, data-driven
+  components such as tables.”
+
+### 06 — Table
+
+- **Hook:** “This table remains native and editable in PowerPoint.”
+- **Track:** Explain the header, alternating row fills, total row, and tokenized
+  styling. State clearly that the quarterly values are fictional.
+- **Action:** Point to the total row and the source/capability context rather
+  than presenting the values as business results.
+- **Transition:** “The same fictional data can also demonstrate editable chart
+  components.”
+
+### 07 — Charts
+
+- **Hook:** “Choose chart forms by the question: compare a trend or show a
+  share.”
+- **Track:** Use the clustered bar chart for quarterly revenue/cost/profit and
+  the doughnut for category share; both are config-driven and editable. State
+  that all values are fictional.
+- **Action:** Point to the Q4 bar cluster, then the largest doughnut segment.
+- **Transition:** “With the components understood, only the three-command loop
+  remains.”
+
+### 08 — Closing
+
+- **Hook:** “The fastest way to learn the starter is to change one slide.”
+- **Track:** Summarize fork/clone → `npm install` → edit `src/slides/` → preview
+  → `npm run generate`.
+- **Action:** Invite the audience to fork the template and replace one sample
+  page; pause for questions.
+- **Transition:** End of deck / Q&A.
+
+## Speaker Choreography
+
+- Keep S1 under 45 seconds and reserve the extra time for the table/chart demo.
+- On S2, optionally show the browser preview loop live; otherwise follow the
+  bottom strip visually.
+- On S6/S7, repeat “fictional demo data” before discussing values.
+- Use verbal/title transitions instead of separate divider slides to preserve
+  the eight-page pace.
+- Dark S1/S8 mirror each other; S2–S7 remain light for code/data legibility.

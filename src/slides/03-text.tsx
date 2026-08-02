@@ -6,6 +6,8 @@ import { PageNumber } from "../components/PageNumber";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
+// slide: 03 | role: Explain | layout: L4 | core: Text and TextRun provide independently formatted runs inside positioned text boxes | sources: user-material:agents-guide,user-material:pptxgenjsx-docs,user-material:source-code | visual: code-native rich text/code | asset: none
+
 export default async function () {
   return (
     <>
@@ -214,11 +216,19 @@ export default async function () {
         </Text>
       </Group>
 
-      <Notes>
-        This slide demonstrates the Text and TextRun components. Each TextRun can have its own
-        formatting options: fontSize, bold, italic, color, and breakLine. The Text component handles
-        positioning, alignment, and line spacing.
-      </Notes>
+      <Notes
+        text={`[Hook]
+A text box can contain multiple runs, each with independent formatting.
+
+[Track]
+Contrast Text positioning and alignment with TextRun-level size, bold, italic, color, font, and line-break options.
+
+[Action]
+Point from the rendered rich-text card to the matching code block.
+
+[Transition]
+Once text is measurable, cards give it a reusable visual structure.`}
+      />
     </>
   );
 }

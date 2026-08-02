@@ -5,6 +5,8 @@ import { PageNumber } from "../components/PageNumber";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
+// slide: 05 | role: Explain | layout: V-L4-shape-gallery | core: Native shapes expose fill, transparency, stroke, dash, shadow, and corner controls | sources: user-material:pptxgenjsx-docs,user-material:source-code | visual: code-native shape gallery | asset: none
+
 export default async function () {
   return (
     <>
@@ -102,11 +104,19 @@ export default async function () {
         />
       </Group>
 
-      <Notes>
-        This slide demonstrates the Rect, Oval, and RoundRect shape components. Shapes support fill
-        color, transparency, line/stroke with width and dash type, and shadows. RoundRect also
-        supports a rectRadius prop for corner rounding.
-      </Notes>
+      <Notes
+        text={`[Hook]
+The deck can draw its own visual language without image assets.
+
+[Track]
+Demonstrate Rect, Ellipse, and RoundRect fill, transparency, line, dash, shadow, and corner-radius controls.
+
+[Action]
+Point to one fill, one stroked shape, and the rounded example; explain that the multiple hues are intentional demo coverage.
+
+[Transition]
+These primitives also support structured, data-driven components such as tables.`}
+      />
     </>
   );
 }

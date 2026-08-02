@@ -22,8 +22,9 @@
   },
   "dependencies": {
     "@silurus/ooxml": "^0.74.6",
-    "@zythum02/pptxgenjsx": "^0.1.4",
+    "@zythum02/pptxgenjsx": "^0.1.5",
     "color": "^5.0.3",
+    "jszip": "^3.10.1",
     "pptxgenjs": "^4.0.1"
   },
   "devDependencies": {

@@ -1,110 +1,139 @@
-# Workflow 05 — Compose: Per-Slide Layout & Typography
+# Workflow 05 — Compose: Visual Preflight, Layout, Typography, Code
 
-**Goal:** translate each outline page into a concrete layout (blocks with
-`x/y/w/h`) + typography (sizes, weights, alignment), then implement with
-pptxgenjsx. This is where design knowledge meets code.
+## Contract
 
-## 1. Choose a locked layout
+**Inputs:** confirmed outline/spec, synchronized tokens, research sources.
+**Precondition:** execute the relevant decision path in `06-visuals.md` before
+finalizing visual-dependent coordinates.
+**Output:** measured `src/slides/NN-name.tsx`, updated spec/outline when a
+decision changes, canonical slide comment.
+**Gate:** none, but unapproved global design changes reopen stage 04.
+**Validation:** source/layout/asset refs resolve; geometry fits; text is
+measured; tokens are used.
+**Resume:** read `.deck/` and the canonical comment before editing the page.
 
-Every page maps its **role** (from `03-outline`) to a layout in
-`templates-themes/layouts.md`. **Do not invent new layouts** — pick from the
-locked set L1–L9 (Cover, Section, Statement, Split, Cards-3, Stats, Timeline,
-Quote, Closing).
+## Per-page order — do not reorder
 
-| Role      | Preferred layout        |
-| --------- | ----------------------- |
-| Cover     | L1 Cover                |
-| Section   | L2 Section              |
-| Statement | L3 Statement / L6 Stats |
-| Explain   | L4 Split / L5 Cards     |
-| Evidence  | L6 Stats / data chart   |
-| Contrast  | L4 Split / L5 Cards     |
-| Process   | L7 Timeline             |
-| Moment    | L8 Quote                |
-| Closing   | L9 Closing              |
+1. Read the page row and notes from `outline.md`.
+2. Resolve source refs and the core message.
+3. Run the `06-visuals.md` decision tree: visual type, source, provenance,
+   asset status, and intended slot ratio.
+4. Select a core layout or register a justified variant in spec §8.
+5. Lock slot geometry and update spec §7 if it changed.
+6. Implement with pptxgenjsx and runtime tokens.
+7. Measure text/images, inspect the rendered page, and simplify.
 
-## 2. Grid & coordinates
+A chart/photo/screenshot/diagram page cannot skip step 3. Text-only is a valid
+visual decision.
 
-Canvas 13.333 × 7.5 in, safe margin 0.8 in → content area 11.733 × 5.9 in.
-Use the 12-column mental grid (column ≈ 0.978 in, gutter 0.2 in):
+## 1. Select a layout
 
-| Column set | Width     | Use                        |
-| ---------- | --------- | -------------------------- |
-| Full       | 11.733 in | titles, statements, quotes |
-| Half       | 5.7 in    | split layouts              |
-| Third      | 3.7 in    | cards-3, stats-3           |
-| Two-thirds | 7.7 in    | text + visual combos       |
+Use `templates-themes/layouts.md`:
 
-Every element gets explicit `x`, `y`, `w`, `h` in inches.
+- L1–L15 are core layouts.
+- Prefer the role's mapped core layout.
+- If none fits, first split or reframe the page.
+- If a new geometry is still justified, register a variant in spec §8 before
+  use: `ID`, parent layout, geometry, reason, affected slides.
 
-## 3. Typography per block
+Do not create an unnamed one-off layout in slide code.
 
-Follow `templates-themes/typography.md`:
+## 2. Grid and coordinates
 
-- Slide title: 24–30 pt bold, top-left (x 0.8, y 0.8 area)
-- Body: 14–18 pt, left-aligned, leading 1.2–1.5× (CJK 1.6–1.8×)
-- One bold takeaway phrase per slide (the core message)
-- `breakLine: true` on the last `TextRun` of each line (pptxgenjsx)
+Default canvas: 13.333 × 7.5 in. Safe margin: 0.8 in. Content area:
+11.733 × 5.9 in.
 
-## 4. Measure before fixing `h`
+For the optional 12-column grid with 0.2 in gutters:
 
-Variable-length text must be measured with `scripts/estimate-text.ts` BEFORE
-choosing container height:
-
+```text
+column = (11.733 - 11 × 0.2) / 12 = 0.7944 in
+span(n) = n × 0.7944 + (n - 1) × 0.2
 ```
+
+Convenient locked widths remain full 11.733, half 5.7 with a 0.333 gap, and
+third 3.71 with 0.3 gaps. Do not mix those convenience widths with the
+12-column formula and call them exact grid spans.
+
+Every positioned visual element gets explicit `x`, `y`, `w`, `h`. `TextRun`,
+`Notes`, and other non-positioned child nodes do not.
+
+## 3. Typography
+
+Use semantic values from `src/token/typography.ts`; no copied layout literals.
+Follow `templates-themes/typography.md` for line height, CJK handling, and
+alignment. Use `bold: true/false` directly.
+
+Measure variable text before fixing height:
+
+```bash
 npx tsx scripts/estimate-text.ts -w 5.7 -f "16pt Inter" --leading 24 \
-  "The actual sentence that will appear here…"
+  "The actual sentence used on the slide"
 ```
 
-If measured height > planned `h`: **shorten the text first** (cut filler words,
-split into two slides). Only if the meaning requires the length, increase `h`
-and re-check neighbors.
+If text does not fit: shorten/split first, then enlarge the box, then use a
+smaller approved type role. Re-measure every changed text block.
 
-## 5. Check overlap & rhythm per slide
+## 4. Geometry and rhythm checks
 
-- Sum `y + h` of each text block and confirm ≤ next block's `y` (no overlap).
-- Elements must not exceed canvas (x + w ≤ 13.333, y + h ≤ 7.5).
-- Cards in a row: identical `x`, `y`, `w`, `h`, equal gaps, same internal padding.
-- Respect the density budget from `templates-themes/density.md` (≤ ~50 words,
-  one KPI per stat card, etc.).
+- `x + w ≤ 13.333`; `y + h ≤ 7.5`.
+- Measured text height plus margins fits its container.
+- Neighboring boxes do not overlap.
+- Cards share geometry, gaps, and padding.
+- Images match slot ratio; crop/resize instead of stretching.
+- Page density stays within the target locked in spec §6.
+- Titles, margins, accents, and recurring components align across pages.
 
-## 6. Consistency across pages
+## 5. Implement
 
-- Same margin (0.8 in) on every slide.
-- Same title position (e.g. always y 0.8) so pages feel aligned when flipping.
-- Section titles use the same component/position (`SectionHeader`).
-- Cover and closing mirror each other (palette + composition).
-- Same accent usage (bar under titles, highlight color) on every page.
+Create `src/slides/NN-name.tsx` using only pptxgenjsx components. The first
+positioned layer is the full-canvas background component. Keep page-specific
+coordinates visible in the slide file; extract only patterns used on 3+ slides.
 
-## 7. Implement
+Colors and typography come from token imports:
 
-Write the slide in `src/slides/NN-name.tsx` using `pptxgenjsx` components
-(see `.agents/skills/pptxgenjsx/` for props). Pull the page's core message from
-`.deck/outline.md` and the tokens from `.deck/spec.md` + `src/token/`
-(`colors.ts` + `typography.ts`).
-Keep positioning visible in the slide file — do not hide coordinates behind
-abstractions (project convention).
-
-**Colors & type always via tokens:** every color in the slide is `colors.*`
-imported from `src/token/colors.ts` (`import { colors } from "../token/colors"`);
-every `fontFace` / `fontSize` is `typography.*` from `src/token/typography.ts`
-— no bare hex, no magic numbers. If a needed color variant isn't in
-`colors.ts`, compute it
-with `scripts/color-tool.ts`, add it to `colors.ts` under a semantic name,
-then use it.
-
-## 8. Slide-top comments (design intent)
-
-At the top of every slide file, record the design intent in one comment line —
-the second half of the `.deck/` traceability contract:
-
-```tsx
-// Slide 3 · L5 Split · palettes/consulting · core: complete the transformation in three steps · source: F-3
-export default async function () {
+```ts
+import { colors } from "../token/colors";
+import { typography } from "../token/typography";
 ```
 
-Format: `// Slide <N> · <Layout ID> · <palette or style> · core: <one-sentence
-message> · source: <fact card ID if any>`. IDs cited here must exist in `.deck/`
-(see `workflow/00-deck-workspace.md` → cross-reference rules). Later
-modification requests read this line plus `.deck/` first, so the original
-intent is never guessed.
+If a needed variant is absent, stop: derive/source it, register it in spec §8,
+add the semantic token, then use it.
+
+## 6. Canonical slide comment
+
+Place one machine-readable line near the top of each slide file. Avoid `|` in
+field values.
+
+```ts
+// slide: 03 | role: Evidence | layout: L10 | core: Growth is concentrated in one segment | sources: F-3,F-4 | visual: chart/bar | asset: none
+```
+
+Required fields:
+
+- `slide`: two-digit number matching filename/order;
+- `role`: outline role;
+- `layout`: core or registered ID;
+- `core`: one sentence;
+- `sources`: comma list, user-material ID, or `none`;
+- `visual`: `none`, `chart/bar`, `image/photo`, etc.;
+- `asset`: relative path, asset ID, or `none`.
+
+Update the comment whenever the implementation changes its intent.
+
+## 7. Page completion condition
+
+A page is complete only when:
+
+- outline/spec/comment agree;
+- all sources and assets resolve;
+- visual provenance is recorded where required;
+- text and image fit checks pass;
+- rendered inspection finds no P0/P1 issue.
+
+## Anti-patterns
+
+- Deciding an image after coordinates are final.
+- `L5 Split` (Split is L4).
+- Unregistered layout geometry.
+- Bare hex or magic reusable type sizes.
+- A comment with stale source, visual, or layout fields.

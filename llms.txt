@@ -32,7 +32,7 @@ pptxgen-ts-starter/
 ## Agent Skills
 
 - [pptxgenjsx SKILL.md](.agents/skills/pptxgenjsx/SKILL.md) — Complete skill for creating and editing PPTX slides using JSX + pptxgenjs
-- [design SKILL.md](.agents/skills/design/SKILL.md) — Design workflow (clarity → research → outline → spec → compose → visuals → QA) and design knowledge (styles, palettes, typography, layouts, density, narrative)
+- [design SKILL.md](.agents/skills/design/SKILL.md) — Design workflow (clarify, research decision, outline, spec, compose/visuals as a per-slide coupled phase, QA) and design knowledge (styles, palettes, typography, core/registered layouts, density, narrative)
 
 ## NPM Scripts
 

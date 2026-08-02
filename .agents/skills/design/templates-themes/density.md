@@ -1,47 +1,74 @@
 # Content Density
 
-Applied per slide in `workflow/05-compose`; checked in `workflow/07-qa`.
+Density is assigned in `workflow/03-outline.md`, locked in spec §6, applied in
+`05-compose.md`, and checked against that approved target in stage 07.
 
-## The density ladder
+## 1. Density ladder
 
-| Density | Slide types                      | Words | Elements |
-| ------- | -------------------------------- | ----- | -------- |
-| Sparse  | Cover, quote, statement, closing | 1–15  | 1–4      |
-| Medium  | Section, cards-2/3, comparison   | 15–40 | 4–10     |
-| Dense   | Data, matrix, process, table     | 30–60 | 6–15     |
+| Density | Typical roles/layouts                      | On-screen words | Positioned elements |
+| ------- | ------------------------------------------ | --------------: | ------------------: |
+| Sparse  | Cover, Section, Statement, Moment, Closing |            1–15 |                 1–4 |
+| Medium  | Explain, Contrast, Process, Demo           |           15–40 |                4–10 |
+| Dense   | Evidence, table, matrix, chart             |           30–60 |                6–15 |
 
-## Budgets
+These are diagnostic ranges, not permissions to shrink type. A page above its
+range should justify the exception or split.
 
-- **~50 words max per slide** — a slide is a claim, not a document.
-- Max 5 bullets; max 6–8 words per bullet.
-- Max 2 charts per slide; one chart + a 2-line takeaway is stronger.
-- Numbers rule: one KPI per stat card, 3–4 stat cards max.
+A Section page is Sparse by default. If it teaches/explains content, reassign it
+to Explain rather than calling a dense page a divider.
 
-## Deck rhythm
+## 2. Deck-level targets
 
-Alternate density across the deck so attention has room to breathe:
+| Deck type            |        Sparse target | Notes                                        |
+| -------------------- | -------------------: | -------------------------------------------- |
+| General/narrative    |               25–40% | Moments and section resets support pacing    |
+| Executive/data-heavy |               15–25% | Preserve decision density but provide resets |
+| Custom               | Specified in spec §6 | Explain audience/purpose rationale           |
 
+Do not enforce “one sparse page every N pages” independently of the approved
+target. The sequence matters as much as the percentage.
+
+## 3. Content budgets
+
+- One core message per page.
+- Body copy usually stays under 50 words; a structured evidence/table page may
+  reach 60 if body type remains approved and readable.
+- Prefer 3–5 bullets, normally 6–10 words each.
+- One primary chart per page; a second chart requires a single combined
+  takeaway and enough space.
+- One KPI per stat card; normally 2–4 cards.
+- Notes hold explanation and transitions; slides hold the visible argument.
+
+## 4. Rhythm
+
+Useful patterns include:
+
+```text
+Sparse claim → Medium explanation → Dense evidence → Sparse reset
+Dense comparison → Medium implication → Sparse decision
 ```
-Dense → Medium → Sparse (section) → Dense → Sparse (quote) → Closing
+
+Avoid long uninterrupted runs of dense pages. A short deck may use typography
+or background transitions instead of dedicated section pages.
+
+## 5. White space and coverage
+
+White space signals hierarchy. Do not fill it automatically.
+
+- If content occupies little area but hierarchy is weak, strengthen scale,
+  alignment, or placement—not word count.
+- If content approaches the safe bounds, cut or split before shrinking type.
+- Empty space is acceptable when it supports a deliberate Sparse role.
+
+Area percentages are rough visual diagnostics, not computable acceptance rules;
+rendered balance matters.
+
+## 6. Progressive disclosure
+
+Sequence complexity across pages:
+
+```text
+overview → one aspect → evidence/details → synthesis/action
 ```
 
-A 12-slide deck should have at least 3 intentionally sparse slides. Section
-dividers reset the rhythm before a dense block.
-
-## White space is a feature
-
-- Empty space around a claim signals importance.
-- Content < 60% of the content area and the slide is not a hero → strengthen
-  hierarchy, don't add filler.
-- Content > 90% of the content area → cut or split the slide.
-
-## Data-ink ratio (Tufte)
-
-For chart slides: remove gridlines, borders, and legends the audience can infer.
-Chart title + axis labels + the one takeaway are the data-ink; the rest is
-overhead.
-
-## Progressive disclosure
-
-Don't put everything on one slide. Sequence across slides:
-overview → one aspect → deeper aspect → synthesis.
+Do not put a whole chapter into a matrix simply because it technically fits.

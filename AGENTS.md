@@ -123,7 +123,19 @@ export default async function () {
         />
       </Text>
 
-      <Notes>Speaker notes.</Notes>
+      <Notes
+        text={`[Hook]
+Frame the page.
+
+[Track]
+Explain what is not duplicated on-screen.
+
+[Action]
+Pause, point, ask, or demo.
+
+[Transition]
+Connect to the next page.`}
+      />
     </Slide>
   );
 }
@@ -196,7 +208,7 @@ npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 --resize 624x351 --o
 ## Skills
 
 - [pptxgenjsx](.agents/skills/pptxgenjsx/SKILL.md) — Component API reference. Use when authoring slide components.
-- [design](.agents/skills/design/SKILL.md) — Design guidance: 7-stage workflow + templates & themes. Use when planning a deck, choosing styles/colors/typography, or running pre-delivery QA.
+- [design](.agents/skills/design/SKILL.md) — Design guidance: seven-stage workflow with per-slide visual preflight before coordinates, core/registered layouts, templates, and QA. Use when planning a deck, choosing styles/colors/typography, or running pre-delivery QA.
 
 ## CLI Tools
 

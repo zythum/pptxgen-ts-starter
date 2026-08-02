@@ -6,6 +6,8 @@ import { PageNumber } from "../components/PageNumber";
 import { colors } from "../token/colors";
 import { typography } from "../token/typography";
 
+// slide: 04 | role: Explain | layout: V-L5-cards-4 | core: Reusable cards combine surfaces, borders, shadows, accents, and absolute-inch positioning | sources: user-material:agents-guide,user-material:source-code | visual: code-native cards | asset: none
+
 export default async function () {
   return (
     <>
@@ -98,11 +100,19 @@ export default async function () {
         </Card>
       </Group>
 
-      <Notes>
-        This slide demonstrates different card layout patterns using RoundRect. Cards can have
-        shadows, colored accent bars, colored backgrounds, and borders. Everything is positioned
-        absolutely using x, y, w, h coordinates.
-      </Notes>
+      <Notes
+        text={`[Hook]
+Cards are compositions, not a separate layout engine.
+
+[Track]
+Show how surfaces, borders, shadows, accent bars, and semantic tokens combine while every element keeps explicit inch coordinates.
+
+[Action]
+Compare the four card treatments and call out the shared geometry.
+
+[Transition]
+The same native approach extends beyond containers to basic drawing primitives.`}
+      />
     </>
   );
 }

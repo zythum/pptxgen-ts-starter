@@ -1,8 +1,5 @@
-import { RoundRect, Group, type PptxNode, type PptxNodePromise } from "@zythum02/pptxgenjsx";
+import { RoundRect, Group, type PptxChildren } from "@zythum02/pptxgenjsx";
 import { colors } from "../token/colors";
-
-/** Union of all types produced by JSX expressions under this jsxImportSource */
-type PptxChildNode = PptxNode | PptxNodePromise | Promise<PptxNode>;
 
 export type CardProps = {
   /** Left edge x position (inches) */
@@ -25,7 +22,7 @@ export type CardProps = {
   /** Show a subtle outer shadow. Default: false */
   shadow?: boolean;
   /** Child elements placed at absolute positions inside the card area */
-  children?: PptxChildNode | PptxChildNode[];
+  children?: PptxChildren;
 };
 
 /**

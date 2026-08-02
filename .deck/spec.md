@@ -1,108 +1,192 @@
 # Design Spec
 
-> # ⚠️ WARNING — EXAMPLE FILE, MUST OVERWRITE
+Status: confirmed
+Updated: 2026-08-02
+Decision authority: user-delegated
+
+> **⚠️ EXAMPLE FILE — MUST OVERWRITE**
 >
-> This is a **filled reference example** (a demo deck), NOT working data.
-> Every NEW deck **must overwrite this file** at its stage:
-> brief → 01-clarify · research → 02-research · outline → 03-outline · spec → 04-spec.
-> A file existing here does NOT mean the work is done — it is still the example.
-> Format spec: `workflow/00-deck-workspace.md`.
+> This is a filled reference example, not active project data. Every new deck
+> must replace it after the stage-04 approval condition is satisfied. Canonical
+> format: `.agents/skills/design/workflow/00-deck-workspace.md`.
 
 ## 1. Canvas & page count
 
-- `LAYOUT_WIDE` 13.333 × 7.5 in; **8 pages** (derived from ~8 min in `outline.md`)
-- Safe margin 0.8 → content area **11.733 × 5.9 in**; content starts at y=2.0 (below SectionHeader)
+- Layout: `LAYOUT_WIDE`, 13.333 × 7.5 in.
+- Page count: 8, matching `.deck/outline.md` and `src/ppt.tsx`.
+- Safe margin: 0.8 in → content area 11.733 × 5.9 in.
+- Content-page body begins at y=2.0 below the shared SectionHeader.
 
 ## 2. Style
 
-- **Dev / Data (8)** — developer audience + tool demo (`templates-themes/styles.md` catalog)
-- Rationale: engineering talk; code/commands in mono (Courier New); no decorative imagery
-- **Dual-background statement**: light content pages + dark cover/closing, the light/dark switch is a deliberate rhythm (§5)
+- **Style:** `S8. Dev / Data`.
+- **System:** information-first.
+- **Rationale:** developer tutorial with code, editable tables/charts, explicit
+  coordinates, and no decorative external imagery.
+- **Secondary treatment boundary:** dark narrative treatment is limited to the
+  Cover and Closing roles; all feature/evidence pages remain light.
 
-## 3. Palette — primary: Light Professional; dark pages: borrow from Dark Premium
+## 3. Palette
 
-**Content pages (Light Professional; actual background pure white FFFFFF)**
+### Core role mapping to runtime tokens
 
-| Role       | Hex             | Usage                                                                |
-| ---------- | --------------- | -------------------------------------------------------------------- |
-| background | FFFFFF          | Content-page background (SlideBackground light)                      |
-| surface    | F3F0FF          | Light-purple cards (agenda / rich-text cards)                        |
-| primary    | 1F2937          | Titles, card titles, body                                            |
-| accent     | 7C3AED          | **The deck's single accent**: divider/underline/title/chart series 1 |
-| text       | 6B7280          | Secondary text, footer                                               |
-| faint      | 9CA3AF          | De-emphasized (captions, page numbers)                               |
-| border     | E5E7EB / E2E8F0 | Card borders / table gridlines                                       |
+| Design role              | Runtime token           | Hex    | Usage                                   |
+| ------------------------ | ----------------------- | ------ | --------------------------------------- |
+| light background/surface | `colors.white`          | FFFFFF | S2–S7 canvas and white cards            |
+| dark background          | `colors.darkBackground` | 18181B | S1/S8 canvas                            |
+| dark surface             | `colors.darkSurface`    | 27272A | command pill/code surface               |
+| primary/text             | `colors.ink`            | 1F2937 | light-page titles and main copy         |
+| secondary text           | `colors.textSecondary`  | 4B5563 | secondary body copy                     |
+| muted on light           | `colors.muted`          | 6B7280 | captions/secondary copy on white        |
+| muted on dark            | `colors.mutedLight`     | 9CA3AF | small page numbers/footer text on dark  |
+| accent                   | `colors.accent`         | 7C3AED | lines, highlights, primary chart series |
+| accent on dark           | `colors.accentLight`    | A78BFA | subtitle/callout text on dark           |
+| soft accent surface      | `colors.accentSoft`     | F3F0FF | highlighted cards                       |
+| border                   | `colors.border`         | E5E7EB | cards/dividers                          |
+| light border/grid        | `colors.borderLight`    | E2E8F0 | table/chart structure                   |
 
-**Dark pages (S1/S8, borrowed from Dark Premium)**
+### Additional runtime token mirror
 
-| Role        | Hex    | Usage                    |
-| ----------- | ------ | ------------------------ |
-| background  | 18181B | Cover/closing background |
-| surface     | 27272A | Command pill             |
-| primary     | FFFFFF | Main title               |
-| accent-soft | A78BFA | Subtitle on dark         |
-| muted       | 6B7280 | Footer on dark           |
-| code-green  | 6EE7B7 | Command text (mono)      |
+| Runtime token                                                 | Hex                                        | Demo use                    |
+| ------------------------------------------------------------- | ------------------------------------------ | --------------------------- |
+| `black`                                                       | 000000                                     | card shadow                 |
+| `backgroundLight`                                             | FAFAFA                                     | agenda workflow strip       |
+| `success`                                                     | 10B981                                     | positive chart series       |
+| `dangerText` / `dangerSoft`                                   | DC2626 / FEF2F2                            | danger card treatment       |
+| `blue600` / `blue500` / `blueSoft`                            | 2563EB / 3B82F6 / EFF6FF                   | info card/chart series      |
+| `violet500` / `violet900` / `violetSoft`                      | 8B5CF6 / 5B21B6 / EDE9FE                   | shape/table demo            |
+| `green200` / `green300` / `green600`                          | 6EE7B7 / 34D399 / 059669                   | shape demo                  |
+| `amber200` / `amber400` / `amber500` / `amber600`             | FDE68A / FBBF24 / F59E0B / D97706          | shape/chart demo            |
+| `slate800` / `slate700` / `slate600` / `slate400` / `slate50` | 1E293B / 334155 / 475569 / 94A3B8 / F8FAFC | table/chart labels and rows |
+| `codeText` / `codeTag`                                        | E2E8F0 / F87171                            | code block syntax styling   |
 
-**Semantic colors (demo pages/charts only, ≤3 with explicit meaning)**:
-`10B981` green=success · `DC2626` red=warning · `F59E0B` orange=attention · `3B82F6` blue=info
+All values above mirror `src/token/colors.ts`; this migration introduces no new
+hex values. Multi-hue tokens are a registered capability-demo exception, not a
+recommended business-deck palette.
 
-> Design decision log: S5 shape-demo page intentionally uses multiple colors
-> (purple/green/orange gradient set) to show fill/stroke/transparency —
-> a "demo deck" exception; business decks use one accent per palettes rules.
+### Approved foreground/background pairs
+
+| Foreground / background          |   Ratio | Rule                               |
+| -------------------------------- | ------: | ---------------------------------- |
+| `ink` / `white`                  | 14.68:1 | body/title text                    |
+| `muted` / `white`                |  4.83:1 | secondary text                     |
+| `accent` / `white`               |  5.70:1 | text or graphic emphasis           |
+| `white` / `darkBackground`       | 17.72:1 | dark-page title                    |
+| `accentLight` / `darkBackground` |  6.51:1 | dark-page subtitle                 |
+| `mutedLight` / `darkBackground`  |  6.98:1 | small dark-page page number/footer |
+| `accent` / `darkBackground`      |  3.11:1 | large text/graphics only           |
+
+Do not use `colors.muted` for 10pt text on dark pages; its measured ratio is
+3.66:1 and fails normal-text AA.
 
 ## 4. Typography
 
-- Fonts: body **default** (no explicit fontFace); code/commands in **Courier New** (S3 code block, S8 pill)
-- Actual scale: hero 36 / section title 30 / card title 16–18 / body 14–16 / caption 10–13 / code 11
-- Line spacing: body 24–32 (24 in cards, 32 in the rich-text demo)
+### Runtime font mirror
 
-## 5. Background
+| Token                  | Value       | Use                                                                            |
+| ---------------------- | ----------- | ------------------------------------------------------------------------------ |
+| `typography.font.sans` | Inter       | approved sans family; most legacy demo runs currently rely on renderer default |
+| `typography.font.mono` | Courier New | code and command text                                                          |
 
-- Dual background: light (FFFFFF) S2–S7 + dark (18181B) S1/S8
-- Contrast: white on 18181B ≈ 13:1 ✓; A78BFA subtitle ≈ 7:1 ✓; footer 6B7280 decorative only (small, de-emphasized)
+### Runtime size mirror
 
-## 6. Layout constants (consistent across content pages)
+| Token      |  Pt | Use                          |
+| ---------- | --: | ---------------------------- |
+| `display`  |  36 | cover/closing title          |
+| `hero`     |  30 | shared SectionHeader         |
+| `title`    |  24 | in-slide title/code emphasis |
+| `subtitle` |  18 | card title/dark subtitle     |
+| `heading`  |  17 | feature-card heading         |
+| `lead`     |  16 | lead/body emphasis           |
+| `body`     |  15 | main body                    |
+| `small`    |  14 | secondary body               |
+| `table`    |  13 | table cells/cover footer     |
+| `caption`  |  12 | captions/details             |
+| `code`     |  11 | code blocks                  |
+| `tiny`     |  10 | page numbers                 |
 
-- Uniform margin **0.8**; content width **11.733**
-- SectionHeader: title (0.8, 0.6) 30pt bold `1F2937` + purple underline (0.8, 1.4) 2.0 × 0.05 `7C3AED`
-- Content area starts at y=2.0; card height 4.8 (to 6.8); PageNumber bottom-right 10pt
-- Cards: rectRadius **0.15**, inner padding 0.3, card gap 0.4 (agenda cards x=0/4.0/8.0; S4 cards x=0/6.0)
-- Cross-page consistency: same title y, same margin 0.8, unified card geometry
+- Weight uses `bold: boolean`; no numeric weight tokens.
+- Body leading ranges from 24–32 pt where the demo intentionally shows spacing.
+- Chart API label sizes use measured local literals (10/11 pt) as component
+  options; they are documented demo exceptions rather than reusable text roles.
 
-## 7. Layout mapping (locked layouts from layouts.md)
+## 5. Background & accessibility
 
-| Page | Layout                       | Notes                                                                        |
-| ---- | ---------------------------- | ---------------------------------------------------------------------------- |
-| S1   | **L1 Cover** (dark variant)  | Centered hero + double divider + footer command                              |
-| S2   | **L5 Cards-3 variant**       | 3 cards + bottom workflow strip (RoundRect + two-line text)                  |
-| S3   | **L4 Split**                 | Left rich-text card + right code block (18181B background)                   |
-| S4   | **L5 variant Cards-4 (2×2)** | 2×2 card grid, registered variant (see §8)                                   |
-| S5   | **L4 variant Gallery**       | Left 8.1-wide double group (Rect/Oval) + right 3.2 narrow column (RoundRect) |
-| S6   | **Data-Table** (full width)  | Header / banded rows / total row, registered variant (see §8)                |
-| S7   | **L4 Split**                 | Left bar + right doughnut                                                    |
-| S8   | **L9 Closing** (dark)        | Mirrors L1 ✓ (same palette, double divider, centered)                        |
+- S1/S8: `colors.darkBackground`; S2–S7: `colors.white`.
+- Dark cover/closing are a deliberate role-bound treatment, not arbitrary
+  slide-by-slide switching.
+- Small dark-page page numbers use `colors.mutedLight`; titles/subtitles use
+  `white` and `accentLight`.
+- All visuals are code-native; there are no background images or external
+  raster assets.
+- Fictional data is labeled in notes and source mapping; it must not be
+  presented as a business claim.
 
-## 8. Design decision log
+## 6. Layout constants & density target
 
-- **Registered variants**: `Cards-4` (S4, 2×2 grid) and `Data-Table` (S6, full-width table page)
-  are outside the 9 base layouts in layouts.md — registered here as this deck's
-  locked variants per the lock rule; all further pages still choose from
-  "locked set + this log", never invent on the fly.
-- **S5 multi-color**: demo exception (see §3 decision log); not for business decks.
-- **Fonts not locked**: a real deck should pick a pair from typography.md (e.g. Inter / JetBrains Mono);
-  this demo deck keeps defaults + Courier New.
-- **Palette naming**: Light Professional + Dark Premium are catalog names; the
-  hex values (`7C3AED` etc.) are the facts.
+- SlideBackground: first root-level slide element at x=0, y=0,
+  `w="100%"`, `h="100%"`; percentage dimensions resolve against the current
+  slide context. Do not place it inside a Group unless a Group-local background
+  is intentional.
+- Margin: 0.8 in; content width: 11.733 in.
+- Shared SectionHeader: x=0.8, title y=0.6, underline y=1.4.
+- Content pages: body y=2.0 to approximately 6.8.
+- Cards: 0.3 in internal padding; consistent rows/columns within each page.
+- PageNumber: compact 1.2 × 0.3 in box, right inset 0.8, bottom footer
+  inset 0.3; coordinates derive from the current slide/Group width and height;
+  type uses `typography.size.tiny`.
+- Density target: general/tutorial, 25–40% Sparse; actual = 2/8 = 25%.
+- Cover/closing mirror; content pages align title, margin, and page-number
+  positions.
 
-## 9. Mirror comment (per 04 spec, on top of `src/ppt.tsx`)
+## 7. Page layout + visual mapping
+
+| Page | Role     | Layout                | Visual type                | Slot ratio            | Sources                                                                                    | Asset status |
+| ---- | -------- | --------------------- | -------------------------- | --------------------- | ------------------------------------------------------------------------------------------ | ------------ |
+| S1   | Cover    | L1                    | none                       | n/a                   | `user-material:agents-guide`, `user-material:package-manifest`                             | not-needed   |
+| S2   | Explain  | `V-L5-workflow-strip` | code-native cards/process  | n/a — vector groups   | `user-material:agents-guide`, `user-material:source-code`                                  | not-needed   |
+| S3   | Explain  | L4                    | code-native rich text/code | n/a — vector/text     | `user-material:agents-guide`, `user-material:pptxgenjsx-docs`, `user-material:source-code` | not-needed   |
+| S4   | Explain  | `V-L5-cards-4`        | code-native cards          | n/a — vector groups   | `user-material:agents-guide`, `user-material:source-code`                                  | not-needed   |
+| S5   | Explain  | `V-L4-shape-gallery`  | code-native shape gallery  | n/a — vector groups   | `user-material:pptxgenjsx-docs`, `user-material:source-code`                               | not-needed   |
+| S6   | Evidence | L11                   | code-native table          | n/a — editable table  | `user-material:source-code`, `user-material:pptxgenjsx-docs`                               | not-needed   |
+| S7   | Evidence | L4                    | code-native bar + doughnut | n/a — editable charts | `user-material:source-code`, `user-material:pptxgenjsx-docs`                               | not-needed   |
+| S8   | Closing  | L9                    | none                       | n/a                   | `user-material:agents-guide`, `user-material:package-manifest`                             | not-needed   |
+
+## 8. Decision log & registered variants
+
+### Registered layout variants
+
+| Variant ID            | Parent     | Geometry                                                                          | Reason                                                                        | Slides |
+| --------------------- | ---------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------ |
+| `V-L5-workflow-strip` | L5 Cards-3 | three 3.6×2.2 cards in an 11.733-wide group plus a full-width process strip below | Preserve three capability cards while teaching the edit-preview-generate loop | S2     |
+| `V-L5-cards-4`        | L5 Cards-3 | 2×2 grid; left width 5.6, right width 5.733, 0.4 gap, two 2.2-high rows           | Demonstrate four reusable card treatments without shrinking body type         | S4     |
+| `V-L4-shape-gallery`  | L4 Split   | 8.1-wide left gallery plus 3.2-wide right column in the standard content zone     | Demonstrate several native shape properties on one capability page            | S5     |
+
+### Demo exceptions
+
+- Multi-hue shape/chart tokens are allowed only because S5/S7 demonstrate
+  rendering capabilities; one-accent guidance remains the default for real
+  business decks.
+- Most prose retains the legacy renderer-default font behavior even though
+  `typography.font.sans` records Inter. A new production deck should apply its
+  approved family explicitly and verify delivery fallback.
+- S6/S7 data is fictional and source-linked to repository code, not external
+  research.
+- This migration changes documentation/comments and the dark page-number token;
+  it does not redesign slide geometry.
+
+## 9. Mirror comment for `src/ppt.tsx`
 
 ```tsx
-/* Design spec
-   Canvas: 13.333 × 7.5 (LAYOUT_WIDE) — 8 slides
-   Style:  Dev / Data (8) — developer demo
-   Palette: Light Professional (bg FFFFFF, accent 7C3AED) + Dark covers 18181B
-   Fonts:  default / Courier New (code)
-   Background: light content, dark cover + closing (deliberate contrast)
-   Layout set: L1, L5×2, L4×3, Cards-4, Data-Table, L9 */
+/* Design spec mirror — .deck/spec.md
+   Status: confirmed (reference example, user-delegated)
+   Canvas: LAYOUT_WIDE 13.333 × 7.5 — 8 slides
+   Style: S8 Dev / Data — information-first
+   Palette: white/light content + 18181B cover/closing; accent 7C3AED
+   Fonts: Inter token / Courier New mono; legacy prose uses renderer default
+   Density: tutorial 25–40% Sparse; actual 25%
+   Layouts: L1, V-L5-workflow-strip, L4, V-L5-cards-4,
+            V-L4-shape-gallery, L11, L4, L9
+   Visuals: code-native only; no external assets
+*/
 ```
