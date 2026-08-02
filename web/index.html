@@ -5,14 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>pptxgen-ts-starter — Slide Preview</title>
     <style>
+      :root {
+        color-scheme: dark;
+        --app-bg: #14141c;
+        --surface: #1c1c27;
+        --surface-raised: #252536;
+        --surface-hover: #303047;
+        --line: rgba(255, 255, 255, 0.09);
+        --line-strong: rgba(255, 255, 255, 0.14);
+        --text: #f4f3f8;
+        --muted: #aaa9b8;
+        --accent: #a99cff;
+        --accent-soft: rgba(169, 156, 255, 0.16);
+        --danger: #fca5a5;
+        --radius: 12px;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
       * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
       }
-      html {
-        height: 100%;
-      }
+
+      html,
       body,
       #root {
         width: 100%;
@@ -20,126 +43,447 @@
         overflow: hidden;
       }
 
-      /* ── PPT Viewer Layout ── */
+      button {
+        font: inherit;
+      }
+
+      button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      /* ── Preview workspace ── */
       .pptx {
-        display: flex;
-        flex-direction: column;
         width: 100%;
         height: 100%;
-        background: #1e1e2e;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        color: var(--text);
+        background: var(--app-bg);
+      }
+
+      .pptx-topbar {
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(28, 28, 39, 0.88);
+      }
+
+      .pptx-brand,
+      .pptx-topbar-actions,
+      .pptx-slide-meta,
+      .notes-desk-header,
+      .notes-desk-title,
+      .pptx-floating-controls {
+        display: flex;
+        align-items: center;
+      }
+
+      .pptx-brand {
+        min-width: 0;
+        gap: 10px;
+      }
+
+      .pptx-brand-mark {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 1px solid rgba(169, 156, 255, 0.45);
+        border-radius: 8px;
+        color: var(--accent);
+        background: var(--accent-soft);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .pptx-brand-copy {
+        min-width: 0;
+      }
+
+      .pptx-brand-title {
+        overflow: hidden;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 650;
+        letter-spacing: -0.01em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .pptx-brand-subtitle,
+      .pptx-slide-meta,
+      .notes-desk-kicker {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.3;
+      }
+
+      .pptx-brand-subtitle {
+        margin-top: 1px;
+      }
+
+      .pptx-topbar-actions {
+        gap: 8px;
+        flex: 0 0 auto;
+      }
+
+      .pptx-icon-button,
+      .pptx-control-button,
+      .notes-close-button {
+        display: inline-grid;
+        place-items: center;
+        border: 1px solid transparent;
+        color: var(--muted);
+        cursor: pointer;
+        background: transparent;
+        transition:
+          background 160ms ease,
+          border-color 160ms ease,
+          color 160ms ease,
+          transform 160ms ease;
+      }
+
+      .pptx-icon-button:hover,
+      .pptx-control-button:hover,
+      .notes-close-button:hover {
+        border-color: var(--line-strong);
+        color: var(--text);
+        background: var(--surface-hover);
+      }
+
+      .pptx-icon-button:active,
+      .pptx-control-button:active,
+      .notes-close-button:active {
+        transform: scale(0.96);
+      }
+
+      .pptx-icon-button {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        font-size: 17px;
+      }
+
+      .pptx-icon-button.active {
+        border-color: rgba(169, 156, 255, 0.4);
+        color: #d7d1ff;
+        background: var(--accent-soft);
+      }
+
+      .pptx-workspace {
+        min-height: 0;
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+
+      .pptx-stage {
+        position: relative;
+        min-width: 0;
+        min-height: 0;
+        flex: 1 1 auto;
+        display: flex;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 42%, rgba(169, 156, 255, 0.075), transparent 46%),
+          var(--app-bg);
       }
 
       .pptx-canvas-wrapper {
+        min-width: 0;
+        min-height: 0;
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        padding: 16px;
+        padding: 20px 20px 0;
+      }
+
+      .pptx-canvas-wrapper > div {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
       }
 
       .pptx-canvas {
         display: block;
         max-width: 100%;
         max-height: 100%;
-        border-radius: 8px;
-        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
-        background: #fff;
+        box-shadow:
+          0 22px 60px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.06);
       }
 
-      .pptx-toolbar {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 18px;
-        padding: 14px 24px;
-        background: #2a2a3e;
-        border-top: 1px solid #3a3a52;
+      .pptx-floating-controls {
+        position: absolute;
+        z-index: 5;
+        bottom: 22px;
+        left: 50%;
+        gap: 4px;
+        min-height: 46px;
+        padding: 5px;
+        border: 1px solid var(--line-strong);
+        border-radius: 14px;
+        background: rgba(37, 37, 54, 0.92);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+        transform: translateX(-50%);
       }
 
-      .pptx-toolbar button {
-        padding: 8px 20px;
-        border: none;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        background: #4a4a6a;
-        color: #eee;
-        transition: background 0.2s;
+      .pptx-control-button {
+        min-width: 36px;
+        height: 34px;
+        border-radius: 9px;
+        padding: 0 10px;
+        font-size: 16px;
+        font-weight: 600;
       }
-      .pptx-toolbar button:hover {
-        background: #6a6a8a;
+
+      .pptx-control-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.36;
       }
-      .pptx-toolbar button:active {
-        background: #5a5a7a;
+
+      .pptx-control-button:disabled:hover {
+        border-color: transparent;
+        color: var(--muted);
+        background: transparent;
+      }
+
+      .pptx-control-divider {
+        width: 1px;
+        height: 22px;
+        margin: 0 2px;
+        background: var(--line-strong);
       }
 
       .pptx-slide-counter {
-        font-size: 15px;
-        font-weight: 500;
-        color: #ccc;
-        min-width: 80px;
-        text-align: center;
+        min-width: 72px;
+        padding: 0 7px;
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 650;
         font-variant-numeric: tabular-nums;
+        text-align: center;
       }
 
-      /* ── Error Modal ── */
+      .notes-desk {
+        width: 0;
+        min-width: 0;
+        flex: 0 0 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border-left: 0 solid var(--line);
+        color: var(--text);
+        background: var(--surface);
+        opacity: 0;
+        transition:
+          flex-basis 220ms ease,
+          width 220ms ease,
+          opacity 160ms ease,
+          border-color 220ms ease;
+      }
+
+      .pptx.notes-open .notes-desk {
+        width: min(360px, 34vw);
+        flex-basis: min(360px, 34vw);
+        border-left-width: 1px;
+        opacity: 1;
+      }
+
+      .notes-desk-header {
+        min-height: 76px;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 16px 14px 18px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .notes-desk-title {
+        min-width: 0;
+        gap: 10px;
+      }
+
+      .notes-desk-indicator {
+        width: 9px;
+        height: 9px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+      }
+
+      .notes-desk-heading {
+        overflow: hidden;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .notes-desk-kicker {
+        margin-top: 2px;
+      }
+
+      .notes-close-button {
+        width: 30px;
+        height: 30px;
+        flex: 0 0 auto;
+        border-radius: 8px;
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .notes-desk-content {
+        min-height: 0;
+        flex: 1;
+        overflow: auto;
+        padding: 18px;
+        scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+      }
+
+      .notes-text {
+        color: #dedde6;
+        font-size: 14px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
+
+      .notes-text.is-empty {
+        color: var(--muted);
+        font-style: italic;
+      }
+
+      /* ── Error modal ── */
       .error-modal-overlay {
-        display: none;
         position: fixed;
+        z-index: 20;
         inset: 0;
-        background: rgba(0, 0, 0, 0.6);
+        display: none;
         align-items: center;
         justify-content: center;
-        z-index: 1000;
+        padding: 24px;
+        background: rgba(7, 7, 10, 0.7);
+        backdrop-filter: blur(8px);
       }
+
       .error-modal-overlay.active {
         display: flex;
       }
+
       .error-modal {
-        background: #2a2a3e;
-        border: 1px solid #e53e3e;
-        border-radius: 12px;
-        max-width: 900px;
-        width: 90%;
-        max-height: 80vh;
+        width: min(900px, 100%);
+        max-height: min(80vh, 720px);
         display: flex;
         flex-direction: column;
-        box-shadow: 0 8px 48px rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+        border: 1px solid rgba(252, 165, 165, 0.5);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
       }
+
       .error-modal-header {
         display: flex;
         align-items: center;
         gap: 10px;
         padding: 16px 20px;
-        border-bottom: 1px solid #3a3a52;
-        font-size: 16px;
-        font-weight: 600;
-        color: #fbb4b4;
+        border-bottom: 1px solid var(--line);
+        color: var(--danger);
+        font-size: 15px;
+        font-weight: 700;
       }
+
       .error-modal-header .icon {
-        font-size: 20px;
+        font-size: 18px;
       }
+
       .error-modal-body {
         padding: 16px 20px;
         overflow-y: auto;
-        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
-        font-size: 13px;
-        line-height: 1.6;
-        color: #ccc;
-        word-break: break-all;
-      }
-      .error-modal-body .error-message {
-        color: #fca5a5;
-        font-weight: 600;
-        font-size: 14px;
-      }
-      .error-modal-body .error-stack {
-        color: #9ca3af;
+        color: #d7d5e1;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         font-size: 12px;
-        padding-top: 12px;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+      }
+
+      .error-modal-body .error-message {
+        color: var(--danger);
+        font-size: 13px;
+        font-weight: 700;
         white-space: pre-wrap;
+      }
+
+      .error-modal-body .error-stack {
+        padding-top: 12px;
+        color: var(--muted);
+        white-space: pre-wrap;
+      }
+
+      @media (max-width: 760px) {
+        .pptx-topbar {
+          min-height: 52px;
+          padding: 0 12px;
+        }
+
+        .pptx-brand-subtitle,
+        .pptx-slide-meta {
+          display: none;
+        }
+
+        .pptx-workspace {
+          flex-direction: column;
+        }
+
+        .pptx-canvas-wrapper {
+          padding: 18px 14px 72px;
+        }
+
+        .pptx-floating-controls {
+          bottom: 16px;
+        }
+
+        .notes-desk {
+          width: 100%;
+          height: 0;
+          flex: 0 0 0;
+          border-top: 0 solid var(--line);
+          border-left: 0;
+        }
+
+        .pptx.notes-open .notes-desk {
+          width: 100%;
+          height: min(38vh, 310px);
+          flex-basis: min(38vh, 310px);
+          border-top-width: 1px;
+          border-left-width: 0;
+        }
+
+        .notes-desk-header {
+          min-height: 62px;
+          padding: 12px 14px;
+        }
+
+        .notes-desk-content {
+          padding: 14px;
+        }
+
+        .notes-text {
+          font-size: 13px;
+          line-height: 1.6;
+        }
       }
     </style>
   </head>
@@ -147,10 +491,16 @@
     <div id="root"></div>
 
     <!-- ── Error Modal ── -->
-    <div id="errorModal" class="error-modal-overlay">
+    <div
+      id="errorModal"
+      class="error-modal-overlay"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="errorModalTitle"
+    >
       <div class="error-modal">
-        <div class="error-modal-header">
-          <span class="icon">⚠️</span>
+        <div class="error-modal-header" id="errorModalTitle">
+          <span class="icon" aria-hidden="true">⚠</span>
           <span>Generate Failed</span>
         </div>
         <div class="error-modal-body" id="errorModalBody"></div>
@@ -172,7 +522,7 @@
     </script>
 
     <script type="module">
-      import { PptxViewer } from "https://esm.sh/@silurus/ooxml@0.74.1/pptx";
+      import { PptxViewer } from "https://esm.sh/@silurus/ooxml@0.74.6/pptx";
 
       // ── Error modal ──
       const errorModal = document.getElementById("errorModal");
@@ -196,30 +546,108 @@
 
       // ── State ──
       let viewer = null;
+      let notesOpen = false;
 
       async function renderPreview(domElement) {
         domElement.innerHTML = `
           <div class="pptx">
-            <div class="pptx-canvas-wrapper">
-              <canvas class="pptx-canvas"></canvas>
-            </div>
-            <div class="pptx-toolbar">
-              <button class="pptx-prev-btn">← Prev</button>
-              <span class="pptx-slide-counter pptx-counter">Loading...</span>
-              <button class="pptx-next-btn">Next →</button>
+            <header class="pptx-topbar">
+              <div class="pptx-brand">
+                <span class="pptx-brand-mark" aria-hidden="true">P</span>
+                <div class="pptx-brand-copy">
+                  <div class="pptx-brand-title">Slide Preview</div>
+                  <div class="pptx-brand-subtitle">pptxgen-ts-starter</div>
+                </div>
+              </div>
+              <div class="pptx-topbar-actions">
+                <span class="pptx-slide-meta pptx-slide-title">Preparing preview…</span>
+              </div>
+            </header>
+            <div class="pptx-workspace">
+              <main class="pptx-stage" aria-label="Slide preview">
+                <div class="pptx-canvas-wrapper">
+                  <canvas class="pptx-canvas"></canvas>
+                </div>
+                <div class="pptx-floating-controls" aria-label="Slide controls">
+                  <button class="pptx-control-button pptx-prev-btn" type="button" aria-label="Previous slide" title="Previous slide (←)">←</button>
+                  <span class="pptx-slide-counter pptx-counter" aria-live="polite">Loading…</span>
+                  <button class="pptx-control-button pptx-next-btn" type="button" aria-label="Next slide" title="Next slide (→)">→</button>
+                  <span class="pptx-control-divider" aria-hidden="true"></span>
+                  <button class="pptx-control-button pptx-notes-toggle" type="button" aria-label="Show speaker notes" aria-expanded="false" title="Show speaker notes (N)">▤</button>
+                </div>
+              </main>
+              <aside class="notes-desk" aria-label="Speaker notes" aria-hidden="true">
+                <div class="notes-desk-header">
+                  <div class="notes-desk-title">
+                    <span class="notes-desk-indicator" aria-hidden="true"></span>
+                    <div>
+                      <div class="notes-desk-heading">Speaker notes</div>
+                      <div class="notes-desk-kicker notes-slide-label">Slide —</div>
+                    </div>
+                  </div>
+                  <button class="notes-close-button" type="button" aria-label="Hide speaker notes" title="Hide speaker notes (N)">×</button>
+                </div>
+                <div class="notes-desk-content">
+                  <p class="notes-text is-empty">Notes will appear here when the preview is ready.</p>
+                </div>
+              </aside>
             </div>
           </div>
         `;
 
+        const app = domElement.querySelector(".pptx");
         const canvas = domElement.querySelector(".pptx-canvas");
+        const wrapper = domElement.querySelector(".pptx-canvas-wrapper");
         const counter = domElement.querySelector(".pptx-counter");
+        const slideTitle = domElement.querySelector(".pptx-slide-title");
+        const notesLabel = domElement.querySelector(".notes-slide-label");
+        const notesDesk = domElement.querySelector(".notes-desk");
+        const notesText = domElement.querySelector(".notes-text");
         const prevBtn = domElement.querySelector(".pptx-prev-btn");
         const nextBtn = domElement.querySelector(".pptx-next-btn");
+        const notesCloseBtn = domElement.querySelector(".notes-close-button");
+        const notesToggleBtns = domElement.querySelectorAll(".pptx-notes-toggle");
+        const compactViewport = window.matchMedia("(max-width: 760px)");
 
-        counter.textContent = "Generating...";
+        function setNotesOpen(open) {
+          notesOpen = open;
+          app.classList.toggle("notes-open", open);
+          notesDesk.setAttribute("aria-hidden", String(!open));
+          notesToggleBtns.forEach((button) => {
+            button.classList.toggle("active", open);
+            button.setAttribute("aria-expanded", String(open));
+            button.setAttribute("aria-label", open ? "Hide speaker notes" : "Show speaker notes");
+            button.title = `${open ? "Hide" : "Show"} speaker notes (N)`;
+          });
+          window.requestAnimationFrame(() => void viewer?.fitPage());
+        }
+
+        function updateNotes(slideIndex, total) {
+          const notes = viewer?.getNotes(slideIndex) ?? "";
+          notesText.textContent = notes || "This slide does not contain speaker notes.";
+          notesText.classList.toggle("is-empty", !notes);
+          notesLabel.textContent = `Slide ${slideIndex + 1} of ${total}`;
+        }
+
+        function updateSlideUi(slideIndex, total) {
+          counter.textContent = `${slideIndex + 1} / ${total}`;
+          slideTitle.textContent = `Slide ${String(slideIndex + 1)} · ${total} total`;
+          prevBtn.disabled = slideIndex === 0;
+          nextBtn.disabled = slideIndex === total - 1;
+          updateNotes(slideIndex, total);
+        }
+
+        function toggleNotes() {
+          setNotesOpen(!notesOpen);
+        }
+
+        counter.textContent = "Generating…";
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        setNotesOpen(!compactViewport.matches);
 
         try {
-          // Fetch pre-generated .pptx from server
+          // Fetch pre-generated .pptx from server.
           const resp = await fetch("/api/generate");
           const contentType = resp.headers.get("Content-Type") || "";
           if (!resp.ok) {
@@ -230,10 +658,11 @@
               showError(err, errData.stack);
               return;
             }
-            throw new Error("Server error: " + resp.status + " " + resp.statusText);
+            throw new Error(`Server error: ${resp.status} ${resp.statusText}`);
           }
+
           const buffer = await resp.arrayBuffer();
-          counter.textContent = "Rendering...";
+          counter.textContent = "Rendering…";
 
           const targetSlide = parseInt(location.hash.replace("#", ""), 10) || 1;
           let suppressHashUpdate = true;
@@ -241,22 +670,20 @@
           viewer = new PptxViewer(canvas, {
             useGoogleFonts: true,
             onSlideChange: (current, total) => {
-              counter.textContent = current + 1 + " / " + total;
+              updateSlideUi(current, total);
               if (!suppressHashUpdate) {
-                history.replaceState(null, "", "#" + (current + 1));
+                history.replaceState(null, "", `#${current + 1}`);
               }
             },
           });
 
           await viewer.load(buffer);
-
-          const wrapper = domElement.querySelector(".pptx-canvas-wrapper");
           await viewer.fitPage();
-          const ro = new ResizeObserver(() => void viewer?.fitPage());
-          ro.observe(wrapper);
+
+          const resizeObserver = new ResizeObserver(() => void viewer?.fitPage());
+          resizeObserver.observe(wrapper);
 
           if (targetSlide > 1) await viewer.goToSlide(targetSlide - 1);
-
           suppressHashUpdate = false;
         } catch (err) {
           counter.textContent = "Error — see modal";
@@ -264,15 +691,32 @@
           return;
         }
 
-        prevBtn.addEventListener("click", () => viewer?.prevSlide());
-        nextBtn.addEventListener("click", () => viewer?.nextSlide());
+        prevBtn.addEventListener("click", () => void viewer?.prevSlide());
+        nextBtn.addEventListener("click", () => void viewer?.nextSlide());
+        notesCloseBtn.addEventListener("click", () => setNotesOpen(false));
+        notesToggleBtns.forEach((button) => button.addEventListener("click", toggleNotes));
 
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-            viewer?.prevSlide();
-          } else if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " ") {
-            e.preventDefault();
-            viewer?.nextSlide();
+        compactViewport.addEventListener("change", (event) => {
+          if (event.matches) setNotesOpen(false);
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
+          if (
+            event.target instanceof HTMLElement &&
+            event.target.closest("button, input, textarea, select, a")
+          )
+            return;
+
+          if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+            void viewer?.prevSlide();
+          } else if (event.key === "ArrowRight" || event.key === "ArrowDown" || event.key === " ") {
+            event.preventDefault();
+            void viewer?.nextSlide();
+          } else if (event.key.toLowerCase() === "n") {
+            toggleNotes();
+          } else if (event.key.toLowerCase() === "f") {
+            void viewer?.fitPage();
           }
         });
       }
