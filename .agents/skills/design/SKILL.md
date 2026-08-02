@@ -1,11 +1,12 @@
 ---
 name: design
-version: 1.1.0
+version: 1.2.0
 description: >
   Content and design methodology for presentations built with
   pptxgen-ts-starter. Use for deck planning, research, narrative, speaker
   notes, style/layout/palette/typography decisions, visuals, and pre-delivery
-  QA. Technical line: code-generated .pptx via pptxgenjsx — never HTML.
+  QA with structured layout audit and constrained repair. Technical line:
+  code-generated .pptx via pptxgenjsx — never HTML.
 metadata:
   requires:
     bins: ["npm", "rg"]
@@ -32,7 +33,8 @@ Produce the **content** and **design** of a deck built with
 | Planning                 | `workflow/01-clarify.md` → `03-outline.md`                   |
 | Design system            | `workflow/04-spec.md` + `04b-token-files.md`                 |
 | Slide execution          | `workflow/05-compose.md` with `06-visuals.md` preflight      |
-| Delivery review          | `workflow/07-qa.md` + `references/qa/checklist.md`           |
+| Delivery review          | `workflow/07-qa.md`: layout audit, constrained repair, Gate  |
+| Canonical QA checklist   | `references/qa/checklist.md`                                 |
 | Design knowledge         | `templates-themes/`                                          |
 
 ## Structure
@@ -82,15 +84,15 @@ Each stage must be **handled**, but its decision may be `completed` or
 `not-needed` where the stage contract allows it. Read
 `workflow/00-deck-workspace.md` for canonical file schemas and status values.
 
-| #   | Stage    | Required result                                        | Gate                |
-| --- | -------- | ------------------------------------------------------ | ------------------- |
-| 1   | Clarify  | Confirmed brief or recorded delegation                 | ⛔ unless delegated |
-| 2   | Research | Fact cards, or explicit `not-needed` record            | —                   |
-| 3   | Outline  | Confirmed chapters/pages/roles; then complete notes    | ⛔ unless delegated |
-| 4   | Spec     | Proposal → approval → write spec and token mirrors     | ⛔ unless delegated |
-| 5   | Compose  | Per-page visual preflight, locked layout, measured TSX | —                   |
-| 6   | Visuals  | Decision/assets/provenance used by stage 05            | coupled with 05     |
-| 7   | QA       | P0/P1 clean, second pass complete                      | delivery gate       |
+| #   | Stage    | Required result                                           | Gate                |
+| --- | -------- | --------------------------------------------------------- | ------------------- |
+| 1   | Clarify  | Confirmed brief or recorded delegation                    | ⛔ unless delegated |
+| 2   | Research | Fact cards, or explicit `not-needed` record               | —                   |
+| 3   | Outline  | Confirmed chapters/pages/roles; then complete notes       | ⛔ unless delegated |
+| 4   | Spec     | Proposal → approval → write spec and token mirrors        | ⛔ unless delegated |
+| 5   | Compose  | Per-page visual preflight, locked layout, measured TSX    | —                   |
+| 6   | Visuals  | Decision/assets/provenance used by stage 05               | coupled with 05     |
+| 7   | QA       | P0/P1 clean; layout audit/repair and second pass complete | delivery gate       |
 
 ### The 05/06 coupling
 
