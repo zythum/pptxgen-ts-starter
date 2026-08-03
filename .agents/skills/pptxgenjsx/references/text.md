@@ -68,6 +68,13 @@ A single formatted run of text inside a `<Text>` block. Each `<TextRun>` carries
 | `tabStops`        | `Array<{ position: number, alignment?: "l"\|"r"\|"ctr"\|"dec" }>` | Tab stops                                    |
 | `softBreakBefore` | `boolean`                                                         | Soft line-break before content (Shift+Enter) |
 
+> ⚠️ **Prefer `breakLine: true` over `\n` in text.**
+> Embedding `\n` inside a `text` string creates a plain-text line break that
+> inherits the *same* formatting as the surrounding run — you cannot change
+> font size, color, or bullet style across the break. Using separate
+> `<TextRun>` elements with `breakLine: true` gives full per-line control and
+> is the idiomatic pptxgenjsx pattern.
+
 #### Underline
 
 ```tsx

@@ -214,6 +214,7 @@ npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 --resize 624x351 --o
 | `function Foo(): PptxNode`     | `async function Foo()` — no return type                             |
 | Modifying `scripts/*.ts`       | Content belongs in `src/slides/` and `src/components/`              |
 | Forgetting `breakLine: true`   | Set on the last `<TextRun>` of each line                            |
+| Using `\n` in `text` for lines | Separate `<TextRun breakLine>` per line (allows per-line formatting)|
 
 ## Skills
 
