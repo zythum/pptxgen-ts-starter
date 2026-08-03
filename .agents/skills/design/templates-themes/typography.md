@@ -117,10 +117,46 @@ proof of fit.
 
 ## 6. Measurement and portability
 
+### Width buffer
+
+`estimate-text.ts` produces exact metrics for the loaded font, but PowerPoint
+renders text with its own shaping engine and potentially different font
+builds/versions. Character advance widths, kerning tables, and hinting can
+differ enough to push a line that barely fits into an unexpected wrap.
+
+**Convention — subtract a 5 % width buffer when measuring:**
+
+```bash
+# Container is 5.7 in → measure at 5.7 × 0.95 ≈ 5.415
+npx tsx scripts/estimate-text.ts -w 5.415 -f "16pt Inter" --leading 24 \
+  "Actual slide text"
+```
+
+The 5 % default absorbs typical font-metric variance across platforms. Apply it
+by passing `container_width × 0.95` (round to three decimal places) as the `-w`
+value. The slide code still uses the full container width — only the measurement
+step is narrower.
+
+When to increase the buffer:
+
+| Condition                                    | Buffer  |
+| -------------------------------------------- | ------- |
+| Default (same family available everywhere)   | 5 %     |
+| CJK text or mixed CJK/Latin                  | 8 %     |
+| Known font substitution risk (fallback only) | 10 %    |
+| Exact managed font on every target device    | 3 % min |
+
+When text still overflows after the buffered measurement, follow the existing
+priority: shorten/split content → enlarge container → smaller approved type
+role.
+
+### Measurement workflow
+
 Before fixing a variable text box:
 
 ```bash
-npx tsx scripts/estimate-text.ts -w 5.7 -f "16pt Inter" --leading 24 \
+# Always apply the width buffer (here 5 % of 5.7 = 0.285, effective 5.415)
+npx tsx scripts/estimate-text.ts -w 5.415 -f "16pt Inter" --leading 24 \
   "Actual slide text"
 ```
 

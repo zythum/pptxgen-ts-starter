@@ -149,17 +149,23 @@ Before committing a slide, verify content fits properly to avoid runtime surpris
 
 When text content has variable length (data-driven, speaker names, long titles), **always** measure rendered height before picking container `h`.
 
+**Apply a 5 % width buffer** — pass `container_width × 0.95` as `-w` to absorb
+cross-platform font-metric variance (use 8 % for CJK, 10 % for fallback-risk
+fonts). The slide code keeps the full container width; only the measurement
+input is narrower.
+
 ```
-npx tsx scripts/estimate-text.ts -w 6.5 -f "18pt Inter" --leading 26 \
+# Container is 6.5 in → measure at 6.5 × 0.95 ≈ 6.175
+npx tsx scripts/estimate-text.ts -w 6.175 -f "18pt Inter" --leading 26 \
   "Variable-length text that might overflow its box"
 
 # Match a <Text margin={10}> box — pass the same pt value (margin unit is always pt)
-npx tsx scripts/estimate-text.ts -w 6.5 -f "18pt Inter" --leading 26 --margin 10 \
+npx tsx scripts/estimate-text.ts -w 6.175 -f "18pt Inter" --leading 26 --margin 10 \
   "Text with 10pt internal padding"
 
 # Asymmetric padding — four pt values as [left, right, bottom, top]
 # (same order as <Text margin={[l, r, b, t]}> runtime behavior)
-npx tsx scripts/estimate-text.ts -w 6.5 -f "18pt Inter" --leading 26 --margin 5,10,15,20 \
+npx tsx scripts/estimate-text.ts -w 6.175 -f "18pt Inter" --leading 26 --margin 5,10,15,20 \
   "Text with asymmetric padding"
 ```
 

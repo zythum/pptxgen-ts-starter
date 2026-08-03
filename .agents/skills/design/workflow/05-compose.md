@@ -63,12 +63,19 @@ Use semantic values from `src/token/typography.ts`; no copied layout literals.
 Follow `templates-themes/typography.md` for line height, CJK handling, and
 alignment. Use `bold: true/false` directly.
 
-Measure variable text before fixing height:
+Measure variable text before fixing height. **Apply the width buffer** (see
+`templates-themes/typography.md` §6) — pass `container_width × 0.95` as `-w`
+to absorb cross-platform font-metric variance:
 
 ```bash
-npx tsx scripts/estimate-text.ts -w 5.7 -f "16pt Inter" --leading 24 \
+# Container is 5.7 in → measure at 5.7 × 0.95 ≈ 5.415
+npx tsx scripts/estimate-text.ts -w 5.415 -f "16pt Inter" --leading 24 \
   "The actual sentence used on the slide"
 ```
+
+Use 8 % for CJK text or 10 % when font substitution is likely. The slide code
+still uses the full container width — only the `-w` measurement input is
+narrowed.
 
 If text does not fit: shorten/split first, then enlarge the box, then use a
 smaller approved type role. Re-measure every changed text block.
