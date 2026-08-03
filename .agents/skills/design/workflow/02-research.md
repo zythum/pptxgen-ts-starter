@@ -68,6 +68,9 @@ Rules:
    state region/language limitations.
 6. Never mark a third-party palette or article as “official” without an
    official source.
+7. Write the FACT line in the source's original language — do not translate at
+   this stage. Translation into the deck's audience language happens during
+   outline/compose, where context reduces mistranslation risk.
 
 Use 5–15 cards as a working range, not a quota. Stop when every evidence-bearing
 section has sufficient support.

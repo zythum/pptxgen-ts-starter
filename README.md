@@ -1,5 +1,7 @@
 # pptxgen-ts-starter
 
+[中文文档](README_CN.md)
+
 A starter template for creating PowerPoint presentations using **JSX** + **TypeScript** with [pptxgenjs](https://github.com/gitbrent/PptxGenJS). Build slides declaratively, preview instantly in the browser, and generate professional `.pptx` files.
 
 ## Features
@@ -18,7 +20,8 @@ Click the **Use this template** button on GitHub — it creates a fresh reposito
 
 ### 2. Create with tiged
 
-If you prefer working locally without creating a GitHub repository first:
+If you prefer working locally without creating a GitHub repository first.
+[tiged](https://github.com/tiged/tiged) downloads a clean copy of the template — no `.git` history, no upstream remote — so you start with a blank slate just like "Use this template" but without leaving the terminal:
 
 ```bash
 npx tiged zythum/pptxgen-ts-starter my-presentation
@@ -29,8 +32,8 @@ npm install
 ### 3. Clone manually (last resort)
 
 ```bash
-git clone https://github.com/zythum/pptxgen-ts-starter.git
-cd pptxgen-ts-starter
+git clone https://github.com/zythum/pptxgen-ts-starter.git my-presentation
+cd my-presentation
 npm install
 ```
 
