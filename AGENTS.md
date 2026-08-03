@@ -27,7 +27,7 @@ scripts/
 ├── color-tool.ts            # Derive palette variants + check WCAG contrast
 ├── dev-server.ts            # Dev server — do not modify
 ├── estimate-text.ts         # Measure rendered text height (prevent overflow)
-├── generate.ts              # .pptx builder — do not modify
+├── generate-pptx.ts         # .pptx builder — do not modify
 └── image-tool.ts            # Query image metadata, crop, resize
 web/index.html               # Browser PPTX viewer
 .agents/skills/pptxgenjsx/   # Component API reference (loaded on demand)
@@ -202,18 +202,18 @@ npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 --resize 624x351 --o
 
 ## Common Mistakes
 
-| ❌ Wrong                      | ✅ Correct                                                        |
-| ----------------------------- | ----------------------------------------------------------------- |
-| `color="#FFFFFF"`             | `color="FFFFFF"` (no `#`)                                         |
-| `fontSize: 18` literal        | `fontSize: typography.size.body` (from `src/token/typography.ts`) |
-| `<RoundRect rectRadius={0}>`  | `<Rect>`                                                          |
+| ❌ Wrong                       | ✅ Correct                                                          |
+| ------------------------------ | ------------------------------------------------------------------- |
+| `color="#FFFFFF"`              | `color="FFFFFF"` (no `#`)                                           |
+| `fontSize: 18` literal         | `fontSize: typography.size.body` (from `src/token/typography.ts`)   |
+| `<RoundRect rectRadius={0}>`   | `<Rect>`                                                            |
 | `margin={0.3}` expecting 0.3in | `margin={21.6}` — `<Text margin>` is in **points** (0.3in ≈ 21.6pt) |
-| `<div>`, `<span>`, `<p>`      | `<Text>` + `<TextRun>`                                            |
-| Named export in `src/ppt.tsx` | `export default function ()`                                      |
-| Missing full-size background  | `<SlideBackground />` as first child                              |
-| `function Foo(): PptxNode`    | `async function Foo()` — no return type                           |
-| Modifying `scripts/*.ts`      | Content belongs in `src/slides/` and `src/components/`            |
-| Forgetting `breakLine: true`  | Set on the last `<TextRun>` of each line                          |
+| `<div>`, `<span>`, `<p>`       | `<Text>` + `<TextRun>`                                              |
+| Named export in `src/ppt.tsx`  | `export default function ()`                                        |
+| Missing full-size background   | `<SlideBackground />` as first child                                |
+| `function Foo(): PptxNode`     | `async function Foo()` — no return type                             |
+| Modifying `scripts/*.ts`       | Content belongs in `src/slides/` and `src/components/`              |
+| Forgetting `breakLine: true`   | Set on the last `<TextRun>` of each line                            |
 
 ## Skills
 

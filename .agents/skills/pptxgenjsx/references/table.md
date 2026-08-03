@@ -2,39 +2,39 @@
 
 ## `<Table>`
 
-| Prop                   | Type                            | Default  | Description              |
-| ---------------------- | ------------------------------- | -------- | ------------------------ |
-| `x`                    | `number`                        | —        | Left offset              |
-| `y`                    | `number`                        | —        | Top offset               |
-| `w`                    | `number`                        | —        | Total width              |
-| `h`                    | `number`                        | —        | Total height             |
-| `colW`                 | `number \| number[]`            | equal    | Column widths            |
-| `rowH`                 | `number \| number[]`            | equal    | Row heights              |
-| `border`               | `BorderProps \| [4]BorderProps` | —        | Table border             |
-| `fill`                 | `ShapeFillProps`                | —        | Default cell background  |
+| Prop                   | Type                            | Default  | Description                         |
+| ---------------------- | ------------------------------- | -------- | ----------------------------------- |
+| `x`                    | `number`                        | —        | Left offset                         |
+| `y`                    | `number`                        | —        | Top offset                          |
+| `w`                    | `number`                        | —        | Total width                         |
+| `h`                    | `number`                        | —        | Total height                        |
+| `colW`                 | `number \| number[]`            | equal    | Column widths                       |
+| `rowH`                 | `number \| number[]`            | equal    | Row heights                         |
+| `border`               | `BorderProps \| [4]BorderProps` | —        | Table border                        |
+| `fill`                 | `ShapeFillProps`                | —        | Default cell background             |
 | `margin`               | `Margin`                        | `0`      | Cell margin (`>=1` pt, `<1` inches) |
-| `autoPage`             | `boolean`                       | `false`  | Auto-paging for overflow |
-| `autoPageRepeatHeader` | `boolean`                       | `false`  | Repeat header rows       |
-| `autoPageHeaderRows`   | `number`                        | `1`      | Header rows to repeat    |
-| `autoPageSlideStartY`  | `number`                        | (margin) | Y on paged slides        |
-| `align`                | `HAlign`                        | `"left"` | Text alignment           |
-| `valign`               | `VAlign`                        | `"top"`  | Vertical alignment       |
+| `autoPage`             | `boolean`                       | `false`  | Auto-paging for overflow            |
+| `autoPageRepeatHeader` | `boolean`                       | `false`  | Repeat header rows                  |
+| `autoPageHeaderRows`   | `number`                        | `1`      | Header rows to repeat               |
+| `autoPageSlideStartY`  | `number`                        | (margin) | Y on paged slides                   |
+| `align`                | `HAlign`                        | `"left"` | Text alignment                      |
+| `valign`               | `VAlign`                        | `"top"`  | Vertical alignment                  |
 
 ---
 
 ## `<TableCell>`
 
-| Prop                                              | Type                            | Description          |
-| ------------------------------------------------- | ------------------------------- | -------------------- |
-| `colspan`                                         | `number`                        | Column span          |
-| `rowspan`                                         | `number`                        | Row span             |
-| `fill`                                            | `ShapeFillProps`                | Cell background      |
-| `border`                                          | `BorderProps \| [4]BorderProps` | Cell border          |
+| Prop                                              | Type                            | Description                         |
+| ------------------------------------------------- | ------------------------------- | ----------------------------------- |
+| `colspan`                                         | `number`                        | Column span                         |
+| `rowspan`                                         | `number`                        | Row span                            |
+| `fill`                                            | `ShapeFillProps`                | Cell background                     |
+| `border`                                          | `BorderProps \| [4]BorderProps` | Cell border                         |
 | `margin`                                          | `Margin`                        | Cell margin (`>=1` pt, `<1` inches) |
-| `align`                                           | `HAlign`                        | Horizontal alignment |
-| `valign`                                          | `VAlign`                        | Vertical alignment   |
-| `bold`, `fontSize`, `fontFace`, `color`, `italic` | —                               | Text formatting      |
-| `hyperlink`                                       | `HyperlinkProps`                | Cell hyperlink       |
+| `align`                                           | `HAlign`                        | Horizontal alignment                |
+| `valign`                                          | `VAlign`                        | Vertical alignment                  |
+| `bold`, `fontSize`, `fontFace`, `color`, `italic` | —                               | Text formatting                     |
+| `hyperlink`                                       | `HyperlinkProps`                | Cell hyperlink                      |
 
 ---
 

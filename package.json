@@ -15,7 +15,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx scripts/dev-server.ts src/ppt.tsx --open",
-    "generate": "tsx scripts/generate.ts src/ppt.tsx -o output/presentation.pptx",
+    "generate": "tsx scripts/generate-pptx.ts src/ppt.tsx -o output/presentation.pptx",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint",
     "format": "oxfmt"

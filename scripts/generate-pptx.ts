@@ -1,5 +1,5 @@
 /**
- * generate.ts — CLI build tool for `npm run generate`.
+ * generate-pptx.ts — CLI build tool for `npm run generate`.
  *
  * Uses tsImport() (from the tsx runtime) to dynamically import the deck
  * entry file and renders it to a .pptx file.
@@ -112,7 +112,7 @@ if (currentUrl === import.meta.url) {
     );
 
     if (args["--help"]) {
-      console.log("Usage: tsx scripts/generate.ts [options] <entry>");
+      console.log("Usage: tsx scripts/generate-pptx.ts [options] <entry>");
       console.log("");
       console.log("Options:");
       console.log("  -o, --output <file>   Output .pptx file path");
@@ -123,7 +123,7 @@ if (currentUrl === import.meta.url) {
     const entry = args._[0];
     const output = args["--output"] ?? args._[1];
     if (!entry) {
-      console.error("Usage: tsx scripts/generate.ts [options] <entry>");
+      console.error("Usage: tsx scripts/generate-pptx.ts [options] <entry>");
       console.error("  <entry> — Path to the slide entry file (e.g. src/ppt.tsx)");
       process.exit(1);
     }

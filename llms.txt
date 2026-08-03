@@ -10,7 +10,7 @@ pptxgen-ts-starter/
 │   ├── color-tool.ts        # Color derivation + WCAG contrast (color npm). Run via `npx tsx scripts/color-tool.ts --hex <color> [--lighten|--darken|--gray|--contrast]`
 │   ├── dev-server.ts        # HTTP dev server (localhost:5173)
 │   ├── estimate-text.ts     # Text measurement: word-wrap + measureText (Canvas 2D). Run via `npx tsx scripts/estimate-text.ts [options] "<text>"`
-│   ├── generate.ts          # CLI build tool (generates .pptx)
+│   ├── generate-pptx.ts     # CLI build tool (generates .pptx)
 │   └── image-tool.ts        # Image query/resize/crop (sharp). Run via `npx tsx scripts/image-tool.ts --image <path> [--resize <spec>] [--crop <spec>]`
 ├── src/
 │   ├── ppt.tsx              # Deck entry — composes all slides into <Deck>

@@ -1,5 +1,7 @@
 # pptxgen-ts-starter
 
+[English](./README.md) | 中文
+
 使用 **JSX** + **TypeScript** 配合 [pptxgenjs](https://github.com/gitbrent/PptxGenJS) 创建 PowerPoint 演示文稿的起手模板。声明式编写幻灯片，浏览器实时预览，一键生成专业 `.pptx` 文件。
 
 ## 特性
@@ -43,7 +45,7 @@ pptxgen-ts-starter/
 │   ├── color-tool.ts      # 派生调色板变体 + 检查 WCAG 对比度
 │   ├── dev-server.ts      # 开发服务器，浏览器预览
 │   ├── estimate-text.ts   # 测量渲染文本高度（防止溢出）
-│   ├── generate.ts        # CLI .pptx 构建器
+│   ├── generate-pptx.ts   # CLI .pptx 构建器
 │   └── image-tool.ts      # 查询图片元数据、裁剪、缩放
 ├── src/
 │   ├── ppt.tsx            # 入口文件 — 在此组合所有幻灯片
@@ -71,13 +73,13 @@ pptxgen-ts-starter/
 
 本模板包含以下 npm 脚本：
 
-| 命令                | 作用                                                        |
-| ------------------- | ----------------------------------------------------------- |
-| `npm run dev`       | 开发服务器运行在 `localhost:5173`（刷新浏览器查看更改）      |
-| `npm run generate`  | 构建 `output/presentation.pptx`                             |
-| `npm run typecheck` | 类型检查，不输出文件                                        |
-| `npm run lint`      | 使用 oxlint 进行代码检查                                    |
-| `npm run format`    | 使用 oxfmt 进行代码格式化                                   |
+| 命令                | 作用                                                    |
+| ------------------- | ------------------------------------------------------- |
+| `npm run dev`       | 开发服务器运行在 `localhost:5173`（刷新浏览器查看更改） |
+| `npm run generate`  | 构建 `output/presentation.pptx`                         |
+| `npm run typecheck` | 类型检查，不输出文件                                    |
+| `npm run lint`      | 使用 oxlint 进行代码检查                                |
+| `npm run format`    | 使用 oxfmt 进行代码格式化                               |
 
 ### CLI 工具
 

@@ -1,6 +1,6 @@
 # pptxgen-ts-starter
 
-[中文文档](README_CN.md)
+English | [中文](./README_CN.md)
 
 A starter template for creating PowerPoint presentations using **JSX** + **TypeScript** with [pptxgenjs](https://github.com/gitbrent/PptxGenJS). Build slides declaratively, preview instantly in the browser, and generate professional `.pptx` files.
 
@@ -45,7 +45,7 @@ pptxgen-ts-starter/
 │   ├── color-tool.ts      # derive palette variants + check WCAG contrast
 │   ├── dev-server.ts      # dev server with browser preview
 │   ├── estimate-text.ts   # measure rendered text height (prevent overflow)
-│   ├── generate.ts        # CLI .pptx builder
+│   ├── generate-pptx.ts   # CLI .pptx builder
 │   └── image-tool.ts      # query image metadata, crop, resize
 ├── src/
 │   ├── ppt.tsx            # deck entry — compose slides here

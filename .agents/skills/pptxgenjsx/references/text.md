@@ -6,25 +6,25 @@ Positions and styles a text block on the slide. All children must be `<TextRun>`
 
 ### Props
 
-| Prop          | Type                              | Default  | Description                                          |
-| ------------- | --------------------------------- | -------- | ---------------------------------------------------- |
-| `x`           | `Coord` (`number \|`${number}%``) | —        | Left offset (inches or %)                            |
-| `y`           | `Coord`                           | —        | Top offset                                           |
-| `w`           | `Coord`                           | —        | Width                                                |
-| `h`           | `Coord`                           | —        | Height                                               |
-| `align`       | `HAlign`                          | `"left"` | `"left"\|"center"\|"right"\|"justify"`               |
-| `valign`      | `VAlign`                          | `"top"`  | `"top"\|"middle"\|"bottom"`                          |
-| `lineSpacing` | `number`                          | —        | Line spacing in points                               |
-| `fill`        | `FillProps`                       | —        | Background fill                                      |
-| `border`      | `BorderProps`                     | —        | Border                                               |
-| `shadow`      | `ShadowProps`                     | —        | Shadow                                               |
-| `rtl`         | `boolean`                         | —        | Right-to-left layout                                 |
-| `rotate`      | `number`                          | —        | Rotation in degrees                                  |
-| `autoFit`     | `boolean`                         | —        | Shrink text to fit                                   |
-| `shrinkText`  | `boolean`                         | —        | Shrink overflow text                                 |
-| `wrap`        | `boolean`                         | `true`   | Word wrap                                            |
+| Prop          | Type                              | Default  | Description                                                             |
+| ------------- | --------------------------------- | -------- | ----------------------------------------------------------------------- |
+| `x`           | `Coord` (`number \|`${number}%``) | —        | Left offset (inches or %)                                               |
+| `y`           | `Coord`                           | —        | Top offset                                                              |
+| `w`           | `Coord`                           | —        | Width                                                                   |
+| `h`           | `Coord`                           | —        | Height                                                                  |
+| `align`       | `HAlign`                          | `"left"` | `"left"\|"center"\|"right"\|"justify"`                                  |
+| `valign`      | `VAlign`                          | `"top"`  | `"top"\|"middle"\|"bottom"`                                             |
+| `lineSpacing` | `number`                          | —        | Line spacing in points                                                  |
+| `fill`        | `FillProps`                       | —        | Background fill                                                         |
+| `border`      | `BorderProps`                     | —        | Border                                                                  |
+| `shadow`      | `ShadowProps`                     | —        | Shadow                                                                  |
+| `rtl`         | `boolean`                         | —        | Right-to-left layout                                                    |
+| `rotate`      | `number`                          | —        | Rotation in degrees                                                     |
+| `autoFit`     | `boolean`                         | —        | Shrink text to fit                                                      |
+| `shrinkText`  | `boolean`                         | —        | Shrink overflow text                                                    |
+| `wrap`        | `boolean`                         | `true`   | Word wrap                                                               |
 | `margin`      | `number \| number[]`              | —        | Margin in **points (pt)**; single value or `[left, right, bottom, top]` |
-| `inset`       | `number`                          | —        | Internal padding in inches                           |
+| `inset`       | `number`                          | —        | Internal padding in inches                                              |
 
 ---
 
