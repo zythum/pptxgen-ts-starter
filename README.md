@@ -37,6 +37,81 @@ cd my-presentation
 npm install
 ```
 
+## Use AI to Create a Presentation
+
+This starter works best when you give an AI assistant a clear brief instead of only asking it to “make a PPT.” The prompt should describe the audience, purpose, content, visual direction, and delivery requirements. The AI should then create editable, code-generated PowerPoint slides in this repository—not screenshots or static HTML.
+
+### The simplest prompt
+
+```text
+Please create a PPT project based on https://github.com/zythum/pptxgen-ts-starter.
+The topic is “<your topic>”.
+```
+
+This is enough to start a task, but a more complete brief will produce a better structure and fewer assumptions.
+
+### Recommended PPT brief
+
+Provide as many of these details as possible:
+
+```text
+Topic:
+Audience:
+Use case:
+Talk length:
+Target slide count:
+One sentence the audience should remember:
+Action the audience should take afterward:
+Required content:
+Available data and sources:
+Data cutoff date:
+Required images, logos, or brand guidelines:
+Visual direction:
+Content or claims that must not appear:
+Delivery requirements: PPTX, speaker notes, PDF, source code, asset list, etc.
+```
+
+At minimum, cover these eight areas: topic, audience, use case, goal, content materials, slide count and timing, visual direction, and delivery requirements.
+
+### Distinguish facts from assumptions
+
+Label the input explicitly so the AI knows what it may use directly:
+
+- **Facts** — sourced or verifiable information, such as “July active customers were 1,240.”
+- **Opinions** — judgments you want the presentation to express, such as “Self-service onboarding is the most promising growth channel.”
+- **Recommendations** — proposed next actions, such as “Pilot templates in two industries.”
+- **To confirm** — missing information that must not be presented as fact, such as “Is retention affected by pricing?”
+
+Do not let the AI invent growth rates, market shares, customer names, competitor information, case-study results, or other unsupported details. Mark missing information as `TBD` or `needs verification` instead.
+
+### A complete example
+
+```text
+Please create a “magazine-style” PPTX project based on https://github.com/zythum/pptxgen-ts-starter. The topic is “城市更新中的新生活方式” (“New Lifestyles in Urban Renewal”).
+
+Audience and goal
+Audience: Brands and content teams focused on urban lifestyles
+Setting: 20-minute internal sharing
+Goal: Help the audience understand how urban renewal is changing lifestyles
+Target length: 10 slides
+
+Content directions
+- Urban spaces are shifting from “passage” to “staying”
+- Old factories, community retail, and public spaces
+- City content in the past vs. city content today
+- People are buying participation, not just function
+
+Visual requirements
+1. Make the overall deck feel like a special feature produced by an editorial team: large headlines, generous whitespace, images, and short phrases placed side by side.
+2. Use a widescreen canvas; keep one main conclusion on each slide.
+3. Use black, off-white, and gray as the base colors, with only one bright accent color.
+4. Use a large image or oversized type on the cover and section slides; use clear metrics or comparison structures on data slides.
+5. Perform a visual preflight for every image and record its source, aspect ratio, crop method, and copyright status. When no image is available, use procedurally drawn graphics instead of inventing image sources.
+6. Do not use large numbers of rounded cards or turn every slide into the same card grid.
+```
+
+When working in this repository, ask the AI to use the existing JSX + TypeScript workflow, shared design tokens in `src/token/`, reusable components in `src/components/`, and the `.deck/` workspace. It should validate text fit, image aspect ratios, type checking, linting, and PPTX generation before delivery. The result is a repeatable, editable native `.pptx` file rather than a rendered image.
+
 ## Project Structure
 
 ```
