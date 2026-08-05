@@ -208,19 +208,19 @@ npx tsx scripts/image-tool.ts --image photo.png --crop 16:9 --resize 624x351 --o
 
 ## Common Mistakes
 
-| ❌ Wrong                       | ✅ Correct                                                          |
-| ------------------------------ | ------------------------------------------------------------------- |
-| `color="#FFFFFF"`              | `color="FFFFFF"` (no `#`)                                           |
-| `fontSize: 18` literal         | `fontSize: typography.size.body` (from `src/token/typography.ts`)   |
-| `<RoundRect rectRadius={0}>`   | `<Rect>`                                                            |
-| `margin={0.3}` expecting 0.3in | `margin={21.6}` — `<Text margin>` is in **points** (0.3in ≈ 21.6pt) |
-| `<div>`, `<span>`, `<p>`       | `<Text>` + `<TextRun>`                                              |
-| Named export in `src/ppt.tsx`  | `export default function ()`                                        |
-| Missing full-size background   | `<SlideBackground />` as first child                                |
-| `function Foo(): PptxNode`     | `async function Foo()` — no return type                             |
-| Modifying `scripts/*.ts`       | Content belongs in `src/slides/` and `src/components/`              |
-| Forgetting `breakLine: true`   | Set on the last `<TextRun>` of each line                            |
-| Using `\n` in `text` for lines | Separate `<TextRun breakLine>` per line (allows per-line formatting)|
+| ❌ Wrong                       | ✅ Correct                                                           |
+| ------------------------------ | -------------------------------------------------------------------- |
+| `color="#FFFFFF"`              | `color="FFFFFF"` (no `#`)                                            |
+| `fontSize: 18` literal         | `fontSize: typography.size.body` (from `src/token/typography.ts`)    |
+| `<RoundRect rectRadius={0}>`   | `<Rect>`                                                             |
+| `margin={0.3}` expecting 0.3in | `margin={21.6}` — `<Text margin>` is in **points** (0.3in ≈ 21.6pt)  |
+| `<div>`, `<span>`, `<p>`       | `<Text>` + `<TextRun>`                                               |
+| Named export in `src/ppt.tsx`  | `export default function ()`                                         |
+| Missing full-size background   | `<SlideBackground />` as first child                                 |
+| `function Foo(): PptxNode`     | `async function Foo()` — no return type                              |
+| Modifying `scripts/*.ts`       | Content belongs in `src/slides/` and `src/components/`               |
+| Forgetting `breakLine: true`   | Set on the last `<TextRun>` of each line                             |
+| Using `\n` in `text` for lines | Separate `<TextRun breakLine>` per line (allows per-line formatting) |
 
 ## Skills
 
