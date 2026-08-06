@@ -199,6 +199,14 @@ Skills are loaded on demand — see the [AGENTS.md](AGENTS.md#skills) guide for 
 
 For detailed authoring instructions — conventions, workflow, common mistakes, and component API — see [AGENTS.md](AGENTS.md). This is the primary reference for both human contributors and AI coding assistants.
 
+## Design References
+
+- Guizang PPT Skill https://github.com/op7418/guizang-ppt-skill
+- ppt-master https://github.com/hugohe3/ppt-master
+- Tailwind CSS colors https://tailwindcss.com/docs/colors
+- McKinsey color reference https://colorcodeguide.com/official/mckinsey
+- Monocle style reference https://styles.refero.design/style/9165ecb1-f068-4093-8783-1f3c98898b8a
+
 ## Acknowledgment
 
 If you found it useful, I would be grateful if you could leave a star on the repository.

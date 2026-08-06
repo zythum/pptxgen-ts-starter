@@ -197,6 +197,14 @@ pptxgen-ts-starter/
 
 详细的编写说明 — 规范、工作流、常见错误和组件 API — 请参见 [AGENTS.md](AGENTS.md)。这是人类贡献者和 AI 编码助手的主要参考文档。
 
+## 设计参考
+
+- Guizang PPT Skill https://github.com/op7418/guizang-ppt-skill
+- ppt-master https://github.com/hugohe3/ppt-master
+- Tailwind CSS colors https://tailwindcss.com/docs/colors
+- McKinsey color reference https://colorcodeguide.com/official/mckinsey
+- Monocle style reference https://styles.refero.design/style/9165ecb1-f068-4093-8783-1f3c98898b8a
+
 ## 致谢
 
 如果你觉得这个项目有用，希望你能在仓库中点个 Star ⭐。
