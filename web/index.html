@@ -438,6 +438,63 @@
         white-space: pre-wrap;
       }
 
+      /* ── Fullscreen / Presentation mode ── */
+      .pptx.fullscreen-mode .pptx-topbar {
+        display: none;
+      }
+
+      .pptx.fullscreen-mode .notes-desk {
+        display: none;
+      }
+
+      .pptx.fullscreen-mode .pptx-canvas-wrapper {
+        padding: 0;
+        background: #000;
+      }
+
+      .pptx.fullscreen-mode .pptx-stage {
+        background: #000;
+      }
+
+      .pptx.fullscreen-mode .pptx-floating-controls {
+        opacity: 0;
+        transition: opacity 300ms ease;
+      }
+
+      .pptx.fullscreen-mode .pptx-stage:hover .pptx-floating-controls,
+      .pptx.fullscreen-mode .pptx-floating-controls:focus-within {
+        opacity: 1;
+      }
+
+      .pptx.fullscreen-mode .pptx-canvas {
+        box-shadow: none;
+      }
+
+      /* Fullscreen toast notification */
+      .fullscreen-toast {
+        position: fixed;
+        z-index: 30;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100px);
+        padding: 12px 20px;
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        background: rgba(37, 37, 54, 0.95);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 500;
+        opacity: 0;
+        transition: transform 300ms ease, opacity 300ms ease;
+        pointer-events: none;
+      }
+
+      .fullscreen-toast.visible {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+
       @media (max-width: 760px) {
         .pptx-topbar {
           min-height: 52px;
@@ -495,6 +552,9 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- ── Fullscreen Toast ── -->
+    <div id="fullscreenToast" class="fullscreen-toast" role="alert" aria-live="polite"></div>
 
     <!-- ── Error Modal ── -->
     <div
@@ -580,6 +640,7 @@
                   <button class="pptx-control-button pptx-next-btn" type="button" aria-label="Next slide" title="Next slide (→)">→</button>
                   <span class="pptx-control-divider" aria-hidden="true"></span>
                   <button class="pptx-control-button pptx-notes-toggle" type="button" aria-label="Show speaker notes" aria-expanded="false" title="Show speaker notes (N)">▤</button>
+                  <button class="pptx-control-button pptx-fullscreen-btn" type="button" aria-label="Fullscreen presentation" title="Fullscreen presentation (F5)">⛶</button>
                 </div>
               </main>
               <aside class="notes-desk" aria-label="Speaker notes" aria-hidden="true">
@@ -703,6 +764,70 @@
         notesCloseBtn.addEventListener("click", () => setNotesOpen(false));
         notesToggleBtns.forEach((button) => button.addEventListener("click", toggleNotes));
 
+        // ── Fullscreen presentation mode ──
+        const fullscreenBtn = domElement.querySelector(".pptx-fullscreen-btn");
+        const fullscreenToast = document.getElementById("fullscreenToast");
+        let toastTimer = null;
+
+        function showToast(message) {
+          fullscreenToast.textContent = message;
+          fullscreenToast.classList.add("visible");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            fullscreenToast.classList.remove("visible");
+          }, 3000);
+        }
+
+        function isFullscreenSupported() {
+          return !!(
+            document.fullscreenEnabled ??
+            document.webkitFullscreenEnabled
+          );
+        }
+
+        function isInFullscreen() {
+          return !!(document.fullscreenElement ?? document.webkitFullscreenElement);
+        }
+
+        function enterFullscreen() {
+          if (!isFullscreenSupported()) {
+            showToast("⚠ 当前浏览器不支持全屏功能，请使用 Chrome/Firefox/Edge 等现代浏览器");
+            return;
+          }
+          const el = document.documentElement;
+          const request = el.requestFullscreen ?? el.webkitRequestFullscreen;
+          if (request) {
+            request.call(el).catch(() => {
+              showToast("⚠ 全屏请求被拒绝，请检查浏览器权限设置");
+            });
+          }
+        }
+
+        function exitFullscreen() {
+          const exit = document.exitFullscreen ?? document.webkitExitFullscreen;
+          if (exit) exit.call(document);
+        }
+
+        function toggleFullscreen() {
+          if (isInFullscreen()) {
+            exitFullscreen();
+          } else {
+            enterFullscreen();
+          }
+        }
+
+        function onFullscreenChange() {
+          const inFs = isInFullscreen();
+          app.classList.toggle("fullscreen-mode", inFs);
+          fullscreenBtn.setAttribute("aria-label", inFs ? "Exit fullscreen" : "Fullscreen presentation");
+          fullscreenBtn.title = inFs ? "Exit fullscreen (Esc)" : "Fullscreen presentation (F5)";
+          window.requestAnimationFrame(() => void viewer?.fitPage());
+        }
+
+        document.addEventListener("fullscreenchange", onFullscreenChange);
+        document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+        fullscreenBtn.addEventListener("click", toggleFullscreen);
+
         compactViewport.addEventListener("change", (event) => {
           if (event.matches) setNotesOpen(false);
         });
@@ -721,9 +846,14 @@
             event.preventDefault();
             void viewer?.nextSlide();
           } else if (event.key.toLowerCase() === "n") {
-            toggleNotes();
+            if (!isInFullscreen()) toggleNotes();
           } else if (event.key.toLowerCase() === "f") {
             void viewer?.fitPage();
+          } else if (event.key === "F5") {
+            event.preventDefault();
+            enterFullscreen();
+          } else if (event.key === "Escape" && isInFullscreen()) {
+            exitFullscreen();
           }
         });
       }
