@@ -52,6 +52,9 @@ Use this checklist with `workflow/07-qa.md`. Mark every applicable item; record
       geometry second, and a conforming representative page only as fallback.
 - [ ] Spec-locked and shared-component anchors match exactly; other drift over
       `0.05in` is reviewed rather than automatically normalized.
+- [ ] After content composition, whitespace is intentional: primary content has
+      breathing room, repeated gaps are coherent, and comparable layout cohorts
+      retain a consistent rhythm without normalizing intentional sparse pages.
 - [ ] Each P0/P1 layout issue has structured evidence, authority, severity, and
       open/fixed status in the working QA report or agent state—not a fifth
       `.deck/` planning file.
