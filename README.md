@@ -50,6 +50,18 @@ The topic is “<your topic>”.
 
 This is enough to start a task, but a more complete brief will produce a better structure and fewer assumptions.
 
+Here are two practical examples:
+
+```text
+Please create a PPT project based on https://github.com/zythum/pptxgen-ts-starter.
+The topic is “Introducing the Kimi K3 model.” Please research and verify public sources, use a Xiaohongshu-inspired style, and create around 5 slides. Cite sources for important information and do not invent unverified facts.
+```
+
+```text
+Please create a PPT project based on https://github.com/zythum/pptxgen-ts-starter.
+Please create a middle-school Chinese language lesson deck on the classical Chinese poem “江雪” Use an ink-wash style and design it for a session of about 20 minutes. Include the lesson structure, key teaching points, and classroom interaction.
+```
+
 ### Recommended PPT brief
 
 Provide as many of these details as possible:
