@@ -207,6 +207,37 @@ For detailed authoring instructions — conventions, workflow, common mistakes, 
 - McKinsey color reference https://colorcodeguide.com/official/mckinsey
 - Monocle style reference https://styles.refero.design/style/9165ecb1-f068-4093-8783-1f3c98898b8a
 
+## Example
+
+Here are some simple examples using `deepseek-v4-flash`.
+
+```text
+Please create a PPT project based on https://github.com/zythum/pptxgen-ts-starter.
+The topic is “Introducing the Kimi K3 model.” Please research and verify public sources, use a Xiaohongshu-inspired style, and create around 5 slides. Cite sources for important information and do not invent unverified facts.
+```
+
+```text
+请基于 https://github.com/zythum/pptxgen-ts-starter
+创建一个 PPT 项目，主题是“介绍 Kimi K3 模型”。请自行查找并核实公开资料，采用小红书风格，制作 5 页左右的内容。请标注重要信息的来源，不要编造未经验证的事实。
+```
+
+![https://i.v2ex.co/rgcqSa6N.jpeg](https://i.v2ex.co/rgcqSa6N.jpeg)
+
+---
+
+```text
+Please create a PPT project based on https://github.com/zythum/pptxgen-ts-starter.
+Please create a middle-school Chinese language lesson deck on the classical Chinese poem “江雪” Use an ink-wash style and design it for a session of about 20 minutes. Include the lesson structure, key teaching points, and classroom interaction.
+```
+
+```text
+请基于 https://github.com/zythum/pptxgen-ts-starter
+创建一个 PPT 作为中学语文课件。主题为“《江雪》古诗解析”，采用水墨风格，时长大概 20 分钟。请结合课文内容设计教学结构、讲解重点和课堂互动。
+```
+
+![https://i.v2ex.co/5cv2UE1m.jpeg](https://i.v2ex.co/5cv2UE1m.jpeg)
+
+
 ## Acknowledgment
 
 If you found it useful, I would be grateful if you could leave a star on the repository.

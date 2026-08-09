@@ -205,6 +205,25 @@ pptxgen-ts-starter/
 - McKinsey color reference https://colorcodeguide.com/official/mckinsey
 - Monocle style reference https://styles.refero.design/style/9165ecb1-f068-4093-8783-1f3c98898b8a
 
+## Example 一些例子
+
+下面给一些简单案例, 使用的是 `deepseek-v4-flash`。
+
+```text
+请基于 https://github.com/zythum/pptxgen-ts-starter 创建一个 PPT 项目，主题是“介绍 Kimi K3 模型”。
+请自行查找并核实公开资料，采用小红书风格，制作 5 页左右的内容。请标注重要信息的来源，不要编造未经验证的事实。
+```
+![https://i.v2ex.co/rgcqSa6N.jpeg](https://i.v2ex.co/rgcqSa6N.jpeg)
+
+---
+
+```text
+请基于 https://github.com/zythum/pptxgen-ts-starter 创建一个 PPT 作为中学语文课件。主题为“《江雪》古诗解析”，采用水墨风格，时长大概 20 分钟。
+请结合课文内容设计教学结构、讲解重点和课堂互动。
+```
+
+![https://i.v2ex.co/5cv2UE1m.jpeg](https://i.v2ex.co/5cv2UE1m.jpeg)
+
 ## 致谢
 
 如果你觉得这个项目有用，希望你能在仓库中点个 Star ⭐。
