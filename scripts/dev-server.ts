@@ -52,7 +52,9 @@ if (args["--help"]) {
   Usage: tsx scripts/dev-server.ts [options] <entry>
 
   Options:
-    --port, -p   Port number (default: 5173 or $PORT)
+    --port, -p   Port number (default: 5173 or $PORT; when no port is
+                 specified and the default is already in use, the next
+                 free port is chosen automatically)
     --host,      Host address (default: 127.0.0.1 or $HOST)
     --open       Open browser automatically on start
     --help, -h   Show this help message
@@ -74,7 +76,13 @@ if (!ENTRY_FILE) {
 const ENTRY_ABS = path.resolve(ROOT, ENTRY_FILE);
 process.chdir(path.dirname(ENTRY_ABS));
 
-const PORT = args["--port"] ?? parseInt(process.env.PORT || "5173", 10);
+// Port selection: a port counts as "specified" when given via --port or $PORT.
+// Otherwise the default (5173) is used, and if it is already taken we step
+// through subsequent ports until a free one is found.
+const PORT_SPECIFIED = args["--port"] !== undefined || (process.env.PORT ?? "") !== "";
+const INITIAL_PORT = args["--port"] ?? parseInt(process.env.PORT || "5173", 10);
+const MAX_PORT_RETRIES = 20;
+let PORT = INITIAL_PORT;
 const HOST = args["--host"] ?? (process.env.HOST || "127.0.0.1");
 
 // ── Hot-reload via SSE ──
@@ -211,22 +219,61 @@ process.on("SIGINT", () => onClose("SIGINT"));
 // ── Start ──
 const OPEN = args["--open"] ?? false;
 
-server.listen(PORT, HOST, () => {
-  const url = `http://${HOST}:${PORT}/`;
-  console.log("  Dev Server");
-  console.log(`  → ${url}\n`);
+function startServer(port: number) {
+  // Drop any stale "listening" callback left over from a failed attempt — Node
+  // keeps listen()'s callback registered on EADDRINUSE, so it would wrongly
+  // fire (with the old port) once a retry succeeds.
+  server.removeAllListeners("listening");
+  server.once("listening", () => {
+    const url = `http://${HOST}:${port}/`;
+    console.log("  Dev Server");
+    console.log(`  → ${url}\n`);
 
-  if (OPEN) {
-    if (process.platform === "win32") {
-      // start "title" "url" — empty title prevents first-quoted-arg confusion
-      exec(`start "" "${url}"`, { shell: "cmd.exe" }, (err) => {
-        if (err) console.error(`  Failed to open browser: ${err.message}`);
-      });
-    } else {
-      const cmd = process.platform === "darwin" ? "open" : "xdg-open";
-      exec(`${cmd} "${url}"`, (err) => {
-        if (err) console.error(`  Failed to open browser: ${err.message}`);
-      });
+    if (OPEN) {
+      if (process.platform === "win32") {
+        // start "title" "url" — empty title prevents first-quoted-arg confusion
+        exec(`start "" "${url}"`, { shell: "cmd.exe" }, (err) => {
+          if (err) console.error(`  Failed to open browser: ${err.message}`);
+        });
+      } else {
+        const cmd = process.platform === "darwin" ? "open" : "xdg-open";
+        exec(`${cmd} "${url}"`, (err) => {
+          if (err) console.error(`  Failed to open browser: ${err.message}`);
+        });
+      }
     }
+  });
+  server.listen(port, HOST);
+}
+
+// Handle listen-phase errors. An EADDRINUSE while not listening means the port
+// is taken: fail fast if the user asked for a specific port, otherwise retry
+// on the next port until a free one is found.
+server.on("error", (err: NodeJS.ErrnoException) => {
+  if (server.listening || err.code !== "EADDRINUSE") {
+    console.error("Server error:", err);
+    process.exit(1);
+    return;
   }
+
+  if (PORT_SPECIFIED) {
+    console.error(`  ✖ Port ${PORT} is already in use.`);
+    console.error("    Release it, or pick a free port with --port.");
+    process.exit(1);
+    return;
+  }
+
+  if (PORT - INITIAL_PORT >= MAX_PORT_RETRIES) {
+    console.error(
+      `  ✖ Port ${PORT} is in use and no free port was found after ${MAX_PORT_RETRIES} attempts.`,
+    );
+    process.exit(1);
+    return;
+  }
+
+  console.log(`  Port ${PORT} is in use → trying ${PORT + 1}...`);
+  PORT += 1;
+  startServer(PORT);
 });
+
+startServer(PORT);
