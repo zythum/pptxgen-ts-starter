@@ -213,6 +213,7 @@ pptxgen-ts-starter/
 请基于 https://github.com/zythum/pptxgen-ts-starter 创建一个 PPT 项目，主题是“介绍 Kimi K3 模型”。
 请自行查找并核实公开资料，采用小红书风格，制作 5 页左右的内容。请标注重要信息的来源，不要编造未经验证的事实。
 ```
+
 ![https://i.v2ex.co/rgcqSa6N.jpeg](https://i.v2ex.co/rgcqSa6N.jpeg)
 
 ---

@@ -1,6 +1,6 @@
 ---
 name: design
-version: 1.2.0
+version: 1.3.0
 description: >
   Content and design methodology for presentations built with
   pptxgen-ts-starter. Use for deck planning, research, narrative, speaker
@@ -34,6 +34,7 @@ Produce the **content** and **design** of a deck built with
 | Design system            | `workflow/04-spec.md` + `04b-token-files.md`                 |
 | Slide execution          | `workflow/05-compose.md` with `06-visuals.md` preflight      |
 | Delivery review          | `workflow/07-qa.md`: layout audit, constrained repair, Gate  |
+| Image content sidecars   | `references/asset-metadata.md`                               |
 | Canonical QA checklist   | `references/qa/checklist.md`                                 |
 | Design knowledge         | `templates-themes/`                                          |
 
@@ -53,6 +54,7 @@ design/
 │   ├── 06-visuals.md
 │   └── 07-qa.md
 ├── references/
+│   ├── asset-metadata.md
 │   └── qa/checklist.md
 └── templates-themes/
     ├── styles.md

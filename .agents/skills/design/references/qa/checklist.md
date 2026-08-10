@@ -107,6 +107,13 @@ Use this checklist with `workflow/07-qa.md`. Mark every applicable item; record
 ## P1 — Images, charts, and provenance
 
 - [ ] User assets have approval/context; stock assets have license/credit data.
+- [ ] Every newly acquired or materially reworked raster image selected in
+      `src/media/images/` has a same-basename `.meta.json` content sidecar:
+      a literal image `description`; optional image-grounded semantic/color
+      fields; and optional `composition` only when reviewed from the final
+      image. It contains no provenance, technical, lifecycle, or usage fields.
+- [ ] Required stock provenance/credit/license data remains in the Stage 06,
+      `.deck`, and/or slide-comment records—not in the content sidecar.
 - [ ] Generated assets record provider, model/version, date, prompt reference,
       reviewer, and restrictions.
 - [ ] Screenshots do not expose confidential or personal information.

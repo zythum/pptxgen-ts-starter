@@ -237,7 +237,6 @@ Please create a middle-school Chinese language lesson deck on the classical Chin
 
 ![https://i.v2ex.co/5cv2UE1m.jpeg](https://i.v2ex.co/5cv2UE1m.jpeg)
 
-
 ## Acknowledgment
 
 If you found it useful, I would be grateful if you could leave a star on the repository.
