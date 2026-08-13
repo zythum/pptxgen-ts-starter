@@ -1,6 +1,6 @@
 ---
 name: design
-version: 1.3.0
+version: 1.4.0
 description: >
   Content and design methodology for presentations built with
   pptxgen-ts-starter. Use for deck planning, research, narrative, speaker

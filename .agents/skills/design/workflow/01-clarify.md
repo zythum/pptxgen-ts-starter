@@ -42,6 +42,33 @@ Never invent brand colors, legal claims, confidentiality rules, or required
 sections. If style is open, propose one style with a rationale; it remains a
 proposal until the applicable gate or delegation covers it.
 
+Ask requirement 5 like any other missing requirement: include style/brand
+preference in the combined prompt and try to surface what the user actually
+wants before choosing anything. Apply the defaults below only when asking yields
+no usable answer — the user has no preference, declines to choose, or does not
+respond. The chosen style is still recorded as a proposal; the Section 3 gate
+applies.
+
+**Level 1 — route by signals already supplied.** Match whatever the user did
+provide (audience, purpose, setting) against the routing table in
+`templates-themes/styles.md` §3. Any observed signal with a row wins over the
+fallback.
+
+**Level 2 — no usable signal → `S1 Minimal Light`.** Universal default:
+
+- Information-first system fits the widest range of content (`styles.md` §1).
+- Light Professional passes AA on every verified pairing — text 14.06:1, muted
+  4.63:1, accent 5.46:1 (`palettes.md` §3).
+- Neo-Grotesk (Inter) is the least error-prone default family
+  (`typography.md` §1).
+- The skeleton migrates cheaply to S2/S3/S5 once real preferences emerge.
+
+**Visual impact.** If the user asks for striking output rather than a safe
+default, escalate: S2 Dark Premium for product/tech, S5 Vibrant Startup for
+launches, S4 Editorial for story-led decks with strong imagery. Remember clarity
+on a projector outranks trendiness — S2 needs a controlled light source and S4
+needs strong photography to carry it.
+
 ## 3. Restate and handle the Gate
 
 Restate in a compact block:
@@ -84,6 +111,7 @@ delegation is explicit.
 ## Anti-patterns
 
 - Asking all seven questions again when most were answered.
+- Assuming the user has no style preference without asking.
 - Treating “make it professional” as approval of an arbitrary style.
 - Proceeding from silence rather than approval or delegation.
 - Rebuilding an existing deck without reading its planning files.
